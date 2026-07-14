@@ -9,16 +9,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
+// TODO: Milestone 9 – implement full profile screen design
 @Composable
 fun ProfileScreen(
-    modifier: Modifier = Modifier
+    onNavigateToHome: () -> Unit = {},
+    onNavigateToRegistered: () -> Unit = {},
+    onLogout: () -> Unit = {},
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(text = "Profile Screen", style = MaterialTheme.typography.headlineMedium)
-        Text(text = "Temporary content for Profile Screen", style = MaterialTheme.typography.bodyLarge)
     }
 }

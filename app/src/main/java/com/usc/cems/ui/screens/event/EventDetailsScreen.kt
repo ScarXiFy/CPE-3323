@@ -9,17 +9,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
+// TODO: Milestone 6 – implement full event details screen design
 @Composable
 fun EventDetailsScreen(
     eventId: String,
-    modifier: Modifier = Modifier
+    onNavUp: () -> Unit = {},
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(text = "Event Details Screen", style = MaterialTheme.typography.headlineMedium)
-        Text(text = "Temporary content for Event ID: $eventId", style = MaterialTheme.typography.bodyLarge)
+        Text(text = "Event Details: $eventId", style = MaterialTheme.typography.headlineMedium)
     }
 }

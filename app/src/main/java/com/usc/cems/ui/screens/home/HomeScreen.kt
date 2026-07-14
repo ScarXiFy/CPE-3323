@@ -9,16 +9,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
+// TODO: Milestone 5 – implement full home screen design
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier
+    onEventClick: (String) -> Unit = {},
+    onNavigateToRegistered: () -> Unit = {},
+    onNavigateToProfile: () -> Unit = {},
+    onNavigateToCreateEvent: () -> Unit = {},
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(text = "Home Screen", style = MaterialTheme.typography.headlineMedium)
-        Text(text = "Temporary content for Home Screen", style = MaterialTheme.typography.bodyLarge)
     }
 }

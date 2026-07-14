@@ -99,6 +99,9 @@ dependencies {
   // Coil
   implementation(libs.coil.compose)
 
+  // Google Fonts (downloadable fonts)
+  implementation(libs.androidx.compose.ui.text.google.fonts)
+
   // Serialization
   implementation(libs.kotlinx.serialization.json)
 }

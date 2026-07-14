@@ -9,16 +9,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
+// TODO: Milestone 8 – implement full registered events screen design
+// Note: repurposed from MyEvents to show student's registered (RSVP'd) events
 @Composable
 fun MyEventsScreen(
-    modifier: Modifier = Modifier
+    onEventClick: (String) -> Unit = {},
+    onNavigateToHome: () -> Unit = {},
+    onNavigateToProfile: () -> Unit = {},
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(text = "My Events Screen", style = MaterialTheme.typography.headlineMedium)
-        Text(text = "Temporary content for My Events Screen", style = MaterialTheme.typography.bodyLarge)
+        Text(text = "Registered Events Screen", style = MaterialTheme.typography.headlineMedium)
     }
 }

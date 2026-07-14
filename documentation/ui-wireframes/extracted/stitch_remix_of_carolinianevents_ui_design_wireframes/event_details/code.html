@@ -1,0 +1,260 @@
+<!DOCTYPE html><html class="light" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
+<title>Event Details - CarolinianEvents</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#434654",
+                        "secondary-fixed": "#ffdf9f",
+                        "on-secondary-fixed-variant": "#5c4300",
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "inverse-primary": "#b5c4ff",
+                        "secondary-fixed-dim": "#f9bd22",
+                        "tertiary": "#852b00",
+                        "surface-dim": "#d9dadb",
+                        "inverse-surface": "#2e3132",
+                        "secondary-container": "#ffc329",
+                        "background": "#f8f9fa",
+                        "primary": "#003fb1",
+                        "on-tertiary-fixed-variant": "#802a00",
+                        "on-tertiary-fixed": "#380d00",
+                        "on-error": "#ffffff",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-background": "#191c1d",
+                        "surface-container": "#edeeef",
+                        "on-tertiary": "#ffffff",
+                        "primary-container": "#1a56db",
+                        "on-primary-fixed-variant": "#003dab",
+                        "primary-fixed-dim": "#b5c4ff",
+                        "surface-variant": "#e1e3e4",
+                        "on-tertiary-container": "#ffd4c5",
+                        "surface-container-high": "#e7e8e9",
+                        "on-secondary-container": "#6f5100",
+                        "surface-bright": "#f8f9fa",
+                        "surface": "#f8f9fa",
+                        "on-surface": "#191c1d",
+                        "on-secondary": "#ffffff",
+                        "inverse-on-surface": "#f0f1f2",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed": "#261a00",
+                        "surface-tint": "#1353d8",
+                        "on-primary-container": "#d4dcff",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed": "#ffdbcf",
+                        "tertiary-container": "#ad3b00",
+                        "surface-container-low": "#f3f4f5",
+                        "on-primary-fixed": "#00174d",
+                        "tertiary-fixed-dim": "#ffb59a",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#dbe1ff",
+                        "outline-variant": "#c3c5d7",
+                        "outline": "#737686",
+                        "secondary": "#795900"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "xl": "32px",
+                        "base": "4px",
+                        "container-padding": "16px",
+                        "card-gap": "12px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "title-lg": ["Plus Jakarta Sans"],
+                        "label-md": ["Inter"],
+                        "label-lg": ["Inter"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                        "title-lg": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "label-md": ["11px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "label-lg": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-md": ["22px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .scrolling-content {
+            padding-bottom: 120px;
+        }
+        .glass-header {
+            background: rgba(248, 249, 250, 0.7);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md">
+<!-- Top App Bar (Shared Component Execution) -->
+<header class="fixed top-0 w-full z-50 glass-header shadow-sm transition-all duration-300">
+<div class="flex items-center justify-between px-container-padding h-16 w-full">
+<div class="flex items-center gap-4">
+<button class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-primary/5 active:scale-95 transition-all text-on-surface-variant" onclick="history.back()">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+</div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">CarolinianEvents</h1>
+<div class="flex items-center gap-2">
+<button class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-primary/5 active:scale-95 transition-all text-on-surface-variant" id="bookmark-toggle">
+
+</button>
+<button class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-primary/5 active:scale-95 transition-all text-on-surface-variant">
+<span class="material-symbols-outlined">share</span>
+</button>
+</div>
+</div>
+</header>
+<main class="scrolling-content mt-16">
+<!-- Event Banner Image -->
+<div class="relative w-full aspect-[16/10] overflow-hidden md:aspect-[21/9]">
+<img class="w-full h-full object-cover" data-alt="A vibrant campus hackathon event banner featuring high-tech workstations with neon blue lighting, diverse university students collaborating intensely over laptops and circuit boards, and large digital displays showing code snippets. The atmosphere is energetic and innovative, captured in a clean light-mode photography style with soft focus backgrounds of a modern glass-walled tech hub." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-I1nZGdJFlM9v3BflkRsFGD56h_alsClbpZY01mhTE3Cjj6bEdsUx7h39k8fwEN93kXk_qi2KlMh1TLwGW4jsinMr554i8uOJXuY1aYA05BbGph0e3depru9o2uX3HRR425sM2d-H3nt7TQQ6uPJ80B_R7ZnjKbNcZiT01ORBsF59NdBbtPkMLuj2zUsZKNrjFIlSGZeCoED8xtBnLKdBBCvpJa_FsnOY16mJ7uJvGaeuIT27nIUAoA">
+<div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+<div class="absolute bottom-4 left-4">
+<span class="bg-primary-container text-on-primary-container px-3 py-1 rounded-full font-label-lg text-label-lg uppercase tracking-wider">Technology</span>
+</div>
+</div>
+<div class="px-container-padding mt-lg space-y-xl">
+<!-- Event Title and Basic Info -->
+<section class="space-y-sm">
+<h2 class="font-display-lg text-display-lg leading-tight text-on-background">University Hackathon 2024</h2>
+<div class="flex items-center gap-2 text-on-surface-variant">
+
+<p class="font-body-md text-on-surface-variant">42 students are attending</p>
+</div>
+</section>
+<!-- Metadata Bento Grid -->
+<section class="grid grid-cols-1 gap-card-gap">
+<div class="flex items-start gap-4 p-4 bg-surface-container-low rounded-xl border border-outline-variant/30">
+<div class="p-3 bg-secondary-container rounded-lg text-on-secondary-container">
+<span class="material-symbols-outlined">calendar_today</span>
+</div>
+<div>
+<p class="font-title-lg text-title-lg text-on-background">Saturday, Oct 12</p>
+<p class="font-body-md text-on-surface-variant">09:00 AM - 09:00 PM EST</p>
+</div>
+</div>
+<div class="flex items-start gap-4 p-4 bg-surface-container-low rounded-xl border border-outline-variant/30">
+<div class="p-3 bg-primary-container rounded-lg text-on-primary text-white">
+<span class="material-symbols-outlined">location_on</span>
+</div>
+<div class="flex-grow">
+<p class="font-title-lg text-title-lg text-on-background">Innovation Commons</p>
+<p class="font-body-md text-on-surface-variant">Building 4, Floor 2 • Campus East</p>
+</div>
+
+</div>
+</section>
+<!-- Description -->
+<section class="space-y-sm">
+<h3 class="font-title-lg text-title-lg text-on-background">About Event</h3>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+                    Join us for the annual University Hackathon! Bring your ideas and coding skills to compete for prizes, network with industry professionals, and collaborate with your fellow Carolinians. 
+                    <br><br>
+                    Whether you're a seasoned developer or a first-time coder, there's a place for you here. We'll provide the fuel (food and drinks), high-speed internet, and a suite of mentors to help you build the next big thing. Don't miss out on this 12-hour innovation marathon!
+                </p>
+</section>
+<!-- Organizer Info -->
+<section class="space-y-sm">
+<h3 class="font-title-lg text-title-lg text-on-background">Organized By</h3>
+<div class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-xl border border-outline-variant/30 shadow-sm">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-container-high">
+<img class="w-full h-full object-cover" data-alt="Official logo of the University Computer Science Society, professional clean graphic design with blue and gold accents, minimalist tech aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBkuM5btIeSGlZYkviOI_ikadaa7meJOX_vVgO0WFCh5PsjNAAqu5bZsfixtExgIjvBFWz_jS7Q67ardG8KKf-FK4oEZEdzW9ClrnnVFFPhgdelnlE8H6Ul2FeMYCWGilxdj2UU7U1Q_kofBpiY28RqlOuM0rdQYKPxOAdpvj6WTx5EZ3MkAFSUAa7NQQrYYwPXPe7eaGw6wA4BL4Sg_phOxO4WChvmlhNA3v6tdEMBq-jlcDdGeE0FQ">
+</div>
+<div>
+<p class="font-title-lg text-title-lg text-on-background">Computer Engineering Council</p>
+<p class="font-body-md text-on-surface-variant">Student Organization</p>
+</div>
+</div>
+
+</div>
+</section>
+</div>
+</main>
+<!-- Fixed Bottom CTA (Registration Bar) -->
+<footer class="fixed left-0 w-full z-50 glass-header p-4 pb-safe border-t border-outline-variant/20 bottom-16">
+<div class="max-w-4xl mx-auto flex items-center justify-between gap-4">
+<div class="hidden sm:block">
+<p class="font-label-md text-on-surface-variant uppercase tracking-tighter">Registration Status</p>
+<p class="font-title-lg text-primary">Open until Oct 10</p>
+</div>
+<button class="flex-grow sm:flex-grow-0 sm:px-12 h-14 bg-secondary-container text-on-secondary-container rounded-full font-headline-md shadow-lg flex items-center justify-center gap-2 active:scale-95 transition-all hover:brightness-105">
+                Register / RSVP
+                <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</footer><nav class="fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest border-t border-outline-variant/20 pb-safe"><div class="flex justify-around items-center h-16"><button class="flex flex-col items-center justify-center gap-1 text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined">home</span><span class="text-label-md font-label-md">Home</span></button><button class="flex flex-col items-center justify-center gap-1 text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined">event_available</span><span class="text-label-md font-label-md">Registered</span></button><button class="flex flex-col items-center justify-center gap-1 text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined">person</span><span class="text-label-md font-label-md">Profile</span></button></div></nav>
+<script>
+        // Micro-interactions
+        const bookmarkBtn = document.getElementById('bookmark-toggle');
+        const bookmarkIcon = document.getElementById('bookmark-icon');
+        let isBookmarked = false;
+
+        bookmarkBtn.addEventListener('click', () => {
+            isBookmarked = !isBookmarked;
+            if (isBookmarked) {
+                bookmarkIcon.style.fontVariationSettings = "'FILL' 1";
+                bookmarkIcon.classList.add('text-primary');
+            } else {
+                bookmarkIcon.style.fontVariationSettings = "'FILL' 0";
+                bookmarkIcon.classList.remove('text-primary');
+            }
+            bookmarkBtn.classList.add('scale-125');
+            setTimeout(() => bookmarkBtn.classList.remove('scale-125'), 200);
+        });
+
+        // Header transparency on scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('shadow-md');
+                header.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+            } else {
+                header.classList.remove('shadow-md');
+                header.style.backgroundColor = 'rgba(248, 249, 250, 0.7)';
+            }
+        });
+    </script>
+
+
+
+
+
+
+</body></html>

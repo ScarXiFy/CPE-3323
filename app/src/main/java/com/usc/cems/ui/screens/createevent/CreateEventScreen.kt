@@ -9,16 +9,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
+// TODO: Milestone 7 – implement full create event screen design
 @Composable
 fun CreateEventScreen(
-    modifier: Modifier = Modifier
+    onNavUp: () -> Unit = {},
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(text = "Create Event Screen", style = MaterialTheme.typography.headlineMedium)
-        Text(text = "Temporary content for Create Event Screen", style = MaterialTheme.typography.bodyLarge)
     }
 }

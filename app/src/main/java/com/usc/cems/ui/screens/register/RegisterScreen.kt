@@ -9,16 +9,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
+// TODO: Milestone 4 – implement full register screen design
 @Composable
 fun RegisterScreen(
-    modifier: Modifier = Modifier
+    onNavigateToLogin: () -> Unit = {},
+    onNavigateToHome: () -> Unit = {},
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(text = "Register Screen", style = MaterialTheme.typography.headlineMedium)
-        Text(text = "Temporary content for Register Screen", style = MaterialTheme.typography.bodyLarge)
     }
 }

@@ -1,0 +1,301 @@
+<!DOCTYPE html><html lang="en" style="width: 390px; height: 1567px; overflow: hidden; position: relative;"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container-high": "#e7e8e9",
+                      "on-primary": "#ffffff",
+                      "secondary-container": "#ffc329",
+                      "primary-fixed": "#dbe1ff",
+                      "on-primary-fixed": "#00174d",
+                      "tertiary-fixed-dim": "#ffb59a",
+                      "on-secondary-fixed": "#261a00",
+                      "on-primary-fixed-variant": "#003dab",
+                      "inverse-surface": "#2e3132",
+                      "on-tertiary-container": "#ffd4c5",
+                      "surface-dim": "#d9dadb",
+                      "primary-container": "#1a56db",
+                      "on-secondary": "#ffffff",
+                      "surface-container": "#edeeef",
+                      "surface-bright": "#f8f9fa",
+                      "error-container": "#ffdad6",
+                      "surface-container-low": "#f3f4f5",
+                      "on-secondary-fixed-variant": "#5c4300",
+                      "on-background": "#191c1d",
+                      "primary": "#003fb1",
+                      "on-secondary-container": "#6f5100",
+                      "tertiary-container": "#ad3b00",
+                      "surface": "#f8f9fa",
+                      "secondary-fixed-dim": "#f9bd22",
+                      "surface-tint": "#1353d8",
+                      "on-surface-variant": "#434654",
+                      "error": "#ba1a1a",
+                      "on-error-container": "#93000a",
+                      "secondary-fixed": "#ffdf9f",
+                      "on-tertiary-fixed": "#380d00",
+                      "tertiary": "#852b00",
+                      "primary-fixed-dim": "#b5c4ff",
+                      "on-primary-container": "#d4dcff",
+                      "background": "#f8f9fa",
+                      "surface-container-highest": "#e1e3e4",
+                      "on-tertiary": "#ffffff",
+                      "on-error": "#ffffff",
+                      "tertiary-fixed": "#ffdbcf",
+                      "secondary": "#795900",
+                      "outline-variant": "#c3c5d7",
+                      "outline": "#737686",
+                      "inverse-primary": "#b5c4ff",
+                      "surface-variant": "#e1e3e4",
+                      "on-tertiary-fixed-variant": "#802a00",
+                      "on-surface": "#191c1d",
+                      "inverse-on-surface": "#f0f1f2"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "sm": "8px",
+                      "md": "16px",
+                      "xs": "4px",
+                      "base": "4px",
+                      "card-gap": "12px",
+                      "xl": "32px",
+                      "lg": "24px",
+                      "container-padding": "16px"
+              },
+              "fontFamily": {
+                      "body-md": ["Inter"],
+                      "label-md": ["Inter"],
+                      "headline-md": ["Plus Jakarta Sans"],
+                      "title-lg": ["Plus Jakarta Sans"],
+                      "headline-lg": ["Plus Jakarta Sans"],
+                      "label-lg": ["Inter"],
+                      "display-lg": ["Plus Jakarta Sans"],
+                      "body-lg": ["Inter"]
+              },
+              "fontSize": {
+                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "label-md": ["11px", {"lineHeight": "16px", "fontWeight": "500"}],
+                      "headline-md": ["22px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "title-lg": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                      "headline-lg": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                      "label-lg": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    }catch(_e){}</script><meta charset="utf-8"></head><body class="bg-background text-on-surface font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Top AppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md">
+<div class="flex items-center justify-between px-container-padding h-16 w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-primary/5 active:scale-95 transition-all text-primary">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">CarolinianEvents</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 rounded-full hover:bg-primary/5 active:scale-95 transition-all text-primary">
+
+</button>
+
+</div>
+</div>
+</header>
+<main class="pt-20 pb-24 px-container-padding max-w-7xl mx-auto">
+<!-- Dashboard Header & Search -->
+<section class="mb-xl">
+<div class="flex flex-col gap-md">
+<div>
+
+
+</div>
+<!-- Search Bar -->
+<div class="relative group">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input type="text" placeholder="Search events, organizers, or tags..." class="block w-full pl-12 pr-4 py-3 bg-surface-container-low border-none rounded-full text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary/20 transition-all">
+</div>
+<!-- Category Filters -->
+<div class="flex gap-sm overflow-x-auto pb-2 scrollbar-hide">
+<button class="px-md py-2 rounded-full bg-primary text-on-primary font-label-lg whitespace-nowrap active:scale-95 transition-transform">All Events</button>
+<button class="px-md py-2 rounded-full bg-surface-container-high text-on-surface-variant font-label-lg whitespace-nowrap hover:bg-surface-container-highest transition-colors">Academic</button>
+<button class="px-md py-2 rounded-full bg-surface-container-high text-on-surface-variant font-label-lg whitespace-nowrap hover:bg-surface-container-highest transition-colors">Sports</button>
+<button class="px-md py-2 rounded-full bg-surface-container-high text-on-surface-variant font-label-lg whitespace-nowrap hover:bg-surface-container-highest transition-colors">Workshops</button>
+<button class="px-md py-2 rounded-full bg-surface-container-high text-on-surface-variant font-label-lg whitespace-nowrap hover:bg-surface-container-highest transition-colors">Social</button>
+</div>
+</div>
+</section>
+<!-- Stats Overview (Bento Style) -->
+
+<!-- Vertical Event List -->
+<section class="flex flex-col gap-card-gap">
+<div class="flex justify-between items-center px-xs">
+<h3 class="font-title-lg text-title-lg">Recent Listings</h3>
+<button class="text-primary font-label-lg hover:underline">View History</button>
+</div>
+<!-- Event Card 1 -->
+<div class="group relative flex flex-col md:flex-row bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant hover:shadow-lg transition-all duration-300">
+<div class="relative w-full md:w-48 h-32 md:h-auto overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A high-energy photograph of a campus basketball tournament in progress. The lighting is bright and cinematic, capturing players in dynamic motion under the arena lights. The color palette features vibrant collegiate blues and oranges against a modern stadium background, evoking a sense of athletic excitement and campus community spirit." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxuUchwHdbo-LDg9mzDrrtO9PBUzBgCG40Hpy6n1yhyKORNV5H1e8IVKx9Jn55iK-WbIRZ-w4HWxwvUaxlzkVtpbnYdESpUg5o99DMljEGFmiKqX_p_6FRAEFIjZeN1M0Iwt7KtX2w-W_1jPGPXhs1_5qUgCosgOyqkPAUqW5K4WO14UT13O9BkqDMCgRyQ0DkY-nqKyZnsz7Cd1PlZkGQCxOOCJsb0X9wjmKqrhtCvlpocQE8JQUCVw">
+<div class="absolute top-2 left-2 px-2 py-1 bg-secondary-container text-on-secondary-container font-label-md rounded text-[10px] uppercase">Sports</div>
+</div>
+<div class="p-md flex-grow flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start">
+<h4 class="font-title-lg text-title-lg text-on-surface">Annual Varsity Basketball Finals</h4>
+<button class="p-2 rounded-full bg-surface-container-high text-primary hover:bg-primary hover:text-on-primary transition-all active:scale-90" title="Edit Event">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+</div>
+<div class="flex flex-wrap gap-x-4 gap-y-1 mt-1 text-on-surface-variant font-body-md">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+                                Oct 24, 2023 • 6:00 PM
+                            </div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+                                Main Gymnasium
+                            </div>
+</div>
+</div>
+<div class="mt-4 flex items-center justify-between">
+<div class="flex -space-x-2">
+<div class="w-6 h-6 rounded-full border-2 border-white bg-primary-fixed"></div>
+<div class="w-6 h-6 rounded-full border-2 border-white bg-secondary-fixed"></div>
+<div class="w-6 h-6 rounded-full border-2 border-white bg-tertiary-fixed"></div>
+<span class="pl-4 text-label-md text-outline">+45 Attending</span>
+</div>
+<span class="text-label-lg font-semibold text-primary">LIVE</span>
+</div>
+</div>
+</div>
+<!-- Event Card 2 -->
+<div class="group relative flex flex-col md:flex-row bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant hover:shadow-lg transition-all duration-300">
+<div class="relative w-full md:w-48 h-32 md:h-auto overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="An atmospheric scene of a tech workshop or hackathon. Students are gathered around laptops in a brightly lit, modern student center with floor-to-ceiling windows. The mood is focused and innovative, with cool blue ambient lighting and warm wooden table textures, highlighting a professional yet energetic educational environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkifj55mTFeCF_YA97WJxkUewYKs1Oleq5uASky3LkTnY8vCBBpdPFj8zlBhRCK8dgnkJePZeEP1v1WK7UfdPBwqGDE75wfq5_fdfgAA8clS4qt-jsAjAeonlouxqw8i7w5Q_w8rYASquR3yLmpBZVqTQTPoaojXy5BKZLrLEU5ydph7sqxnYubfeNDDBWYBY63QBw11dqXRcEoOh2FSg62dzDfEN17ulR1QgDuuO6Dz0UdZb-astrig">
+<div class="absolute top-2 left-2 px-2 py-1 bg-primary-container text-on-primary-container font-label-md rounded text-[10px] uppercase">Workshop</div>
+</div>
+<div class="p-md flex-grow flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start">
+<h4 class="font-title-lg text-title-lg text-on-surface">UI/UX Design Masterclass</h4>
+<button class="p-2 rounded-full bg-surface-container-high text-primary hover:bg-primary hover:text-on-primary transition-all active:scale-90" title="Edit Event">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+</div>
+<div class="flex flex-wrap gap-x-4 gap-y-1 mt-1 text-on-surface-variant font-body-md">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+                                Oct 26, 2023 • 2:00 PM
+                            </div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+                                Design Hub, Room 402
+                            </div>
+</div>
+</div>
+<div class="mt-4 flex items-center justify-between">
+<div class="flex -space-x-2">
+<div class="w-6 h-6 rounded-full border-2 border-white bg-error-container"></div>
+<div class="w-6 h-6 rounded-full border-2 border-white bg-primary-fixed-dim"></div>
+<span class="pl-4 text-label-md text-outline">+12 Attending</span>
+</div>
+<span class="text-label-lg font-semibold text-outline">UPCOMING</span>
+</div>
+</div>
+</div>
+<!-- Event Card 3 -->
+<div class="group relative flex flex-col md:flex-row bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant hover:shadow-lg transition-all duration-300 opacity-80">
+<div class="relative w-full md:w-48 h-32 md:h-auto overflow-hidden grayscale">
+<img class="w-full h-full object-cover" data-alt="A serene, professional setting of a guest lecture or academic seminar. A diverse audience is seated in a tiered auditorium, with a speaker dimly visible on a stage illuminated by a spotlight. The color palette is composed of sophisticated greys, deep blues, and crisp whites, conveying a serious and intellectual campus atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6V_q9L4NzVDwt5YjeaIsZ3eL0Oa9jz12FJ8rYqlpz5559JKDSAHlmprUrBarxlfeAxsdQUS-fuw010tsiDNrPQHfY-0CXOpSPfP2ZZ8uhd3lY5AojmmoEpzQJ9BHrC4UGyxWszVse2C7d_lV4pBaOOf92WGsRXDonY46L9-fqw6mM9iMMB9twI5un9m8CSlKm-yY6ImwO1yShRdIu2aIFOuRSzMzSWwEySip8WNGf0zncLeXh0V10pA">
+<div class="absolute top-2 left-2 px-2 py-1 bg-surface-container-highest text-on-surface-variant font-label-md rounded text-[10px] uppercase">Academic</div>
+</div>
+<div class="p-md flex-grow flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start">
+<h4 class="font-title-lg text-title-lg text-on-surface">Guest Lecture: Future of AI</h4>
+<button class="p-2 rounded-full bg-surface-container-high text-primary hover:bg-primary hover:text-on-primary transition-all active:scale-90" title="Edit Event">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+</div>
+<div class="flex flex-wrap gap-x-4 gap-y-1 mt-1 text-on-surface-variant font-body-md">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+                                Oct 20, 2023 • 10:00 AM
+                            </div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+                                Central Auditorium
+                            </div>
+</div>
+</div>
+<div class="mt-4 flex items-center justify-between">
+<span class="text-label-md text-outline">Ended 3 days ago</span>
+<span class="text-label-lg font-semibold text-outline">COMPLETED</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- FAB: Add Event -->
+<button class="fixed bottom-24 right-6 w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-center active:scale-90 transition-all z-50 hover:bg-primary-container group">
+<span class="material-symbols-outlined text-[32px] group-hover:rotate-90 transition-transform duration-300">add</span>
+</button>
+<!-- Bottom Navigation Shell -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-surface/80 backdrop-blur-md flex justify-around items-center px-4 py-3 pb-safe">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-5 py-1 active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-weight="fill">home</span>
+<span class="font-label-lg text-label-lg">Home</span>
+</a>
+
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-5 py-1 active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-lg text-label-lg">Profile</span>
+</a>
+</nav>
+<script>
+        // Simple micro-interaction for active state simulation
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (this.getAttribute('href') === '#') e.preventDefault();
+                document.querySelectorAll('nav a').forEach(l => {
+                    l.className = 'flex flex-col items-center justify-center text-on-surface-variant px-5 py-1 active:scale-90 transition-transform duration-200';
+                    const icon = l.querySelector('.material-symbols-outlined');
+                    if (icon) icon.removeAttribute('style');
+                });
+                this.className = 'flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-5 py-1 active:scale-90 transition-transform duration-200';
+                const activeIcon = this.querySelector('.material-symbols-outlined');
+                if (activeIcon) activeIcon.style.fontVariationSettings = "'FILL' 1";
+            });
+        });
+
+        // Filter chips interaction
+        const chips = document.querySelectorAll('.overflow-x-auto button');
+        chips.forEach(chip => {
+            chip.addEventListener('click', function() {
+                chips.forEach(c => {
+                    c.classList.remove('bg-primary', 'text-on-primary');
+                    c.classList.add('bg-surface-container-high', 'text-on-surface-variant');
+                });
+                this.classList.remove('bg-surface-container-high', 'text-on-surface-variant');
+                this.classList.add('bg-primary', 'text-on-primary');
+            });
+        });
+    </script>
+
+
+
+
+
+
+
+</body></html>

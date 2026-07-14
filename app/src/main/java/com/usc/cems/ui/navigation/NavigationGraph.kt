@@ -6,7 +6,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.usc.cems.ui.screens.bookmarks.BookmarksScreen
 import com.usc.cems.ui.screens.createevent.CreateEventScreen
 import com.usc.cems.ui.screens.event.EventDetailsScreen
 import com.usc.cems.ui.screens.home.HomeScreen
@@ -19,40 +18,117 @@ import com.usc.cems.ui.screens.splash.SplashScreen
 @Composable
 fun NavigationGraph(
     navController: NavHostController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     NavHost(
         navController = navController,
         startDestination = Screen.Splash,
-        modifier = modifier
+        modifier = modifier,
     ) {
         composable<Screen.Splash> {
-            SplashScreen()
+            SplashScreen(
+                onNavigateToHome = {
+                    navController.navigate(Screen.Home) {
+                        popUpTo(Screen.Splash) { inclusive = true }
+                    }
+                },
+                onNavigateToLogin = {
+                    navController.navigate(Screen.Login) {
+                        popUpTo(Screen.Splash) { inclusive = true }
+                    }
+                },
+            )
         }
+
         composable<Screen.Login> {
-            LoginScreen()
+            LoginScreen(
+                onNavigateToHome = {
+                    navController.navigate(Screen.Home) {
+                        popUpTo(Screen.Login) { inclusive = true }
+                    }
+                },
+                onNavigateToRegister = {
+                    navController.navigate(Screen.Register)
+                },
+            )
         }
+
         composable<Screen.Register> {
-            RegisterScreen()
+            RegisterScreen(
+                onNavigateToLogin = {
+                    navController.popBackStack()
+                },
+                onNavigateToHome = {
+                    navController.navigate(Screen.Home) {
+                        popUpTo(Screen.Register) { inclusive = true }
+                    }
+                },
+            )
         }
+
         composable<Screen.Home> {
-            HomeScreen()
+            HomeScreen(
+                onEventClick = { eventId ->
+                    navController.navigate(Screen.EventDetails(eventId))
+                },
+                onNavigateToRegistered = {
+                    navController.navigate(Screen.MyEvents)
+                },
+                onNavigateToProfile = {
+                    navController.navigate(Screen.Profile)
+                },
+                onNavigateToCreateEvent = {
+                    navController.navigate(Screen.CreateEvent)
+                },
+            )
         }
+
         composable<Screen.EventDetails> { backStackEntry ->
             val route = backStackEntry.toRoute<Screen.EventDetails>()
-            EventDetailsScreen(eventId = route.eventId)
+            EventDetailsScreen(
+                eventId = route.eventId,
+                onNavUp = { navController.popBackStack() },
+            )
         }
+
         composable<Screen.CreateEvent> {
-            CreateEventScreen()
+            CreateEventScreen(
+                onNavUp = { navController.popBackStack() },
+            )
         }
-        composable<Screen.Bookmarks> {
-            BookmarksScreen()
-        }
+
         composable<Screen.MyEvents> {
-            MyEventsScreen()
+            MyEventsScreen(
+                onEventClick = { eventId ->
+                    navController.navigate(Screen.EventDetails(eventId))
+                },
+                onNavigateToHome = {
+                    navController.navigate(Screen.Home) {
+                        popUpTo(Screen.Home) { inclusive = false }
+                    }
+                },
+                onNavigateToProfile = {
+                    navController.navigate(Screen.Profile)
+                },
+            )
         }
+
         composable<Screen.Profile> {
-            ProfileScreen()
+            ProfileScreen(
+                onNavigateToHome = {
+                    navController.navigate(Screen.Home) {
+                        popUpTo(Screen.Home) { inclusive = false }
+                    }
+                },
+                onNavigateToRegistered = {
+                    navController.navigate(Screen.MyEvents)
+                },
+                onLogout = {
+                    navController.navigate(Screen.Login) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                },
+            )
         }
     }
 }

@@ -1,0 +1,246 @@
+<!DOCTYPE html><html class="light" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Login - CarolinianEvents</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#434654",
+                        "secondary-fixed": "#ffdf9f",
+                        "on-secondary-fixed-variant": "#5c4300",
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "inverse-primary": "#b5c4ff",
+                        "secondary-fixed-dim": "#f9bd22",
+                        "tertiary": "#852b00",
+                        "surface-dim": "#d9dadb",
+                        "inverse-surface": "#2e3132",
+                        "secondary-container": "#ffc329",
+                        "background": "#f8f9fa",
+                        "primary": "#003fb1",
+                        "on-tertiary-fixed-variant": "#802a00",
+                        "on-tertiary-fixed": "#380d00",
+                        "on-error": "#ffffff",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-background": "#191c1d",
+                        "surface-container": "#edeeef",
+                        "on-tertiary": "#ffffff",
+                        "primary-container": "#1a56db",
+                        "on-primary-fixed-variant": "#003dab",
+                        "primary-fixed-dim": "#b5c4ff",
+                        "surface-variant": "#e1e3e4",
+                        "on-tertiary-container": "#ffd4c5",
+                        "surface-container-high": "#e7e8e9",
+                        "on-secondary-container": "#6f5100",
+                        "surface-bright": "#f8f9fa",
+                        "surface": "#f8f9fa",
+                        "on-surface": "#191c1d",
+                        "on-secondary": "#ffffff",
+                        "inverse-on-surface": "#f0f1f2",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed": "#261a00",
+                        "surface-tint": "#1353d8",
+                        "on-primary-container": "#d4dcff",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed": "#ffdbcf",
+                        "tertiary-container": "#ad3b00",
+                        "surface-container-low": "#f3f4f5",
+                        "on-primary-fixed": "#00174d",
+                        "tertiary-fixed-dim": "#ffb59a",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#dbe1ff",
+                        "outline-variant": "#c3c5d7",
+                        "outline": "#737686",
+                        "secondary": "#795900"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "xl": "32px",
+                        "base": "4px",
+                        "container-padding": "16px",
+                        "card-gap": "12px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "title-lg": ["Plus Jakarta Sans"],
+                        "label-md": ["Inter"],
+                        "label-lg": ["Inter"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                        "title-lg": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "label-md": ["11px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "label-lg": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-md": ["22px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #f8f9fa;
+            color: #191c1d;
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .login-card {
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .input-group:focus-within label {
+            color: #003fb1;
+            transform: translateY(-24px) scale(0.85);
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: #003fb1;
+            box-shadow: 0 0 0 1px #003fb1;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-md overflow-x-hidden">
+<!-- Atmospheric Background Element -->
+<div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+<div class="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] rounded-full bg-primary/5 blur-[120px]"></div>
+<div class="absolute top-[60%] -right-[5%] w-[30%] h-[30%] rounded-full bg-secondary-container/10 blur-[100px]"></div>
+</div>
+<!-- Main Content Wrapper -->
+<main class="relative z-10 w-full max-w-[400px] flex flex-col items-center">
+<!-- Brand Identity Section -->
+<header class="flex flex-col items-center mb-xl animate-in fade-in slide-in-from-bottom-4 duration-700">
+<div class="w-20 h-20 mb-md rounded-xl overflow-hidden shadow-sm">
+<img alt="CarolinianEvents Logo" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGryXEoM4SFmDo4crRdVngkPvA-P03iVRAbjtl57QeK1J0gPG5won_mbyagDgmiq70kaJR2vleMsFu1qNA4pp-QrbHDGWsoLY-8gqA4NoyosIiNgQmzAdd-mCsXm_1JZCsnEYfqN4lkF15DMdROzAd5DJDIrmcAeDTcK8h-8T6Kh4ldZVv2_k8sP0LWxMwL-1bFVQUjzteq3tQ5_jQu-Re0pFFFe69ySyWOrugowgesAWt_U-W5UHFqQ">
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-background tracking-tight">CarolinianEvents</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-xs">Sign in to your campus life</p>
+</header>
+<!-- Login Card -->
+<section class="w-full bg-surface-container-lowest border border-outline-variant rounded-xl p-xl shadow-sm login-card animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-100" style="transform: rotateY(0deg) rotateX(0deg);">
+<form class="flex flex-col gap-lg" id="loginForm">
+<!-- Email Field -->
+<div class="relative flex flex-col gap-xs group">
+<label class="font-label-lg text-label-lg text-outline group-focus-within:text-primary transition-all duration-200" for="email">Email Address</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors">mail</span>
+<input class="w-full h-14 pl-[48px] pr-md bg-surface-container-low border border-outline-variant rounded-lg font-body-lg text-body-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200" id="email" placeholder="name@university.edu" required="" type="email">
+</div>
+</div>
+<!-- Password Field -->
+<div class="relative flex flex-col gap-xs group">
+<div class="flex justify-between items-center">
+<label class="font-label-lg text-label-lg text-outline group-focus-within:text-primary transition-all duration-200" for="password">Password</label>
+<a class="font-label-lg text-label-lg text-primary hover:underline transition-all" href="#">Forgot?</a>
+</div>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors">lock</span>
+<input class="w-full h-14 pl-[48px] pr-12 bg-surface-container-low border border-outline-variant rounded-lg font-body-lg text-body-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200" id="password" placeholder="••••••••" required="" type="password">
+<button class="absolute right-md top-1/2 -translate-y-1/2 text-outline hover:text-on-surface transition-colors flex items-center justify-center" onclick="togglePasswordVisibility()" type="button">
+<span class="material-symbols-outlined" id="passwordIcon">visibility</span>
+</button>
+</div>
+</div>
+<!-- Primary Action -->
+<button class="w-full h-14 bg-primary-container text-on-primary font-title-lg text-title-lg rounded-lg shadow-md hover:bg-primary hover:shadow-lg active:scale-95 transition-all duration-200 flex items-center justify-center gap-sm mt-md" type="submit">
+<span class="">Log In</span>
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</form>
+<!-- Social/Alternative Divider -->
+
+<!-- Single Sign On Option (Standard in Campus Apps) -->
+
+</section>
+<!-- Footer Links -->
+<footer class="mt-xl text-center animate-in fade-in slide-in-from-bottom-2 duration-1000 delay-300">
+<p class="font-body-md text-body-md text-on-surface-variant">
+                Don't have an account? 
+                <a class="text-primary font-semibold hover:underline transition-all" href="#">Register here</a>
+</p>
+<div class="flex items-center justify-center gap-xl mt-xl">
+<a class="font-label-lg text-label-lg text-outline hover:text-on-surface-variant transition-colors" href="#">Privacy Policy</a>
+<a class="font-label-lg text-label-lg text-outline hover:text-on-surface-variant transition-colors" href="#">Terms of Service</a>
+</div>
+</footer>
+</main>
+<script>
+        // Micro-interaction for password visibility
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const passwordIcon = document.getElementById('passwordIcon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordIcon.innerText = 'visibility_off';
+            } else {
+                passwordInput.type = 'password';
+                passwordIcon.innerText = 'visibility';
+            }
+        }
+
+        // Form submission animation handling
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalContent = btn.innerHTML;
+            
+            // Visual feedback
+            btn.disabled = true;
+            btn.innerHTML = `
+                <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span>Authenticating...</span>
+            `;
+            
+            // Simulate API call
+            setTimeout(() => {
+                btn.innerHTML = originalContent;
+                btn.disabled = false;
+                alert('Login successful! Welcome back to CarolinianEvents.');
+            }, 2000);
+        });
+
+        // Add subtle mouse-tracking parallax effect to the card
+        document.addEventListener('mousemove', (e) => {
+            const card = document.querySelector('.login-card');
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 50;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 50;
+            card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+        });
+        
+        // Reset card on mouse leave
+        document.addEventListener('mouseleave', () => {
+            const card = document.querySelector('.login-card');
+            card.style.transform = `rotateY(0deg) rotateX(0deg)`;
+        });
+    </script>
+
+
+</body></html>

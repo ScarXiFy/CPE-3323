@@ -21,9 +21,10 @@ sealed interface Screen {
     @Serializable
     data object CreateEvent : Screen
 
-    @Serializable
-    data object Bookmarks : Screen
-
+    /**
+     * Repurposed as the "Registered Events" screen per the wireframe —
+     * shows events the student has RSVP'd to (upcoming + past).
+     */
     @Serializable
     data object MyEvents : Screen
 

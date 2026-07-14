@@ -9,16 +9,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
+// TODO: Milestone 2 – implement full splash screen design
 @Composable
 fun SplashScreen(
-    modifier: Modifier = Modifier
+    onNavigateToLogin: () -> Unit = {},
+    onNavigateToHome: () -> Unit = {},
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(text = "Splash Screen", style = MaterialTheme.typography.headlineMedium)
-        Text(text = "Temporary content for Splash Screen", style = MaterialTheme.typography.bodyLarge)
+        Text(text = "CarolinianEvents", style = MaterialTheme.typography.headlineLarge)
+        Text(text = "Discover Campus Life", style = MaterialTheme.typography.bodyMedium)
     }
 }

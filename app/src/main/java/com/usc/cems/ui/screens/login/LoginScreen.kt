@@ -9,16 +9,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
+// TODO: Milestone 3 – implement full login screen design
 @Composable
 fun LoginScreen(
-    modifier: Modifier = Modifier
+    onNavigateToHome: () -> Unit = {},
+    onNavigateToRegister: () -> Unit = {},
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(text = "Login Screen", style = MaterialTheme.typography.headlineMedium)
-        Text(text = "Temporary content for Login Screen", style = MaterialTheme.typography.bodyLarge)
     }
 }
