@@ -20,7 +20,7 @@ fun SplashScreen(
 ) {
     LaunchedEffect(Unit) {
         delay(2000L) // just testing: navigate almost immediately
-        onNavigateToHome()
+        onNavigateToLogin()
     }
 
     Column(

@@ -2,7 +2,10 @@ package com.usc.cems.ui.screens.profile
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,5 +26,14 @@ fun ProfileScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(text = "Profile Screen", style = MaterialTheme.typography.headlineMedium)
+        Button(onClick = onLogout) {Text("Log Out")}
+        Row(
+            modifier = modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceAround
+        ) {
+            Button(onClick = onNavigateToHome) {Text("Home")}
+            Button(onClick = onNavigateToRegistered) {Text("Registered")}
+        }
     }
 }
