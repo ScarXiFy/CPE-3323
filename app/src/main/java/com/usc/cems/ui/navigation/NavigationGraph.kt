@@ -1,5 +1,8 @@
 package com.usc.cems.ui.navigation
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -85,50 +88,58 @@ fun NavigationGraph(
 
         composable<Screen.EventDetails> { backStackEntry ->
             val route = backStackEntry.toRoute<Screen.EventDetails>()
-            EventDetailsScreen(
-                eventId = route.eventId,
-                onNavUp = { navController.popBackStack() },
-            )
+            Box(modifier = Modifier.fillMaxSize().systemBarsPadding()) {
+                EventDetailsScreen(
+                    eventId = route.eventId,
+                    onNavUp = { navController.popBackStack() },
+                )
+            }
         }
 
         composable<Screen.CreateEvent> {
-            CreateEventScreen(
-                onNavUp = { navController.popBackStack() },
-            )
+            Box(modifier = Modifier.fillMaxSize().systemBarsPadding()) {
+                CreateEventScreen(
+                    onNavUp = { navController.popBackStack() },
+                )
+            }
         }
 
         composable<Screen.MyEvents> {
-            MyEventsScreen(
-                onEventClick = { eventId ->
-                    navController.navigate(Screen.EventDetails(eventId))
-                },
-                onNavigateToHome = {
-                    navController.navigate(Screen.Home) {
-                        popUpTo(Screen.Home) { inclusive = false }
-                    }
-                },
-                onNavigateToProfile = {
-                    navController.navigate(Screen.Profile)
-                },
-            )
+            Box(modifier = Modifier.fillMaxSize().systemBarsPadding()) {
+                MyEventsScreen(
+                    onEventClick = { eventId ->
+                        navController.navigate(Screen.EventDetails(eventId))
+                    },
+                    onNavigateToHome = {
+                        navController.navigate(Screen.Home) {
+                            popUpTo(Screen.Home) { inclusive = false }
+                        }
+                    },
+                    onNavigateToProfile = {
+                        navController.navigate(Screen.Profile)
+                    },
+                )
+            }
         }
 
         composable<Screen.Profile> {
-            ProfileScreen(
-                onNavigateToHome = {
-                    navController.navigate(Screen.Home) {
-                        popUpTo(Screen.Home) { inclusive = false }
-                    }
-                },
-                onNavigateToRegistered = {
-                    navController.navigate(Screen.MyEvents)
-                },
-                onLogout = {
-                    navController.navigate(Screen.Login) {
-                        popUpTo(0) { inclusive = true }
-                    }
-                },
-            )
+            Box(modifier = Modifier.fillMaxSize().systemBarsPadding()) {
+                ProfileScreen(
+                    onNavigateToHome = {
+                        navController.navigate(Screen.Home) {
+                            popUpTo(Screen.Home) { inclusive = false }
+                        }
+                    },
+                    onNavigateToRegistered = {
+                        navController.navigate(Screen.MyEvents)
+                    },
+                    onLogout = {
+                        navController.navigate(Screen.Login) {
+                            popUpTo(0) { inclusive = true }
+                        }
+                    },
+                )
+            }
         }
     }
 }
