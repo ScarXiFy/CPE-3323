@@ -46,6 +46,7 @@ dependencies {
   val composeBom = platform(libs.androidx.compose.bom)
   implementation(composeBom)
   androidTestImplementation(composeBom)
+  implementation(platform("com.google.firebase:firebase-bom:34.16.0"))
 
   // Core Android dependencies
   implementation(libs.androidx.core.ktx)
