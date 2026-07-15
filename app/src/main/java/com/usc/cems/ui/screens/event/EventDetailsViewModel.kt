@@ -47,8 +47,10 @@ class EventDetailsViewModel @Inject constructor(
         )
         
         val eventId = event?.id ?: return
-        currentUserId?.let { uid ->
-            isRegistered = eventRepository.isUserRegistered(uid, eventId)
+        viewModelScope.launch {
+            currentUserId?.let { uid ->
+                isRegistered = eventRepository.isUserRegistered(uid, eventId)
+            }
         }
     }
 

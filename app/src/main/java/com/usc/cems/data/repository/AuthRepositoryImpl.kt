@@ -17,159 +17,86 @@ class AuthRepositoryImpl @Inject constructor(
     private var cachedUser: UserProfile? = null
 
     override suspend fun login(email: String, password: String): Result<Unit> = runCatching {
-        // Special case: Seeded Admin Account
-        if (email.trim() == "21700003@usc.edu.ph" && password == "admin123") {
-            cachedUser = UserProfile(
-                uid = "admin_uid_seed",
-                fullname = "USC Admin",
-                email = "21700003@usc.edu.ph",
-                role = "Admin"
-            )
-            try {
-                firebaseAuth.signInWithEmailAndPassword(email.trim(), password).await()
-            } catch (e: Exception) {
-                // Ignore firebase errors for the seeded admin account to support local/offline mode
-            }
-            return@runCatching
-        }
-
-        // Standard logic
-        if (email.endsWith("@university.edu") || email == "test@usc.edu") {
-            try {
-                val authResult = firebaseAuth.signInWithEmailAndPassword(email.trim(), password).await()
-                val user = authResult.user
-                cachedUser = UserProfile(
-                    uid = user?.uid ?: "mock_uid",
-                    fullname = user?.displayName ?: "Mock Student",
-                    email = email,
-                    role = "Student"
-                )
-            } catch (e: Exception) {
-                val message = e.message ?: ""
-                if (message.contains("google", ignoreCase = true) || 
-                    message.contains("api key", ignoreCase = true) ||
-                    message.contains("network", ignoreCase = true) ||
-                    message.contains("play services", ignoreCase = true) ||
-                    message.contains("service", ignoreCase = true)
-                ) {
-                    // Fallback to mock success
-                    cachedUser = UserProfile(
-                        uid = "mock_uid",
-                        fullname = "Mock Student",
-                        email = email,
-                        role = "Student"
-                    )
-                    return@runCatching
-                } else {
-                    throw e
-                }
-            }
-        } else {
+        try {
             val authResult = firebaseAuth.signInWithEmailAndPassword(email.trim(), password).await()
-            val user = authResult.user
-            val role = if (email.trim() == "21700003@usc.edu.ph") "Admin" else "Student"
+            val firebaseUser = authResult.user ?: throw Exception("Authentication failed: Empty user returned.")
+
+            // Retrieve user profile document from Cloud Firestore
+            val userDoc = firestore.collection("users").document(firebaseUser.uid).get().await()
+            val role = userDoc.getString("role") ?: "user"
+            val fullname = userDoc.getString("fullname") ?: firebaseUser.displayName ?: "USC Student"
+
             cachedUser = UserProfile(
-                uid = user?.uid ?: "",
-                fullname = user?.displayName ?: "USC Student",
-                email = email,
+                uid = firebaseUser.uid,
+                fullname = fullname,
+                email = email.trim(),
                 role = role
             )
+        } catch (e: Exception) {
+            // Resilient seeding: Auto-register the admin credentials if login fails due to user not found
+            if (email.trim() == "21700003@usc.edu.ph" && password == "admin123") {
+                register(email.trim(), "USC Admin", password).getOrThrow()
+                // Retry sign-in
+                val authResult = firebaseAuth.signInWithEmailAndPassword(email.trim(), password).await()
+                val firebaseUser = authResult.user ?: throw Exception("Auth failed after admin seeding.")
+                cachedUser = UserProfile(
+                    uid = firebaseUser.uid,
+                    fullname = "USC Admin",
+                    email = email.trim(),
+                    role = "admin"
+                )
+            } else {
+                throw e
+            }
         }
     }
 
     override suspend fun register(email: String, fullname: String, password: String): Result<Unit> = runCatching {
-        val role = if (email.trim() == "21700003@usc.edu.ph") "Admin" else "Student"
-        if (email.endsWith("@university.edu") || email == "test@usc.edu") {
-            try {
-                val authResult = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
-                val user = authResult.user
-                
-                val profileUpdates = UserProfileChangeRequest.Builder()
-                    .setDisplayName(fullname)
-                    .build()
-                user?.updateProfile(profileUpdates)?.await()
+        val authResult = firebaseAuth.createUserWithEmailAndPassword(email.trim(), password).await()
+        val firebaseUser = authResult.user ?: throw Exception("Registration failed: Empty user returned.")
 
-                val userMap = hashMapOf(
-                    "uid" to (user?.uid ?: ""),
-                    "fullname" to fullname,
-                    "email" to email,
-                    "role" to role
-                )
-                user?.uid?.let { uid ->
-                    firestore.collection("users").document(uid).set(userMap).await()
-                }
+        // Update display name in Firebase Auth
+        val profileUpdates = UserProfileChangeRequest.Builder()
+            .setDisplayName(fullname.trim())
+            .build()
+        firebaseUser.updateProfile(profileUpdates).await()
 
-                cachedUser = UserProfile(
-                    uid = user?.uid ?: "mock_uid",
-                    fullname = fullname,
-                    email = email,
-                    role = role
-                )
-            } catch (e: Exception) {
-                val message = e.message ?: ""
-                if (message.contains("google", ignoreCase = true) || 
-                    message.contains("api key", ignoreCase = true) ||
-                    message.contains("network", ignoreCase = true) ||
-                    message.contains("play services", ignoreCase = true) ||
-                    message.contains("service", ignoreCase = true)
-                ) {
-                    // Fallback to mock registration
-                    cachedUser = UserProfile(
-                        uid = "mock_uid",
-                        fullname = fullname,
-                        email = email,
-                        role = role
-                    )
-                    return@runCatching
-                } else {
-                    throw e
-                }
-            }
-        } else {
-            val authResult = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
-            val user = authResult.user
-            
-            val profileUpdates = UserProfileChangeRequest.Builder()
-                .setDisplayName(fullname)
-                .build()
-            user?.updateProfile(profileUpdates)?.await()
+        // Set default role: admin for the seeded admin email, user for others
+        val role = if (email.trim() == "21700003@usc.edu.ph") "admin" else "user"
+        val userMap = hashMapOf(
+            "uid" to firebaseUser.uid,
+            "fullname" to fullname.trim(),
+            "email" to email.trim(),
+            "role" to role
+        )
 
-            val userMap = hashMapOf(
-                "uid" to (user?.uid ?: ""),
-                "fullname" to fullname,
-                "email" to email,
-                "role" to role
-            )
-            user?.uid?.let { uid ->
-                firestore.collection("users").document(uid).set(userMap).await()
-            }
+        // Save profile configuration directly to users Firestore collection
+        firestore.collection("users").document(firebaseUser.uid).set(userMap).await()
 
-            cachedUser = UserProfile(
-                uid = user?.uid ?: "",
-                fullname = fullname,
-                email = email,
-                role = role
-            )
-        }
+        cachedUser = UserProfile(
+            uid = firebaseUser.uid,
+            fullname = fullname.trim(),
+            email = email.trim(),
+            role = role
+        )
     }
 
     override fun isUserLoggedIn(): Boolean {
-        return cachedUser != null || firebaseAuth.currentUser != null
+        return firebaseAuth.currentUser != null
     }
 
     override fun getCurrentUser(): UserProfile? {
-        if (cachedUser == null) {
-            val firebaseUser = firebaseAuth.currentUser
-            if (firebaseUser != null) {
-                val email = firebaseUser.email ?: ""
-                val role = if (email == "21700003@usc.edu.ph") "Admin" else "Student"
-                cachedUser = UserProfile(
-                    uid = firebaseUser.uid,
-                    fullname = firebaseUser.displayName ?: "USC Student",
-                    email = email,
-                    role = role
-                )
-            }
+        val firebaseUser = firebaseAuth.currentUser ?: return null
+        if (cachedUser == null || cachedUser?.uid != firebaseUser.uid) {
+            // Return cached user or fallback to auth info until firestore is loaded
+            val email = firebaseUser.email ?: ""
+            val role = if (email == "21700003@usc.edu.ph") "admin" else "user"
+            cachedUser = UserProfile(
+                uid = firebaseUser.uid,
+                fullname = firebaseUser.displayName ?: "USC Student",
+                email = email,
+                role = role
+            )
         }
         return cachedUser
     }

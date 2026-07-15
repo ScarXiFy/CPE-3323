@@ -26,7 +26,7 @@ class AdminDashboardViewModel @Inject constructor(
         private set
 
     init {
-        isAuthorized = authRepository.getCurrentUser()?.role == "Admin"
+        isAuthorized = authRepository.getCurrentUser()?.role.equals("admin", ignoreCase = true)
     }
 
     var searchQuery by mutableStateOf("")

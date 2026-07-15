@@ -28,7 +28,7 @@ class ProfileViewModel @Inject constructor(
 
     fun loadUserProfile() {
         authRepository.getCurrentUser()?.let { user ->
-            isAdmin = user.role == "Admin"
+            isAdmin = user.role.equals("admin", ignoreCase = true)
             userEmail = user.email
             userName = user.fullname
         }
