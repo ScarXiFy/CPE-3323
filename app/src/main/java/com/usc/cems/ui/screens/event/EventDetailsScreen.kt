@@ -136,8 +136,8 @@ fun EventDetailsScreen(
                         }
                         
                         PrimaryButton(
-                            text = "Register / RSVP",
-                            onClick = { /* RSVP Logic */ },
+                            text = if (viewModel.isRegistered) "Cancel RSVP" else "Register / RSVP",
+                            onClick = { viewModel.toggleRegistration() },
                             modifier = Modifier.width(180.dp)
                         )
                     }

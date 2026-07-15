@@ -4,18 +4,31 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.usc.cems.data.model.Event
+import com.usc.cems.data.repository.AuthRepository
 import com.usc.cems.data.repository.EventRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class EventDetailsViewModel @Inject constructor(
-    private val eventRepository: EventRepository
+    private val eventRepository: EventRepository,
+    private val authRepository: AuthRepository
 ) : ViewModel() {
 
     var event by mutableStateOf<Event?>(null)
         private set
+
+    var isRegistered by mutableStateOf(false)
+        private set
+
+    private var currentUserId: String? = null
+
+    init {
+        currentUserId = authRepository.getCurrentUser()?.uid ?: "mock_uid"
+    }
 
     fun loadEvent(id: String) {
         event = eventRepository.getEventById(id) ?: Event(
@@ -32,5 +45,27 @@ class EventDetailsViewModel @Inject constructor(
             attendingCount = "42 students are attending",
             registrationStatus = "Open until Oct 10"
         )
+        
+        val eventId = event?.id ?: return
+        currentUserId?.let { uid ->
+            isRegistered = eventRepository.isUserRegistered(uid, eventId)
+        }
+    }
+
+    fun toggleRegistration() {
+        val eventId = event?.id ?: return
+        val uid = currentUserId ?: return
+
+        viewModelScope.launch {
+            if (isRegistered) {
+                eventRepository.unregisterFromEvent(uid, eventId).onSuccess {
+                    isRegistered = false
+                }
+            } else {
+                eventRepository.registerForEvent(uid, eventId).onSuccess {
+                    isRegistered = true
+                }
+            }
+        }
     }
 }

@@ -104,21 +104,19 @@ fun NavigationGraph(
         }
 
         composable<Screen.MyEvents> {
-            Box(modifier = Modifier.fillMaxSize().systemBarsPadding()) {
-                MyEventsScreen(
-                    onEventClick = { eventId ->
-                        navController.navigate(Screen.EventDetails(eventId))
-                    },
-                    onNavigateToHome = {
-                        navController.navigate(Screen.Home) {
-                            popUpTo(Screen.Home) { inclusive = false }
-                        }
-                    },
-                    onNavigateToProfile = {
-                        navController.navigate(Screen.Profile)
-                    },
-                )
-            }
+            MyEventsScreen(
+                onEventClick = { eventId ->
+                    navController.navigate(Screen.EventDetails(eventId))
+                },
+                onNavigateToHome = {
+                    navController.navigate(Screen.Home) {
+                        popUpTo(Screen.Home) { inclusive = false }
+                    }
+                },
+                onNavigateToProfile = {
+                    navController.navigate(Screen.Profile)
+                },
+            )
         }
 
         composable<Screen.Profile> {
