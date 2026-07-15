@@ -173,4 +173,9 @@ class AuthRepositoryImpl @Inject constructor(
         }
         return cachedUser
     }
+
+    override fun logout() {
+        cachedUser = null
+        firebaseAuth.signOut()
+    }
 }

@@ -2,6 +2,8 @@ package com.usc.cems.di
 
 import com.usc.cems.data.repository.AuthRepository
 import com.usc.cems.data.repository.AuthRepositoryImpl
+import com.usc.cems.data.repository.EventRepository
+import com.usc.cems.data.repository.EventRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -17,4 +19,10 @@ abstract class RepositoryModule {
     abstract fun bindAuthRepository(
         authRepositoryImpl: AuthRepositoryImpl
     ): AuthRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindEventRepository(
+        eventRepositoryImpl: EventRepositoryImpl
+    ): EventRepository
 }

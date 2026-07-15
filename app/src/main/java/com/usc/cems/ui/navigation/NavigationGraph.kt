@@ -9,6 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.usc.cems.ui.screens.admin.AdminDashboardScreen
 import com.usc.cems.ui.screens.createevent.CreateEventScreen
 import com.usc.cems.ui.screens.event.EventDetailsScreen
 import com.usc.cems.ui.screens.home.HomeScreen
@@ -97,11 +98,9 @@ fun NavigationGraph(
         }
 
         composable<Screen.CreateEvent> {
-            Box(modifier = Modifier.fillMaxSize().systemBarsPadding()) {
-                CreateEventScreen(
-                    onNavUp = { navController.popBackStack() },
-                )
-            }
+            CreateEventScreen(
+                onNavUp = { navController.popBackStack() },
+            )
         }
 
         composable<Screen.MyEvents> {
@@ -133,6 +132,9 @@ fun NavigationGraph(
                     onNavigateToRegistered = {
                         navController.navigate(Screen.MyEvents)
                     },
+                    onNavigateToAdminDashboard = {
+                        navController.navigate(Screen.AdminDashboard)
+                    },
                     onLogout = {
                         navController.navigate(Screen.Login) {
                             popUpTo(0) { inclusive = true }
@@ -140,6 +142,25 @@ fun NavigationGraph(
                     },
                 )
             }
+        }
+
+        composable<Screen.AdminDashboard> {
+            AdminDashboardScreen(
+                onNavigateToHome = {
+                    navController.navigate(Screen.Home) {
+                        popUpTo(Screen.Home) { inclusive = false }
+                    }
+                },
+                onNavigateToProfile = {
+                    navController.navigate(Screen.Profile)
+                },
+                onNavigateToAddEvent = {
+                    navController.navigate(Screen.CreateEvent)
+                },
+                onEventClick = { eventId ->
+                    navController.navigate(Screen.EventDetails(eventId))
+                }
+            )
         }
     }
 }

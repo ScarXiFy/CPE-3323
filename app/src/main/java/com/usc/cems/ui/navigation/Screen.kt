@@ -30,4 +30,7 @@ sealed interface Screen {
 
     @Serializable
     data object Profile : Screen
+
+    @Serializable
+    data object AdminDashboard : Screen
 }
