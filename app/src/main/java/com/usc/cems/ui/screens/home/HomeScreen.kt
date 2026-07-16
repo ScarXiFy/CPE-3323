@@ -66,22 +66,7 @@ fun HomeScreen(
                 }
             )
         },
-        floatingActionButton = {
-            if (viewModel.isAdmin) {
-                FloatingActionButton(
-                    onClick = onNavigateToCreateEvent,
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary,
-                    shape = CircleShape,
-                    modifier = Modifier.padding(bottom = 16.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = "Add Event"
-                    )
-                }
-            }
-        },
+
         modifier = modifier.fillMaxSize()
     ) { innerPadding ->
         Column(

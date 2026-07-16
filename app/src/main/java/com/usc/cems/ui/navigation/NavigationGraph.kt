@@ -34,9 +34,7 @@ fun NavigationGraph(
         composable<Screen.Splash> {
             SplashScreen(
                 onNavigateToHome = {
-                    val email = FirebaseAuth.getInstance().currentUser?.email?.trim()
-                    val dest = if (email == "21700003@usc.edu.ph") Screen.AdminDashboard else Screen.Home
-                    navController.navigate(dest) {
+                    navController.navigate(Screen.Home) {
                         popUpTo(Screen.Splash) { inclusive = true }
                     }
                 },
