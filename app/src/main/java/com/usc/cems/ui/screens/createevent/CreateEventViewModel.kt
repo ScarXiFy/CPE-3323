@@ -130,7 +130,7 @@ class CreateEventViewModel @Inject constructor(
     var validationError by mutableStateOf<String?>(null)
         private set
 
-    var imageUrl by mutableStateOf("https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop&q=60")
+    var imageUrl by mutableStateOf("")
         private set
 
     var isLoading by mutableStateOf(false)

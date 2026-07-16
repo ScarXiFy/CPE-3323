@@ -200,7 +200,6 @@ fun HomeScreen(
                         }
                         
                         EventCard(
-                            imageUrl = event.imageUrl,
                             category = event.category,
                             categoryColor = categoryColor,
                             categoryOnColor = categoryOnColor,
