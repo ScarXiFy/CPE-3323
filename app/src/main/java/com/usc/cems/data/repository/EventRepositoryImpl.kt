@@ -120,7 +120,8 @@ class EventRepositoryImpl @Inject constructor(
                 "organizerName" to event.organizerName,
                 "organizerLogo" to event.organizerLogo,
                 "attendingCount" to event.attendingCount,
-                "registrationStatus" to event.registrationStatus
+                "registrationStatus" to event.registrationStatus,
+                "status" to event.status
             )
             firestore.collection("events").document(event.id).set(eventMap)
         }
@@ -155,7 +156,8 @@ class EventRepositoryImpl @Inject constructor(
             "organizerName" to event.organizerName,
             "organizerLogo" to event.organizerLogo,
             "attendingCount" to event.attendingCount,
-            "registrationStatus" to event.registrationStatus
+            "registrationStatus" to event.registrationStatus,
+            "status" to event.status
         )
         firestore.collection("events").document(event.id).set(eventMap).await()
     }
@@ -172,7 +174,8 @@ class EventRepositoryImpl @Inject constructor(
             "organizerName" to event.organizerName,
             "organizerLogo" to event.organizerLogo,
             "attendingCount" to event.attendingCount,
-            "registrationStatus" to event.registrationStatus
+            "registrationStatus" to event.registrationStatus,
+            "status" to event.status
         )
         firestore.collection("events").document(event.id).set(eventMap).await()
     }
@@ -228,7 +231,8 @@ class EventRepositoryImpl @Inject constructor(
                 organizerName = getString("organizerName") ?: "",
                 organizerLogo = getString("organizerLogo") ?: "",
                 attendingCount = getString("attendingCount") ?: "0 students are attending",
-                registrationStatus = getString("registrationStatus") ?: "Open"
+                registrationStatus = getString("registrationStatus") ?: "Open",
+                status = getString("status") ?: getString("registrationStatus") ?: "Upcoming"
             )
         } catch (e: Exception) {
             null

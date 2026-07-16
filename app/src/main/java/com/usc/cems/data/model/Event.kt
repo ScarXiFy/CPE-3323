@@ -12,5 +12,6 @@ data class Event(
     val organizerName: String = "",
     val organizerLogo: String = "",
     val attendingCount: String = "0 students are attending",
-    val registrationStatus: String = "Open"
+    val registrationStatus: String = "Open",
+    val status: String = "Upcoming"
 )

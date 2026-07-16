@@ -1,8 +1,8 @@
 package com.usc.cems.ui.screens.createevent
 
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -21,9 +20,8 @@ import androidx.compose.material.icons.outlined.CalendarToday
 import androidx.compose.material.icons.outlined.Category
 import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.Group
-import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.ArrowDropDown
+import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material.icons.outlined.Title
 import androidx.compose.material3.Button
@@ -32,9 +30,9 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -46,6 +44,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.usc.cems.ui.components.CemsTextField
@@ -64,9 +63,7 @@ fun CreateEventScreen(
 ) {
     val context = LocalContext.current
     var showCategoryDropdown by remember { mutableStateOf(false) }
-    var showStatusDropdown by remember { mutableStateOf(false) }
     val categories = listOf("Academic", "Sports", "Workshop", "Social", "Other")
-    val statuses = listOf("Open", "Closed", "Completed")
 
     // Listen to success state
     LaunchedEffect(key1 = true) {
@@ -93,6 +90,24 @@ fun CreateEventScreen(
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             Spacer(modifier = Modifier.height(8.dp))
+
+            // Validation Error Box
+            viewModel.validationError?.let { error ->
+                Text(
+                    text = error,
+                    color = MaterialTheme.colorScheme.onErrorContainer,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(
+                            color = MaterialTheme.colorScheme.errorContainer,
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                        .padding(12.dp),
+                    textAlign = TextAlign.Center
+                )
+            }
 
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(
@@ -196,62 +211,213 @@ fun CreateEventScreen(
                 supportingText = viewModel.organizerError?.let { { Text(it) } }
             )
 
-            // Event Date picker field
+            // Start Date Picker Field
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(
-                    text = "Event Date",
+                    text = "Start Date",
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.outline,
                     fontWeight = FontWeight.SemiBold
                 )
-                OutlinedTextField(
-                    value = viewModel.date,
-                    onValueChange = {},
-                    readOnly = true,
-                    placeholder = { Text("Select date") },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Outlined.CalendarToday,
-                            contentDescription = "Date Picker",
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    },
-                    trailingIcon = {
-                        IconButton(onClick = {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
                             val calendar = Calendar.getInstance()
                             DatePickerDialog(
                                 context,
                                 { _, year, month, dayOfMonth ->
                                     val formattedDate = String.format("%d-%02d-%02d", year, month + 1, dayOfMonth)
-                                    viewModel.onDateChange(formattedDate)
+                                    viewModel.onStartDateChange(formattedDate)
                                 },
                                 calendar.get(Calendar.YEAR),
                                 calendar.get(Calendar.MONTH),
                                 calendar.get(Calendar.DAY_OF_MONTH)
                             ).show()
-                        }) {
+                        }
+                ) {
+                    OutlinedTextField(
+                        value = viewModel.startDate,
+                        onValueChange = {},
+                        readOnly = true,
+                        enabled = false,
+                        placeholder = { Text("Select start date") },
+                        leadingIcon = {
                             Icon(
                                 imageVector = Icons.Outlined.CalendarToday,
-                                contentDescription = "Open Date Picker"
+                                contentDescription = "Start Date",
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
                             )
-                        }
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp),
-                    isError = viewModel.dateError != null,
-                    supportingText = viewModel.dateError?.let { { Text(it) } }
-                )
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            disabledTextColor = MaterialTheme.colorScheme.onSurface,
+                            disabledBorderColor = if (viewModel.startDateError != null) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.outline,
+                            disabledLeadingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            disabledPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+                        ),
+                        isError = viewModel.startDateError != null,
+                        supportingText = viewModel.startDateError?.let { { Text(it) } }
+                    )
+                }
             }
 
-            // Event Time
-            CemsTextField(
-                value = viewModel.time,
-                onValueChange = viewModel::onTimeChange,
-                label = "Event Time (e.g. 2:30 PM - 4:00 PM)",
-                leadingIcon = Icons.Outlined.Schedule,
-                isError = viewModel.timeError != null,
-                supportingText = viewModel.timeError?.let { { Text(it) } }
-            )
+            // Start Time Picker Field
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text(
+                    text = "Start Time",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.outline,
+                    fontWeight = FontWeight.SemiBold
+                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            val calendar = Calendar.getInstance()
+                            TimePickerDialog(
+                                context,
+                                { _, hourOfDay, minute ->
+                                    val formattedTime = String.format("%02d:%02d", hourOfDay, minute)
+                                    viewModel.onStartTimeChange(formattedTime)
+                                },
+                                calendar.get(Calendar.HOUR_OF_DAY),
+                                calendar.get(Calendar.MINUTE),
+                                true
+                            ).show()
+                        }
+                ) {
+                    OutlinedTextField(
+                        value = viewModel.startTime,
+                        onValueChange = {},
+                        readOnly = true,
+                        enabled = false,
+                        placeholder = { Text("Select start time") },
+                        leadingIcon = {
+                            Icon(
+                                imageVector = Icons.Outlined.Schedule,
+                                contentDescription = "Start Time",
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            disabledTextColor = MaterialTheme.colorScheme.onSurface,
+                            disabledBorderColor = if (viewModel.startTimeError != null) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.outline,
+                            disabledLeadingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            disabledPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+                        ),
+                        isError = viewModel.startTimeError != null,
+                        supportingText = viewModel.startTimeError?.let { { Text(it) } }
+                    )
+                }
+            }
+
+            // End Date Picker Field
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text(
+                    text = "End Date",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.outline,
+                    fontWeight = FontWeight.SemiBold
+                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            val calendar = Calendar.getInstance()
+                            DatePickerDialog(
+                                context,
+                                { _, year, month, dayOfMonth ->
+                                    val formattedDate = String.format("%d-%02d-%02d", year, month + 1, dayOfMonth)
+                                    viewModel.onEndDateChange(formattedDate)
+                                },
+                                calendar.get(Calendar.YEAR),
+                                calendar.get(Calendar.MONTH),
+                                calendar.get(Calendar.DAY_OF_MONTH)
+                            ).show()
+                        }
+                ) {
+                    OutlinedTextField(
+                        value = viewModel.endDate,
+                        onValueChange = {},
+                        readOnly = true,
+                        enabled = false,
+                        placeholder = { Text("Select end date") },
+                        leadingIcon = {
+                            Icon(
+                                imageVector = Icons.Outlined.CalendarToday,
+                                contentDescription = "End Date",
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            disabledTextColor = MaterialTheme.colorScheme.onSurface,
+                            disabledBorderColor = if (viewModel.endDateError != null) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.outline,
+                            disabledLeadingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            disabledPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+                        ),
+                        isError = viewModel.endDateError != null,
+                        supportingText = viewModel.endDateError?.let { { Text(it) } }
+                    )
+                }
+            }
+
+            // End Time Picker Field
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text(
+                    text = "End Time",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.outline,
+                    fontWeight = FontWeight.SemiBold
+                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            val calendar = Calendar.getInstance()
+                            TimePickerDialog(
+                                context,
+                                { _, hourOfDay, minute ->
+                                    val formattedTime = String.format("%02d:%02d", hourOfDay, minute)
+                                    viewModel.onEndTimeChange(formattedTime)
+                                },
+                                calendar.get(Calendar.HOUR_OF_DAY),
+                                calendar.get(Calendar.MINUTE),
+                                true
+                            ).show()
+                        }
+                ) {
+                    OutlinedTextField(
+                        value = viewModel.endTime,
+                        onValueChange = {},
+                        readOnly = true,
+                        enabled = false,
+                        placeholder = { Text("Select end time") },
+                        leadingIcon = {
+                            Icon(
+                                imageVector = Icons.Outlined.Schedule,
+                                contentDescription = "End Time",
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            disabledTextColor = MaterialTheme.colorScheme.onSurface,
+                            disabledBorderColor = if (viewModel.endTimeError != null) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.outline,
+                            disabledLeadingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            disabledPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+                        ),
+                        isError = viewModel.endTimeError != null,
+                        supportingText = viewModel.endTimeError?.let { { Text(it) } }
+                    )
+                }
+            }
 
             // Location
             CemsTextField(
@@ -290,59 +456,6 @@ fun CreateEventScreen(
                     isError = viewModel.descriptionError != null,
                     supportingText = viewModel.descriptionError?.let { { Text(it) } }
                 )
-            }
-
-            // Status Dropdown Selector
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Text(
-                    text = "Status",
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.outline,
-                    fontWeight = FontWeight.SemiBold
-                )
-                Box(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    OutlinedTextField(
-                        value = viewModel.status,
-                        onValueChange = {},
-                        readOnly = true,
-                        leadingIcon = {
-                            Icon(
-                                imageVector = Icons.Outlined.Info,
-                                contentDescription = "Status",
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        },
-                        trailingIcon = {
-                            Icon(
-                                imageVector = Icons.Outlined.ArrowDropDown,
-                                contentDescription = "Dropdown",
-                                modifier = Modifier.clickable { showStatusDropdown = true }
-                            )
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { showStatusDropdown = true },
-                        shape = RoundedCornerShape(12.dp)
-                    )
-
-                    DropdownMenu(
-                        expanded = showStatusDropdown,
-                        onDismissRequest = { showStatusDropdown = false },
-                        modifier = Modifier.fillMaxWidth(0.85f)
-                    ) {
-                        statuses.forEach { statusName ->
-                            DropdownMenuItem(
-                                text = { Text(statusName) },
-                                onClick = {
-                                    viewModel.onStatusChange(statusName)
-                                    showStatusDropdown = false
-                                }
-                            )
-                        }
-                    }
-                }
             }
 
             Spacer(modifier = Modifier.height(12.dp))

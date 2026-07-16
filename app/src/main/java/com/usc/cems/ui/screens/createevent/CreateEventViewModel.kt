@@ -14,6 +14,8 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import java.util.UUID
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @HiltViewModel
@@ -46,12 +48,30 @@ class CreateEventViewModel @Inject constructor(
                 organizer = event.organizerName
                 
                 val parts = event.dateTime.split(" • ")
-                date = parts.getOrNull(0) ?: ""
-                time = parts.getOrNull(1) ?: event.dateTime
+                val startPart = parts.getOrNull(0) ?: ""
+                val endPart = parts.getOrNull(1) ?: ""
+                
+                val startParts = startPart.split(" ")
+                val endParts = endPart.split(" ")
+                
+                if (startParts.size == 2 && startParts[0].matches(Regex("\\d{4}-\\d{2}-\\d{2}")) && startParts[1].matches(Regex("\\d{2}:\\d{2}"))) {
+                    startDate = startParts[0]
+                    startTime = startParts[1]
+                } else {
+                    startDate = ""
+                    startTime = ""
+                }
+                
+                if (endParts.size == 2 && endParts[0].matches(Regex("\\d{4}-\\d{2}-\\d{2}")) && endParts[1].matches(Regex("\\d{2}:\\d{2}"))) {
+                    endDate = endParts[0]
+                    endTime = endParts[1]
+                } else {
+                    endDate = ""
+                    endTime = ""
+                }
                 
                 location = event.location
                 description = event.description
-                status = event.registrationStatus
                 imageUrl = event.imageUrl
             }
         }
@@ -77,14 +97,24 @@ class CreateEventViewModel @Inject constructor(
     var organizerError by mutableStateOf<String?>(null)
         private set
 
-    var date by mutableStateOf("")
+    var startDate by mutableStateOf("")
         private set
-    var dateError by mutableStateOf<String?>(null)
+    var startDateError by mutableStateOf<String?>(null)
         private set
 
-    var time by mutableStateOf("")
+    var startTime by mutableStateOf("")
         private set
-    var timeError by mutableStateOf<String?>(null)
+    var startTimeError by mutableStateOf<String?>(null)
+        private set
+
+    var endDate by mutableStateOf("")
+        private set
+    var endDateError by mutableStateOf<String?>(null)
+        private set
+
+    var endTime by mutableStateOf("")
+        private set
+    var endTimeError by mutableStateOf<String?>(null)
         private set
 
     var location by mutableStateOf("")
@@ -97,9 +127,7 @@ class CreateEventViewModel @Inject constructor(
     var descriptionError by mutableStateOf<String?>(null)
         private set
 
-    var status by mutableStateOf("Open")
-        private set
-    var statusError by mutableStateOf<String?>(null)
+    var validationError by mutableStateOf<String?>(null)
         private set
 
     var imageUrl by mutableStateOf("https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop&q=60")
@@ -134,14 +162,24 @@ class CreateEventViewModel @Inject constructor(
         organizerError = null
     }
 
-    fun onDateChange(value: String) {
-        date = value
-        dateError = null
+    fun onStartDateChange(value: String) {
+        startDate = value
+        startDateError = null
     }
 
-    fun onTimeChange(value: String) {
-        time = value
-        timeError = null
+    fun onStartTimeChange(value: String) {
+        startTime = value
+        startTimeError = null
+    }
+
+    fun onEndDateChange(value: String) {
+        endDate = value
+        endDateError = null
+    }
+
+    fun onEndTimeChange(value: String) {
+        endTime = value
+        endTimeError = null
     }
 
     fun onLocationChange(value: String) {
@@ -154,11 +192,6 @@ class CreateEventViewModel @Inject constructor(
         descriptionError = null
     }
 
-    fun onStatusChange(value: String) {
-        status = value
-        statusError = null
-    }
-
     fun saveEvent() {
         if (isEditMode) updateEvent() else createEvent()
     }
@@ -168,6 +201,11 @@ class CreateEventViewModel @Inject constructor(
 
         isLoading = true
         viewModelScope.launch {
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+            val startDateTime = LocalDateTime.parse("$startDate $startTime", formatter)
+            val endDateTime = LocalDateTime.parse("$endDate $endTime", formatter)
+            val calculatedStatus = calculateEventStatus(startDateTime, endDateTime)
+
             val finalCategory = if (category == "Other") customCategory.trim() else category
             
             val newEvent = Event(
@@ -175,14 +213,15 @@ class CreateEventViewModel @Inject constructor(
                 title = title.trim(),
                 category = finalCategory,
                 imageUrl = imageUrl,
-                dateTime = "${date.trim()} • ${time.trim()}",
+                dateTime = "$startDate $startTime • $endDate $endTime",
                 location = location.trim(),
                 spotsLeft = "Unlimited spots",
                 description = description.trim(),
                 organizerName = organizer.trim(),
                 organizerLogo = "https://lh3.googleusercontent.com/aida-public/AB6AXuDBkuM5btIeSGlZYkviOI_ikadaa7meJOX_vVgO0WFCh5PsjNAAqu5bZsfixtExgIjvBFWz_jS7Q67ardG8KKf-FK4oEZEdzW9ClrnnVFFPhgdelnlE8H6Ul2FeMYCWGilxdj2UU7U1Q_kofBpiY28RqlOuM0rdQYKPxOAdpvj6WTx5EZ3MkAFSUAa7NQQrYYwPXPe7eaGw6wA4BL4Sg_phOxO4WChvmlhNA3v6tdEMBq-jlcDdGeE0FQ",
                 attendingCount = "0 students attending",
-                registrationStatus = status
+                registrationStatus = calculatedStatus,
+                status = calculatedStatus
             )
 
             eventRepository.addEvent(newEvent)
@@ -197,6 +236,11 @@ class CreateEventViewModel @Inject constructor(
         if (!validateInputs()) return
         isLoading = true
         viewModelScope.launch {
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+            val startDateTime = LocalDateTime.parse("$startDate $startTime", formatter)
+            val endDateTime = LocalDateTime.parse("$endDate $endTime", formatter)
+            val calculatedStatus = calculateEventStatus(startDateTime, endDateTime)
+
             val finalCategory = if (category == "Other") customCategory.trim() else category
             
             val updatedEvent = Event(
@@ -204,14 +248,15 @@ class CreateEventViewModel @Inject constructor(
                 title = title.trim(),
                 category = finalCategory,
                 imageUrl = imageUrl,
-                dateTime = "${date.trim()} • ${time.trim()}",
+                dateTime = "$startDate $startTime • $endDate $endTime",
                 location = location.trim(),
                 spotsLeft = originalEvent?.spotsLeft ?: "Unlimited spots",
                 description = description.trim(),
                 organizerName = organizer.trim(),
                 organizerLogo = originalEvent?.organizerLogo ?: "https://lh3.googleusercontent.com/aida-public/AB6AXuDBkuM5btIeSGlZYkviOI_ikadaa7meJOX_vVgO0WFCh5PsjNAAqu5bZsfixtExgIjvBFWz_jS7Q67ardG8KKf-FK4oEZEdzW9ClrnnVFFPhgdelnlE8H6Ul2FeMYCWGilxdj2UU7U1Q_kofBpiY28RqlOuM0rdQYKPxOAdpvj6WTx5EZ3MkAFSUAa7NQQrYYwPXPe7eaGw6wA4BL4Sg_phOxO4WChvmlhNA3v6tdEMBq-jlcDdGeE0FQ",
                 attendingCount = originalEvent?.attendingCount ?: "0 students attending",
-                registrationStatus = status
+                registrationStatus = calculatedStatus,
+                status = calculatedStatus
             )
             eventRepository.updateEvent(updatedEvent)
                 .onSuccess {
@@ -233,8 +278,28 @@ class CreateEventViewModel @Inject constructor(
         }
     }
 
+    private fun calculateEventStatus(start: LocalDateTime, end: LocalDateTime): String {
+        val now = LocalDateTime.now()
+        return when {
+            now.isBefore(start) -> "Upcoming"
+            now.isAfter(end) -> "Completed"
+            else -> "Ongoing"
+        }
+    }
+
     private fun validateInputs(): Boolean {
         var isValid = true
+        titleError = null
+        categoryError = null
+        customCategoryError = null
+        organizerError = null
+        startDateError = null
+        startTimeError = null
+        endDateError = null
+        endTimeError = null
+        descriptionError = null
+        locationError = null
+        validationError = null
 
         if (title.isBlank()) {
             titleError = "Event Name is required"
@@ -252,12 +317,20 @@ class CreateEventViewModel @Inject constructor(
             organizerError = "Organizer name is required"
             isValid = false
         }
-        if (date.isBlank()) {
-            dateError = "Event Date is required"
+        if (startDate.isBlank()) {
+            startDateError = "Start Date is required"
             isValid = false
         }
-        if (time.isBlank()) {
-            timeError = "Event Time is required"
+        if (startTime.isBlank()) {
+            startTimeError = "Start Time is required"
+            isValid = false
+        }
+        if (endDate.isBlank()) {
+            endDateError = "End Date is required"
+            isValid = false
+        }
+        if (endTime.isBlank()) {
+            endTimeError = "End Time is required"
             isValid = false
         }
         if (location.isBlank()) {
@@ -266,6 +339,39 @@ class CreateEventViewModel @Inject constructor(
         }
         if (description.isBlank()) {
             descriptionError = "Event Description is required"
+            isValid = false
+        }
+
+        if (!isValid) return false
+
+        try {
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+            val startDateTime = LocalDateTime.parse("$startDate $startTime", formatter)
+            val endDateTime = LocalDateTime.parse("$endDate $endTime", formatter)
+            val currentDateTime = LocalDateTime.now()
+
+            var enforceStartNotInPast = true
+            if (isEditMode && originalEvent != null) {
+                val parts = originalEvent!!.dateTime.split(" • ")
+                val origStart = parts.getOrNull(0) ?: ""
+                val origStartParts = origStart.split(" ")
+                if (startDate == origStartParts.getOrNull(0) && startTime == origStartParts.getOrNull(1)) {
+                    enforceStartNotInPast = false
+                }
+            }
+
+            if (enforceStartNotInPast && startDateTime.isBefore(currentDateTime)) {
+                startDateError = "Start Date & Time cannot be in the past"
+                validationError = "Start Date & Time cannot be in the past"
+                isValid = false
+            }
+            if (!endDateTime.isAfter(startDateTime)) {
+                endDateError = "End Date & Time must be after Start Date & Time"
+                validationError = "End Date & Time must be after Start Date & Time"
+                isValid = false
+            }
+        } catch (e: Exception) {
+            validationError = "Invalid Date or Time format selected"
             isValid = false
         }
 
