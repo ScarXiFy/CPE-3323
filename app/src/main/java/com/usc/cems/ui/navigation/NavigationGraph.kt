@@ -105,32 +105,18 @@ fun NavigationGraph(
 
         composable<Screen.CreateEvent> { backStackEntry ->
             val route = backStackEntry.toRoute<Screen.CreateEvent>()
-            val email = FirebaseAuth.getInstance().currentUser?.email?.trim()
-            if (email != "21700003@usc.edu.ph") {
-                LaunchedEffect(Unit) {
-                    navController.popBackStack()
-                }
-            } else {
-                CreateEventScreen(
-                    eventId = route.eventId,
-                    onNavUp = { navController.popBackStack() },
-                )
-            }
+            CreateEventScreen(
+                eventId = route.eventId,
+                onNavUp = { navController.popBackStack() },
+            )
         }
 
         composable<Screen.UpdateEvent> { backStackEntry ->
             val route = backStackEntry.toRoute<Screen.UpdateEvent>()
-            val email = FirebaseAuth.getInstance().currentUser?.email?.trim()
-            if (email != "21700003@usc.edu.ph") {
-                LaunchedEffect(Unit) {
-                    navController.popBackStack()
-                }
-            } else {
-                CreateEventScreen(
-                    eventId = route.eventId,
-                    onNavUp = { navController.popBackStack() },
-                )
-            }
+            CreateEventScreen(
+                eventId = route.eventId,
+                onNavUp = { navController.popBackStack() },
+            )
         }
 
         composable<Screen.MyEvents> {
