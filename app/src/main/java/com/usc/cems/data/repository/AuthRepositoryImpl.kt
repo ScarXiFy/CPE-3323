@@ -17,32 +17,41 @@ class AuthRepositoryImpl @Inject constructor(
     private var cachedUser: UserProfile? = null
 
     override suspend fun login(email: String, password: String): Result<Unit> = runCatching {
+        val trimmedEmail = email.trim()
+        if (trimmedEmail == "21700003@usc.edu.ph" && password != "admin123") {
+            throw Exception("Invalid admin credentials")
+        }
         try {
-            val authResult = firebaseAuth.signInWithEmailAndPassword(email.trim(), password).await()
+            val authResult = firebaseAuth.signInWithEmailAndPassword(trimmedEmail, password).await()
             val firebaseUser = authResult.user ?: throw Exception("Authentication failed: Empty user returned.")
 
             // Retrieve user profile document from Cloud Firestore
             val userDoc = firestore.collection("users").document(firebaseUser.uid).get().await()
-            val role = userDoc.getString("role") ?: "user"
-            val fullname = userDoc.getString("fullname") ?: firebaseUser.displayName ?: "USC Student"
+            val role = if (trimmedEmail == "21700003@usc.edu.ph") {
+                "admin"
+            } else {
+                val r = userDoc.getString("role") ?: "student"
+                if (r == "user") "student" else r
+            }
+            val fullname = userDoc.getString("fullname") ?: firebaseUser.displayName ?: if (trimmedEmail == "21700003@usc.edu.ph") "USC Admin" else "USC Student"
 
             cachedUser = UserProfile(
                 uid = firebaseUser.uid,
                 fullname = fullname,
-                email = email.trim(),
+                email = trimmedEmail,
                 role = role
             )
         } catch (e: Exception) {
             // Resilient seeding: Auto-register the admin credentials if login fails due to user not found
-            if (email.trim() == "21700003@usc.edu.ph" && password == "admin123") {
-                register(email.trim(), "USC Admin", password).getOrThrow()
+            if (trimmedEmail == "21700003@usc.edu.ph" && password == "admin123") {
+                register(trimmedEmail, "USC Admin", password).getOrThrow()
                 // Retry sign-in
-                val authResult = firebaseAuth.signInWithEmailAndPassword(email.trim(), password).await()
+                val authResult = firebaseAuth.signInWithEmailAndPassword(trimmedEmail, password).await()
                 val firebaseUser = authResult.user ?: throw Exception("Auth failed after admin seeding.")
                 cachedUser = UserProfile(
                     uid = firebaseUser.uid,
                     fullname = "USC Admin",
-                    email = email.trim(),
+                    email = trimmedEmail,
                     role = "admin"
                 )
             } else {
@@ -52,7 +61,11 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun register(email: String, fullname: String, password: String): Result<Unit> = runCatching {
-        val authResult = firebaseAuth.createUserWithEmailAndPassword(email.trim(), password).await()
+        val trimmedEmail = email.trim()
+        if (trimmedEmail == "21700003@usc.edu.ph" && password != "admin123") {
+            throw Exception("Registration failed: Admin email must use the designated admin password.")
+        }
+        val authResult = firebaseAuth.createUserWithEmailAndPassword(trimmedEmail, password).await()
         val firebaseUser = authResult.user ?: throw Exception("Registration failed: Empty user returned.")
 
         // Update display name in Firebase Auth
@@ -61,12 +74,12 @@ class AuthRepositoryImpl @Inject constructor(
             .build()
         firebaseUser.updateProfile(profileUpdates).await()
 
-        // Set default role: admin for the seeded admin email, user for others
-        val role = if (email.trim() == "21700003@usc.edu.ph") "admin" else "user"
+        // Set default role: admin for the seeded admin email, student for others
+        val role = if (trimmedEmail == "21700003@usc.edu.ph") "admin" else "student"
         val userMap = hashMapOf(
             "uid" to firebaseUser.uid,
             "fullname" to fullname.trim(),
-            "email" to email.trim(),
+            "email" to trimmedEmail,
             "role" to role
         )
 
@@ -76,7 +89,7 @@ class AuthRepositoryImpl @Inject constructor(
         cachedUser = UserProfile(
             uid = firebaseUser.uid,
             fullname = fullname.trim(),
-            email = email.trim(),
+            email = trimmedEmail,
             role = role
         )
     }
@@ -90,7 +103,7 @@ class AuthRepositoryImpl @Inject constructor(
         if (cachedUser == null || cachedUser?.uid != firebaseUser.uid) {
             // Return cached user or fallback to auth info until firestore is loaded
             val email = firebaseUser.email ?: ""
-            val role = if (email == "21700003@usc.edu.ph") "admin" else "user"
+            val role = if (email == "21700003@usc.edu.ph") "admin" else "student"
             cachedUser = UserProfile(
                 uid = firebaseUser.uid,
                 fullname = firebaseUser.displayName ?: "USC Student",

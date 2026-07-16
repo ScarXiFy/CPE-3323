@@ -4,11 +4,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.google.firebase.auth.FirebaseAuth
 import com.usc.cems.ui.screens.admin.AdminDashboardScreen
 import com.usc.cems.ui.screens.createevent.CreateEventScreen
 import com.usc.cems.ui.screens.event.EventDetailsScreen
@@ -32,7 +34,9 @@ fun NavigationGraph(
         composable<Screen.Splash> {
             SplashScreen(
                 onNavigateToHome = {
-                    navController.navigate(Screen.Home) {
+                    val email = FirebaseAuth.getInstance().currentUser?.email?.trim()
+                    val dest = if (email == "21700003@usc.edu.ph") Screen.AdminDashboard else Screen.Home
+                    navController.navigate(dest) {
                         popUpTo(Screen.Splash) { inclusive = true }
                     }
                 },
@@ -47,7 +51,9 @@ fun NavigationGraph(
         composable<Screen.Login> {
             LoginScreen(
                 onNavigateToHome = {
-                    navController.navigate(Screen.Home) {
+                    val email = FirebaseAuth.getInstance().currentUser?.email?.trim()
+                    val dest = if (email == "21700003@usc.edu.ph") Screen.AdminDashboard else Screen.Home
+                    navController.navigate(dest) {
                         popUpTo(Screen.Login) { inclusive = true }
                     }
                 },
@@ -63,7 +69,9 @@ fun NavigationGraph(
                     navController.popBackStack()
                 },
                 onNavigateToHome = {
-                    navController.navigate(Screen.Home) {
+                    val email = FirebaseAuth.getInstance().currentUser?.email?.trim()
+                    val dest = if (email == "21700003@usc.edu.ph") Screen.AdminDashboard else Screen.Home
+                    navController.navigate(dest) {
                         popUpTo(Screen.Register) { inclusive = true }
                     }
                 },
@@ -98,9 +106,16 @@ fun NavigationGraph(
         }
 
         composable<Screen.CreateEvent> {
-            CreateEventScreen(
-                onNavUp = { navController.popBackStack() },
-            )
+            val email = FirebaseAuth.getInstance().currentUser?.email?.trim()
+            if (email != "21700003@usc.edu.ph") {
+                LaunchedEffect(Unit) {
+                    navController.popBackStack()
+                }
+            } else {
+                CreateEventScreen(
+                    onNavUp = { navController.popBackStack() },
+                )
+            }
         }
 
         composable<Screen.MyEvents> {
@@ -143,22 +158,29 @@ fun NavigationGraph(
         }
 
         composable<Screen.AdminDashboard> {
-            AdminDashboardScreen(
-                onNavigateToHome = {
-                    navController.navigate(Screen.Home) {
-                        popUpTo(Screen.Home) { inclusive = false }
-                    }
-                },
-                onNavigateToProfile = {
-                    navController.navigate(Screen.Profile)
-                },
-                onNavigateToAddEvent = {
-                    navController.navigate(Screen.CreateEvent)
-                },
-                onEventClick = { eventId ->
-                    navController.navigate(Screen.EventDetails(eventId))
+            val email = FirebaseAuth.getInstance().currentUser?.email?.trim()
+            if (email != "21700003@usc.edu.ph") {
+                LaunchedEffect(Unit) {
+                    navController.popBackStack()
                 }
-            )
+            } else {
+                AdminDashboardScreen(
+                    onNavigateToHome = {
+                        navController.navigate(Screen.Home) {
+                            popUpTo(Screen.Home) { inclusive = false }
+                        }
+                    },
+                    onNavigateToProfile = {
+                        navController.navigate(Screen.Profile)
+                    },
+                    onNavigateToAddEvent = {
+                        navController.navigate(Screen.CreateEvent)
+                    },
+                    onEventClick = { eventId ->
+                        navController.navigate(Screen.EventDetails(eventId))
+                    }
+                )
+            }
         }
     }
 }

@@ -7,14 +7,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.usc.cems.data.model.Event
 import com.usc.cems.data.repository.EventRepository
+import com.usc.cems.data.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val eventRepository: EventRepository
+    private val eventRepository: EventRepository,
+    private val authRepository: AuthRepository
 ) : ViewModel() {
+
+    val isAdmin: Boolean
+        get() = authRepository.getCurrentUser()?.role?.equals("admin", ignoreCase = true) == true
 
     var searchQuery by mutableStateOf("")
         private set
