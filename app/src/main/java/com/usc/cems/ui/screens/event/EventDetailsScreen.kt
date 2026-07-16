@@ -47,6 +47,7 @@ import com.usc.cems.ui.components.CemsTopAppBar
 fun EventDetailsScreen(
     eventId: String,
     onNavUp: () -> Unit = {},
+    onNavigateToEditEvent: (String) -> Unit = {},
     modifier: Modifier = Modifier,
     viewModel: EventDetailsViewModel = hiltViewModel(),
 ) {
@@ -267,31 +268,51 @@ fun EventDetailsScreen(
                     )
                 }
 
-                // Join/Cancel Registration Button
-                val isRegistered = viewModel.isRegistered
-                val buttonColor = if (isRegistered) {
-                    MaterialTheme.colorScheme.error
+                if (viewModel.isAdmin) {
+                    Button(
+                        onClick = { onNavigateToEditEvent(event.id) },
+                        shape = RoundedCornerShape(12.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp)
+                    ) {
+                        Text(
+                            text = "Edit Event",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                    }
                 } else {
-                    MaterialTheme.colorScheme.primary
-                }
-                val buttonText = if (isRegistered) "Cancel Joining" else "Join Event"
+                    // Join/Cancel Registration Button
+                    val isRegistered = viewModel.isRegistered
+                    val buttonColor = if (isRegistered) {
+                        MaterialTheme.colorScheme.error
+                    } else {
+                        MaterialTheme.colorScheme.primary
+                    }
+                    val buttonText = if (isRegistered) "Cancel Joining" else "Join Event"
 
-                Button(
-                    onClick = { viewModel.toggleRegistration() },
-                    shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = buttonColor
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp)
-                ) {
-                    Text(
-                        text = buttonText,
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White
-                    )
+                    Button(
+                        onClick = { viewModel.toggleRegistration() },
+                        shape = RoundedCornerShape(12.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = buttonColor
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp)
+                    ) {
+                        Text(
+                            text = buttonText,
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(32.dp))

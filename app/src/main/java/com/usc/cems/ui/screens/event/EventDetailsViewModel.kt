@@ -24,6 +24,9 @@ class EventDetailsViewModel @Inject constructor(
     var isRegistered by mutableStateOf(false)
         private set
 
+    val isAdmin: Boolean
+        get() = authRepository.getCurrentUser()?.role?.lowercase() == "admin"
+
     private var currentUserId: String? = null
 
     init {

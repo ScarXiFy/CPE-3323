@@ -100,6 +100,9 @@ fun NavigationGraph(
                 EventDetailsScreen(
                     eventId = route.eventId,
                     onNavUp = { navController.popBackStack() },
+                    onNavigateToEditEvent = { eventId ->
+                        navController.navigate(Screen.UpdateEvent(eventId))
+                    }
                 )
             }
         }
