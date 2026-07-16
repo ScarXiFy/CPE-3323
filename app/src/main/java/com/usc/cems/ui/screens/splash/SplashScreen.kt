@@ -39,6 +39,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
+import com.google.firebase.auth.FirebaseAuth
 import com.usc.cems.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -117,9 +118,14 @@ fun SplashScreen(
             )
         }
 
-        // Simulate 2.5 seconds splash display before navigating to login
+        // Simulate 2.5 seconds splash display before navigating
         delay(2500)
-        onNavigateToLogin()
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser != null) {
+            onNavigateToHome()
+        } else {
+            onNavigateToLogin()
+        }
     }
 
     Box(
