@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 import com.usc.cems.data.repository.AuthRepository
@@ -88,6 +89,12 @@ class AdminDashboardViewModel @Inject constructor(
                     event.category.lowercase() == selectedCategory.lowercase() ||
                     (selectedCategory == "Workshops" && event.category.lowercase() == "workshop")
             matchesSearch && matchesCategory
+        }
+    }
+
+    fun deleteEvent(eventId: String) {
+        viewModelScope.launch {
+            eventRepository.deleteEvent(eventId)
         }
     }
 }

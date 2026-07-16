@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 import java.util.UUID
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import androidx.navigation.toRoute
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,7 +25,15 @@ class CreateEventViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    val eventId: String? = savedStateHandle.get<String>("eventId")
+    val eventId: String? = try {
+        savedStateHandle.toRoute<com.usc.cems.ui.navigation.Screen.UpdateEvent>().eventId
+    } catch (e: Exception) {
+        try {
+            savedStateHandle.toRoute<com.usc.cems.ui.navigation.Screen.CreateEvent>().eventId
+        } catch (ex: Exception) {
+            savedStateHandle.get<String>("eventId")
+        }
+    }
     val isEditMode: Boolean
         get() = eventId != null
 
