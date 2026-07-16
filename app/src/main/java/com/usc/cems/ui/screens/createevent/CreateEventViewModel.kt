@@ -28,11 +28,7 @@ class CreateEventViewModel @Inject constructor(
     val eventId: String? = try {
         savedStateHandle.toRoute<com.usc.cems.ui.navigation.Screen.UpdateEvent>().eventId
     } catch (e: Exception) {
-        try {
-            savedStateHandle.toRoute<com.usc.cems.ui.navigation.Screen.CreateEvent>().eventId
-        } catch (ex: Exception) {
-            savedStateHandle.get<String>("eventId")
-        }
+        savedStateHandle.get<String>("eventId")
     }
     val isEditMode: Boolean
         get() = eventId != null

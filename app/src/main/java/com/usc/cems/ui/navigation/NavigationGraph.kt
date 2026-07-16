@@ -89,7 +89,7 @@ fun NavigationGraph(
                     navController.navigate(Screen.Profile)
                 },
                 onNavigateToCreateEvent = {
-                    navController.navigate(Screen.CreateEvent(null))
+                    navController.navigate(Screen.CreateEvent)
                 },
             )
         }
@@ -104,10 +104,9 @@ fun NavigationGraph(
             }
         }
 
-        composable<Screen.CreateEvent> { backStackEntry ->
-            val route = backStackEntry.toRoute<Screen.CreateEvent>()
+        composable<Screen.CreateEvent> {
             CreateEventScreen(
-                eventId = route.eventId,
+                eventId = null,
                 onNavUp = { navController.popBackStack() },
             )
         }
@@ -179,7 +178,7 @@ fun NavigationGraph(
                         navController.navigate(Screen.MyEvents)
                     },
                     onNavigateToAddEvent = {
-                        navController.navigate(Screen.CreateEvent(null))
+                        navController.navigate(Screen.CreateEvent)
                     },
                     onNavigateToEditEvent = { eventId ->
                         navController.navigate(Screen.UpdateEvent(eventId))

@@ -19,7 +19,7 @@ sealed interface Screen {
     data class EventDetails(val eventId: String) : Screen
 
     @Serializable
-    data class CreateEvent(val eventId: String? = null) : Screen
+    data object CreateEvent : Screen
 
     @Serializable
     data class UpdateEvent(val eventId: String) : Screen
