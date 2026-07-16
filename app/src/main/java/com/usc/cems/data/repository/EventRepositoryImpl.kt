@@ -121,7 +121,8 @@ class EventRepositoryImpl @Inject constructor(
                 "organizerLogo" to event.organizerLogo,
                 "attendingCount" to event.attendingCount,
                 "registrationStatus" to event.registrationStatus,
-                "status" to event.status
+                "status" to event.status,
+                "attendees" to emptyList<String>()
             )
             firestore.collection("events").document(event.id).set(eventMap)
         }
@@ -157,7 +158,8 @@ class EventRepositoryImpl @Inject constructor(
             "organizerLogo" to event.organizerLogo,
             "attendingCount" to event.attendingCount,
             "registrationStatus" to event.registrationStatus,
-            "status" to event.status
+            "status" to event.status,
+            "attendees" to emptyList<String>()
         )
         firestore.collection("events").document(event.id).set(eventMap).await()
     }
@@ -177,7 +179,9 @@ class EventRepositoryImpl @Inject constructor(
             "registrationStatus" to event.registrationStatus,
             "status" to event.status
         )
-        firestore.collection("events").document(event.id).set(eventMap).await()
+        firestore.collection("events").document(event.id)
+            .set(eventMap, com.google.firebase.firestore.SetOptions.merge())
+            .await()
     }
 
     override suspend fun deleteEvent(eventId: String): Result<Unit> = runCatching {
@@ -204,11 +208,17 @@ class EventRepositoryImpl @Inject constructor(
             "eventId" to eventId
         )
         firestore.collection("registrations").document(registrationId).set(regMap).await()
+        firestore.collection("events").document(eventId)
+            .update("attendees", com.google.firebase.firestore.FieldValue.arrayUnion(userId))
+            .await()
     }
 
     override suspend fun unregisterFromEvent(userId: String, eventId: String): Result<Unit> = runCatching {
         val registrationId = "${userId}_$eventId"
         firestore.collection("registrations").document(registrationId).delete().await()
+        firestore.collection("events").document(eventId)
+            .update("attendees", com.google.firebase.firestore.FieldValue.arrayRemove(userId))
+            .await()
     }
 
     override suspend fun isUserRegistered(userId: String, eventId: String): Boolean {
