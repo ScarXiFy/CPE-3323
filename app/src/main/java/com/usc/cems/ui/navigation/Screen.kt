@@ -21,6 +21,9 @@ sealed interface Screen {
     @Serializable
     data object CreateEvent : Screen
 
+    @Serializable
+    data class UpdateEvent(val eventId: String) : Screen
+
     /**
      * Repurposed as the "Registered Events" screen per the wireframe —
      * shows events the student has RSVP'd to (upcoming + past).
@@ -30,4 +33,7 @@ sealed interface Screen {
 
     @Serializable
     data object Profile : Screen
+
+    @Serializable
+    data object AdminDashboard : Screen
 }

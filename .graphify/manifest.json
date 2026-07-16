@@ -1,0 +1,262 @@
+{
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/build.gradle.kts": {
+    "mtime": 1784022001352.9714,
+    "hash": "a7dda4ffaedd1b196cdf85eb9c6716b4"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/androidTest/java/com/example/carolianeventsmanagementsystem/ui/main/MainScreenTest.kt": {
+    "mtime": 1783909376958.2405,
+    "hash": "1636ad74c33290d7f91fcba420bfbc6b"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/java/com/usc/cems/CemsApplication.kt": {
+    "mtime": 1783909376958.2405,
+    "hash": "7a40d4c9aeb2b6150b31d7302c0bcf5c"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/java/com/usc/cems/MainActivity.kt": {
+    "mtime": 1783909376964.5498,
+    "hash": "f272a0f44b7d3514deb55d57a1f0cc59"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/java/com/usc/cems/data/local/AppDatabase.kt": {
+    "mtime": 1783909376965.0806,
+    "hash": "8192b582487c1a6f923d2f6fb40ef92f"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/java/com/usc/cems/data/local/PlaceholderEntity.kt": {
+    "mtime": 1783909376965.0806,
+    "hash": "05565572378f01ffb5ca865f3142c0d1"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/java/com/usc/cems/di/DatabaseModule.kt": {
+    "mtime": 1783909376965.0806,
+    "hash": "d345c3487f7816dafd4ff25290de0ca3"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/java/com/usc/cems/di/FirebaseModule.kt": {
+    "mtime": 1783909376965.0806,
+    "hash": "15d2e167d0ce2e288b304a91c069a19d"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/java/com/usc/cems/ui/components/CategoryChip.kt": {
+    "mtime": 1784022001352.9714,
+    "hash": "87e6dce22fa0f8e7e65c9af0b4a0b798"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/java/com/usc/cems/ui/components/CemsBottomNavBar.kt": {
+    "mtime": 1784022001360.3296,
+    "hash": "11ce5e621ce28ff34fe5d57002b395ec"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/java/com/usc/cems/ui/components/CemsTextField.kt": {
+    "mtime": 1784022001360.3296,
+    "hash": "6d64b8610a9f64489bc459808acbb3fd"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/java/com/usc/cems/ui/components/CemsTopAppBar.kt": {
+    "mtime": 1784022001362.3467,
+    "hash": "d292220408d24b0cd578f4442b62ca83"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/java/com/usc/cems/ui/components/EventCard.kt": {
+    "mtime": 1784022001362.3467,
+    "hash": "a4c405457157f49924f7b167948f98ae"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/java/com/usc/cems/ui/components/PrimaryButton.kt": {
+    "mtime": 1784022001364.3616,
+    "hash": "c58e83ef9fb94251b8d0f72d43ab9898"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/java/com/usc/cems/ui/navigation/NavigationGraph.kt": {
+    "mtime": 1784022001364.3616,
+    "hash": "d549e00fec9777d240f9bef86e401f07"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/java/com/usc/cems/ui/navigation/Screen.kt": {
+    "mtime": 1784022001364.3616,
+    "hash": "83fa5d25659ebc064d6615edcf69fdea"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/java/com/usc/cems/ui/screens/bookmarks/BookmarksScreen.kt": {
+    "mtime": 1783909376972.0427,
+    "hash": "066a14b39750aa9241e233130469c27e"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/java/com/usc/cems/ui/screens/createevent/CreateEventScreen.kt": {
+    "mtime": 1784022001369.0146,
+    "hash": "6f9abca6c952db632f6c99fc3c0de12b"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/java/com/usc/cems/ui/screens/event/EventDetailsScreen.kt": {
+    "mtime": 1784022001369.0146,
+    "hash": "2560ba86877acbceca63913b250f7b43"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/java/com/usc/cems/ui/screens/home/HomeScreen.kt": {
+    "mtime": 1784022607571.5728,
+    "hash": "9c1ec24bad0ebbdd826ac35e2601f019"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/java/com/usc/cems/ui/screens/login/LoginScreen.kt": {
+    "mtime": 1784022607572.5815,
+    "hash": "a1e69bc5de9675a2680c43712799557f"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/java/com/usc/cems/ui/screens/myevents/MyEventsScreen.kt": {
+    "mtime": 1784022607574.9006,
+    "hash": "f4f90af6b3651bce2e1a7eef214b1e49"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/java/com/usc/cems/ui/screens/profile/ProfileScreen.kt": {
+    "mtime": 1784022607576.9028,
+    "hash": "806e3082fdc3d686081e3cc83ab733ed"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/java/com/usc/cems/ui/screens/register/RegisterScreen.kt": {
+    "mtime": 1784022607579.4229,
+    "hash": "b681e5fd5b13855ab94a9ee468c07c77"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/java/com/usc/cems/ui/screens/splash/SplashScreen.kt": {
+    "mtime": 1784022607580.8237,
+    "hash": "a3e4c2f97d42c2ce89363f18a01b2758"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/java/com/usc/cems/ui/theme/Color.kt": {
+    "mtime": 1784022001372.318,
+    "hash": "22ffac1908d171ad9929399148a21ff7"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/java/com/usc/cems/ui/theme/Theme.kt": {
+    "mtime": 1784022001372.318,
+    "hash": "7e30518548bdd8c7e911050e7c4848b2"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/java/com/usc/cems/ui/theme/Type.kt": {
+    "mtime": 1784022001372.318,
+    "hash": "264df9de16fa13d7c00e9b0a4952aafd"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/test/java/com/example/carolianeventsmanagementsystem/ui/main/MainScreenViewModelTest.kt": {
+    "mtime": 1783909377006.705,
+    "hash": "cdb0e59490a3121f1b88ef7192408a21"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/build.gradle.kts": {
+    "mtime": 1783909377006.705,
+    "hash": "af142a1722ae4dbd37b46ec9083c5294"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/gradlew": {
+    "mtime": 1783909377013.865,
+    "hash": "fce6f5f5d390fc1928c48eeb4e9271e9"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/settings.gradle.kts": {
+    "mtime": 1783909377020.1438,
+    "hash": "88a4ac0bdc0d2f7bc9c0a740779f97a2"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/build_output.txt": {
+    "mtime": 1784022001385.0256,
+    "hash": "07f11e938db38b5cf69e4402241ceb76"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/documentation/PROJECT.md": {
+    "mtime": 1783906687926.857,
+    "hash": "918e9d0542e162c1f4acd3aefdf56324"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/documentation/ui-wireframes/extracted/stitch_remix_of_carolinianevents_ui_design_wireframes/add_event_admin/code.html": {
+    "mtime": 1784022001386.3047,
+    "hash": "d5929aafb7807eabb56f8d2e9beee96f"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/documentation/ui-wireframes/extracted/stitch_remix_of_carolinianevents_ui_design_wireframes/admin_dashboard/code.html": {
+    "mtime": 1784022001392.1047,
+    "hash": "04468033d28a86f927943799b1187806"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/documentation/ui-wireframes/extracted/stitch_remix_of_carolinianevents_ui_design_wireframes/admin_profile/code.html": {
+    "mtime": 1784022001396.1238,
+    "hash": "418f8d40c08d225dbc5b9b0548b23737"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/documentation/ui-wireframes/extracted/stitch_remix_of_carolinianevents_ui_design_wireframes/carolinianevents/DESIGN.md": {
+    "mtime": 1784022001400.8528,
+    "hash": "6dad25d62590abd76ac8b1949b700ed3"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/documentation/ui-wireframes/extracted/stitch_remix_of_carolinianevents_ui_design_wireframes/event_details/code.html": {
+    "mtime": 1784022001400.8528,
+    "hash": "905617cb5c4fb9cbad865ac6a1ccde6e"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/documentation/ui-wireframes/extracted/stitch_remix_of_carolinianevents_ui_design_wireframes/home_dashboard/code.html": {
+    "mtime": 1784022001408.5945,
+    "hash": "324c43f7464e9504d8822fd6e4f64ec3"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/documentation/ui-wireframes/extracted/stitch_remix_of_carolinianevents_ui_design_wireframes/login_screen/code.html": {
+    "mtime": 1784022001416.9502,
+    "hash": "98cd0a96bca9af4bd40cb959e06e2db5"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/documentation/ui-wireframes/extracted/stitch_remix_of_carolinianevents_ui_design_wireframes/profile_screen/code.html": {
+    "mtime": 1784022001418.534,
+    "hash": "45acf05bff84ccde16c65f3268110a00"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/documentation/ui-wireframes/extracted/stitch_remix_of_carolinianevents_ui_design_wireframes/register_screen/code.html": {
+    "mtime": 1784022001418.534,
+    "hash": "90296d548e2ba912b3de4147f3219bea"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/documentation/ui-wireframes/extracted/stitch_remix_of_carolinianevents_ui_design_wireframes/registered_events/code.html": {
+    "mtime": 1784022001424.0696,
+    "hash": "257292732b1eb54f0aa8d2107bf1c2eb"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/documentation/ui-wireframes/extracted/stitch_remix_of_carolinianevents_ui_design_wireframes/splash_screen/code.html": {
+    "mtime": 1784022001424.0696,
+    "hash": "9f2516f889cfb9789f3ab92f39966e0a"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/res/mipmap-hdpi/ic_launcher.webp": {
+    "mtime": 1783909376992.8784,
+    "hash": "39d9bb21eb48f128a71c3f01ad3cd427"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/res/mipmap-hdpi/ic_launcher_round.webp": {
+    "mtime": 1783909376992.8784,
+    "hash": "70d6f58af3c76ee221c829b1ce9daa04"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/res/mipmap-mdpi/ic_launcher.webp": {
+    "mtime": 1783909376992.8784,
+    "hash": "d2acce71c7b46e5e9540d23a9f7b2166"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/res/mipmap-mdpi/ic_launcher_round.webp": {
+    "mtime": 1783909376992.8784,
+    "hash": "6376acb48f96a855ee95c113cd7fd616"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/res/mipmap-xhdpi/ic_launcher.webp": {
+    "mtime": 1783909376999.2708,
+    "hash": "bd087d80b70bec05a43c745f29dc3ffc"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/res/mipmap-xhdpi/ic_launcher_round.webp": {
+    "mtime": 1783909376999.8406,
+    "hash": "7479edd56ab712609f030054bffd7263"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/res/mipmap-xxhdpi/ic_launcher.webp": {
+    "mtime": 1783909376999.8406,
+    "hash": "ea180e8d1a2e8300cc998b987266b736"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.webp": {
+    "mtime": 1783909376999.8406,
+    "hash": "947842742b29eeda80ee0805e1600366"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp": {
+    "mtime": 1783909377003.3274,
+    "hash": "54ab624970c86c2146e76b93f27586f7"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.webp": {
+    "mtime": 1783909377003.3274,
+    "hash": "9ee591be72fb336861a8044086054daa"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/documentation/ui-wireframes/extracted/stitch_remix_of_carolinianevents_ui_design_wireframes/add_event_admin/screen.png": {
+    "mtime": 1784022001390.094,
+    "hash": "9cb9b1f3c5dfb4c358f0cd28dbb00c83"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/documentation/ui-wireframes/extracted/stitch_remix_of_carolinianevents_ui_design_wireframes/admin_dashboard/screen.png": {
+    "mtime": 1784022001396.1238,
+    "hash": "727c81f86bf489bde4f03880a96aa8d1"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/documentation/ui-wireframes/extracted/stitch_remix_of_carolinianevents_ui_design_wireframes/admin_profile/screen.png": {
+    "mtime": 1784022001400.8528,
+    "hash": "534c3e86f906a684d9d730c6df43547d"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/documentation/ui-wireframes/extracted/stitch_remix_of_carolinianevents_ui_design_wireframes/event_details/screen.png": {
+    "mtime": 1784022001400.8528,
+    "hash": "2b392c8bc6e8dc7647b112f99c35d94e"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/documentation/ui-wireframes/extracted/stitch_remix_of_carolinianevents_ui_design_wireframes/home_dashboard/screen.png": {
+    "mtime": 1784022001413.9346,
+    "hash": "e92c53bbea959f165e6d2cc4e46b89cf"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/documentation/ui-wireframes/extracted/stitch_remix_of_carolinianevents_ui_design_wireframes/login_screen/screen.png": {
+    "mtime": 1784022001418.534,
+    "hash": "21bddf681cbed99d8cdf2f2ff791fce7"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/documentation/ui-wireframes/extracted/stitch_remix_of_carolinianevents_ui_design_wireframes/profile_screen/screen.png": {
+    "mtime": 1784022001418.534,
+    "hash": "17f1db865633d18c457353c29c0b1402"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/documentation/ui-wireframes/extracted/stitch_remix_of_carolinianevents_ui_design_wireframes/register_screen/screen.png": {
+    "mtime": 1784022001418.534,
+    "hash": "21bddf681cbed99d8cdf2f2ff791fce7"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/documentation/ui-wireframes/extracted/stitch_remix_of_carolinianevents_ui_design_wireframes/registered_events/screen.png": {
+    "mtime": 1784022001424.0696,
+    "hash": "21bddf681cbed99d8cdf2f2ff791fce7"
+  },
+  "C:/Users/johne/School/CPE 3323/CPE-3323/documentation/ui-wireframes/extracted/stitch_remix_of_carolinianevents_ui_design_wireframes/splash_screen/screen.png": {
+    "mtime": 1784022001424.0696,
+    "hash": "21bddf681cbed99d8cdf2f2ff791fce7"
+  }
+}

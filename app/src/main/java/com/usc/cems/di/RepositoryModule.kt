@@ -1,0 +1,28 @@
+package com.usc.cems.di
+
+import com.usc.cems.data.repository.AuthRepository
+import com.usc.cems.data.repository.AuthRepositoryImpl
+import com.usc.cems.data.repository.EventRepository
+import com.usc.cems.data.repository.EventRepositoryImpl
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
+
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class RepositoryModule {
+
+    @Binds
+    @Singleton
+    abstract fun bindAuthRepository(
+        authRepositoryImpl: AuthRepositoryImpl
+    ): AuthRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindEventRepository(
+        eventRepositoryImpl: EventRepositoryImpl
+    ): EventRepository
+}
