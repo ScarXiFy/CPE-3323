@@ -33,21 +33,25 @@ class CreateEventViewModel @Inject constructor(
             eventRepository.getEventById(id)?.let { event ->
                 originalEvent = event
                 title = event.title
-                category = event.category
+                
+                val defaultCategories = listOf("Academic", "Sports", "Workshop", "Social")
+                if (event.category in defaultCategories) {
+                    category = event.category
+                    customCategory = ""
+                } else {
+                    category = "Other"
+                    customCategory = event.category
+                }
+                
                 organizer = event.organizerName
                 
                 val parts = event.dateTime.split(" • ")
                 date = parts.getOrNull(0) ?: ""
-                val timeRange = parts.getOrNull(1) ?: ""
-                val times = timeRange.split(" - ")
-                startTime = times.getOrNull(0) ?: ""
-                endTime = times.getOrNull(1) ?: ""
+                time = parts.getOrNull(1) ?: event.dateTime
                 
-                val locParts = event.location.split(", ")
-                building = locParts.getOrNull(0) ?: ""
-                room = locParts.getOrNull(1) ?: ""
-                
+                location = event.location
                 description = event.description
+                status = event.registrationStatus
                 imageUrl = event.imageUrl
             }
         }
@@ -63,6 +67,11 @@ class CreateEventViewModel @Inject constructor(
     var categoryError by mutableStateOf<String?>(null)
         private set
 
+    var customCategory by mutableStateOf("")
+        private set
+    var customCategoryError by mutableStateOf<String?>(null)
+        private set
+
     var organizer by mutableStateOf("")
         private set
     var organizerError by mutableStateOf<String?>(null)
@@ -73,29 +82,24 @@ class CreateEventViewModel @Inject constructor(
     var dateError by mutableStateOf<String?>(null)
         private set
 
-    var startTime by mutableStateOf("")
+    var time by mutableStateOf("")
         private set
-    var startTimeError by mutableStateOf<String?>(null)
-        private set
-
-    var endTime by mutableStateOf("")
-        private set
-    var endTimeError by mutableStateOf<String?>(null)
+    var timeError by mutableStateOf<String?>(null)
         private set
 
-    var building by mutableStateOf("")
+    var location by mutableStateOf("")
         private set
-    var buildingError by mutableStateOf<String?>(null)
-        private set
-
-    var room by mutableStateOf("")
-        private set
-    var roomError by mutableStateOf<String?>(null)
+    var locationError by mutableStateOf<String?>(null)
         private set
 
     var description by mutableStateOf("")
         private set
     var descriptionError by mutableStateOf<String?>(null)
+        private set
+
+    var status by mutableStateOf("Open")
+        private set
+    var statusError by mutableStateOf<String?>(null)
         private set
 
     var imageUrl by mutableStateOf("https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop&q=60")
@@ -115,6 +119,14 @@ class CreateEventViewModel @Inject constructor(
     fun onCategoryChange(value: String) {
         category = value
         categoryError = null
+        if (value != "Other") {
+            customCategoryError = null
+        }
+    }
+
+    fun onCustomCategoryChange(value: String) {
+        customCategory = value
+        customCategoryError = null
     }
 
     fun onOrganizerChange(value: String) {
@@ -127,29 +139,24 @@ class CreateEventViewModel @Inject constructor(
         dateError = null
     }
 
-    fun onStartTimeChange(value: String) {
-        startTime = value
-        startTimeError = null
+    fun onTimeChange(value: String) {
+        time = value
+        timeError = null
     }
 
-    fun onEndTimeChange(value: String) {
-        endTime = value
-        endTimeError = null
-    }
-
-    fun onBuildingChange(value: String) {
-        building = value
-        buildingError = null
-    }
-
-    fun onRoomChange(value: String) {
-        room = value
-        roomError = null
+    fun onLocationChange(value: String) {
+        location = value
+        locationError = null
     }
 
     fun onDescriptionChange(value: String) {
         description = value
         descriptionError = null
+    }
+
+    fun onStatusChange(value: String) {
+        status = value
+        statusError = null
     }
 
     fun saveEvent() {
@@ -161,26 +168,21 @@ class CreateEventViewModel @Inject constructor(
 
         isLoading = true
         viewModelScope.launch {
-            val eventDateFormatted = date // e.g. "2026-07-20"
-            val timeRange = if (startTime.isNotBlank() && endTime.isNotBlank()) {
-                "$startTime - $endTime"
-            } else {
-                startTime.ifBlank { "All Day" }
-            }
+            val finalCategory = if (category == "Other") customCategory.trim() else category
             
             val newEvent = Event(
                 id = UUID.randomUUID().toString(),
-                title = title,
-                category = category,
+                title = title.trim(),
+                category = finalCategory,
                 imageUrl = imageUrl,
-                dateTime = "$eventDateFormatted • $timeRange",
-                location = "${building.ifBlank { "Main Campus" }}, ${room.ifBlank { "TBA" }}",
+                dateTime = "${date.trim()} • ${time.trim()}",
+                location = location.trim(),
                 spotsLeft = "Unlimited spots",
-                description = description,
-                organizerName = organizer,
+                description = description.trim(),
+                organizerName = organizer.trim(),
                 organizerLogo = "https://lh3.googleusercontent.com/aida-public/AB6AXuDBkuM5btIeSGlZYkviOI_ikadaa7meJOX_vVgO0WFCh5PsjNAAqu5bZsfixtExgIjvBFWz_jS7Q67ardG8KKf-FK4oEZEdzW9ClrnnVFFPhgdelnlE8H6Ul2FeMYCWGilxdj2UU7U1Q_kofBpiY28RqlOuM0rdQYKPxOAdpvj6WTx5EZ3MkAFSUAa7NQQrYYwPXPe7eaGw6wA4BL4Sg_phOxO4WChvmlhNA3v6tdEMBq-jlcDdGeE0FQ",
                 attendingCount = "0 students attending",
-                registrationStatus = "Open"
+                registrationStatus = status
             )
 
             eventRepository.addEvent(newEvent)
@@ -195,25 +197,21 @@ class CreateEventViewModel @Inject constructor(
         if (!validateInputs()) return
         isLoading = true
         viewModelScope.launch {
-            val eventDateFormatted = date
-            val timeRange = if (startTime.isNotBlank() && endTime.isNotBlank()) {
-                "$startTime - $endTime"
-            } else {
-                startTime.ifBlank { "All Day" }
-            }
+            val finalCategory = if (category == "Other") customCategory.trim() else category
+            
             val updatedEvent = Event(
                 id = eventId!!,
-                title = title,
-                category = category,
+                title = title.trim(),
+                category = finalCategory,
                 imageUrl = imageUrl,
-                dateTime = "$eventDateFormatted • $timeRange",
-                location = "${building.ifBlank { "Main Campus" }}, ${room.ifBlank { "TBA" }}",
+                dateTime = "${date.trim()} • ${time.trim()}",
+                location = location.trim(),
                 spotsLeft = originalEvent?.spotsLeft ?: "Unlimited spots",
-                description = description,
-                organizerName = organizer,
+                description = description.trim(),
+                organizerName = organizer.trim(),
                 organizerLogo = originalEvent?.organizerLogo ?: "https://lh3.googleusercontent.com/aida-public/AB6AXuDBkuM5btIeSGlZYkviOI_ikadaa7meJOX_vVgO0WFCh5PsjNAAqu5bZsfixtExgIjvBFWz_jS7Q67ardG8KKf-FK4oEZEdzW9ClrnnVFFPhgdelnlE8H6Ul2FeMYCWGilxdj2UU7U1Q_kofBpiY28RqlOuM0rdQYKPxOAdpvj6WTx5EZ3MkAFSUAa7NQQrYYwPXPe7eaGw6wA4BL4Sg_phOxO4WChvmlhNA3v6tdEMBq-jlcDdGeE0FQ",
                 attendingCount = originalEvent?.attendingCount ?: "0 students attending",
-                registrationStatus = originalEvent?.registrationStatus ?: "Open"
+                registrationStatus = status
             )
             eventRepository.updateEvent(updatedEvent)
                 .onSuccess {
@@ -239,11 +237,15 @@ class CreateEventViewModel @Inject constructor(
         var isValid = true
 
         if (title.isBlank()) {
-            titleError = "Event Title is required"
+            titleError = "Event Name is required"
             isValid = false
         }
         if (category.isBlank()) {
             categoryError = "Category selection is required"
+            isValid = false
+        }
+        if (category == "Other" && customCategory.isBlank()) {
+            customCategoryError = "Custom Category name is required"
             isValid = false
         }
         if (organizer.isBlank()) {
@@ -252,6 +254,14 @@ class CreateEventViewModel @Inject constructor(
         }
         if (date.isBlank()) {
             dateError = "Event Date is required"
+            isValid = false
+        }
+        if (time.isBlank()) {
+            timeError = "Event Time is required"
+            isValid = false
+        }
+        if (location.isBlank()) {
+            locationError = "Location is required"
             isValid = false
         }
         if (description.isBlank()) {

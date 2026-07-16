@@ -7,29 +7,23 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.Send
-import androidx.compose.material.icons.outlined.AddPhotoAlternate
-import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material.icons.outlined.CalendarToday
 import androidx.compose.material.icons.outlined.Category
 import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.Group
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.LocationOn
-import androidx.compose.material.icons.outlined.MeetingRoom
+import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material.icons.outlined.Title
 import androidx.compose.material3.Button
@@ -41,7 +35,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -50,16 +43,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.AsyncImage
 import com.usc.cems.ui.components.CemsTextField
 import com.usc.cems.ui.components.CemsTopAppBar
 import com.usc.cems.ui.components.PrimaryButton
@@ -76,7 +64,9 @@ fun CreateEventScreen(
 ) {
     val context = LocalContext.current
     var showCategoryDropdown by remember { mutableStateOf(false) }
-    val categories = listOf("Academic", "Sports", "Workshop", "Social")
+    var showStatusDropdown by remember { mutableStateOf(false) }
+    val categories = listOf("Academic", "Sports", "Workshop", "Social", "Other")
+    val statuses = listOf("Open", "Closed", "Completed")
 
     // Listen to success state
     LaunchedEffect(key1 = true) {
@@ -118,57 +108,11 @@ fun CreateEventScreen(
                 )
             }
 
-            // Image Banner Upload Area
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(180.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(MaterialTheme.colorScheme.surfaceContainerLow)
-                    .border(
-                        width = 2.dp,
-                        color = MaterialTheme.colorScheme.outlineVariant,
-                        shape = RoundedCornerShape(12.dp)
-                    ),
-                contentAlignment = Alignment.Center
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier
-                            .size(56.dp)
-                            .clip(CircleShape)
-                            .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f))
-                    ) {
-                        Icon(
-                            imageVector = Icons.Outlined.AddPhotoAlternate,
-                            contentDescription = "Upload Image",
-                            tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(28.dp)
-                        )
-                    }
-                    Text(
-                        text = "Upload Event Banner",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                    Text(
-                        text = "16:9 aspect ratio recommended",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
-
-            // Event Title
+            // Event Name
             CemsTextField(
                 value = viewModel.title,
                 onValueChange = viewModel::onTitleChange,
-                label = "Event Title",
+                label = "Event Name",
                 leadingIcon = Icons.Outlined.Title,
                 isError = viewModel.titleError != null,
                 supportingText = viewModel.titleError?.let { { Text(it) } }
@@ -230,7 +174,19 @@ fun CreateEventScreen(
                 }
             }
 
-            // Organizer Name
+            // Custom Category Text Box (Visible ONLY if Category == "Other")
+            if (viewModel.category == "Other") {
+                CemsTextField(
+                    value = viewModel.customCategory,
+                    onValueChange = viewModel::onCustomCategoryChange,
+                    label = "Custom Category Name",
+                    leadingIcon = Icons.Outlined.Category,
+                    isError = viewModel.customCategoryError != null,
+                    supportingText = viewModel.customCategoryError?.let { { Text(it) } }
+                )
+            }
+
+            // Event Organizer
             CemsTextField(
                 value = viewModel.organizer,
                 onValueChange = viewModel::onOrganizerChange,
@@ -287,41 +243,24 @@ fun CreateEventScreen(
                 )
             }
 
-            // Start & End Time Box
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                Box(modifier = Modifier.weight(1f)) {
-                    CemsTextField(
-                        value = viewModel.startTime,
-                        onValueChange = viewModel::onStartTimeChange,
-                        label = "Start Time",
-                        leadingIcon = Icons.Outlined.Schedule
-                    )
-                }
-                Box(modifier = Modifier.weight(1f)) {
-                    CemsTextField(
-                        value = viewModel.endTime,
-                        onValueChange = viewModel::onEndTimeChange,
-                        label = "End Time",
-                        leadingIcon = Icons.Outlined.Schedule
-                    )
-                }
-            }
-
-            // Venue Location (Building & Room)
+            // Event Time
             CemsTextField(
-                value = viewModel.building,
-                onValueChange = viewModel::onBuildingChange,
-                label = "Building Name",
-                leadingIcon = Icons.Outlined.LocationOn
+                value = viewModel.time,
+                onValueChange = viewModel::onTimeChange,
+                label = "Event Time (e.g. 2:30 PM - 4:00 PM)",
+                leadingIcon = Icons.Outlined.Schedule,
+                isError = viewModel.timeError != null,
+                supportingText = viewModel.timeError?.let { { Text(it) } }
             )
+
+            // Location
             CemsTextField(
-                value = viewModel.room,
-                onValueChange = viewModel::onRoomChange,
-                label = "Room / Floor",
-                leadingIcon = Icons.Outlined.MeetingRoom
+                value = viewModel.location,
+                onValueChange = viewModel::onLocationChange,
+                label = "Location",
+                leadingIcon = Icons.Outlined.LocationOn,
+                isError = viewModel.locationError != null,
+                supportingText = viewModel.locationError?.let { { Text(it) } }
             )
 
             // Event Description Box
@@ -351,6 +290,59 @@ fun CreateEventScreen(
                     isError = viewModel.descriptionError != null,
                     supportingText = viewModel.descriptionError?.let { { Text(it) } }
                 )
+            }
+
+            // Status Dropdown Selector
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text(
+                    text = "Status",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.outline,
+                    fontWeight = FontWeight.SemiBold
+                )
+                Box(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    OutlinedTextField(
+                        value = viewModel.status,
+                        onValueChange = {},
+                        readOnly = true,
+                        leadingIcon = {
+                            Icon(
+                                imageVector = Icons.Outlined.Info,
+                                contentDescription = "Status",
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        },
+                        trailingIcon = {
+                            Icon(
+                                imageVector = Icons.Outlined.ArrowDropDown,
+                                contentDescription = "Dropdown",
+                                modifier = Modifier.clickable { showStatusDropdown = true }
+                            )
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { showStatusDropdown = true },
+                        shape = RoundedCornerShape(12.dp)
+                    )
+
+                    DropdownMenu(
+                        expanded = showStatusDropdown,
+                        onDismissRequest = { showStatusDropdown = false },
+                        modifier = Modifier.fillMaxWidth(0.85f)
+                    ) {
+                        statuses.forEach { statusName ->
+                            DropdownMenuItem(
+                                text = { Text(statusName) },
+                                onClick = {
+                                    viewModel.onStatusChange(statusName)
+                                    showStatusDropdown = false
+                                }
+                            )
+                        }
+                    }
+                }
             }
 
             Spacer(modifier = Modifier.height(12.dp))
