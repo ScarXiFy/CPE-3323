@@ -90,7 +90,7 @@ fun NavigationGraph(
                     navController.navigate(Screen.Profile)
                 },
                 onNavigateToCreateEvent = {
-                    navController.navigate(Screen.CreateEvent)
+                    navController.navigate(Screen.CreateEvent(null))
                 },
             )
         }
@@ -105,7 +105,8 @@ fun NavigationGraph(
             }
         }
 
-        composable<Screen.CreateEvent> {
+        composable<Screen.CreateEvent> { backStackEntry ->
+            val route = backStackEntry.toRoute<Screen.CreateEvent>()
             val email = FirebaseAuth.getInstance().currentUser?.email?.trim()
             if (email != "21700003@usc.edu.ph") {
                 LaunchedEffect(Unit) {
@@ -113,6 +114,7 @@ fun NavigationGraph(
                 }
             } else {
                 CreateEventScreen(
+                    eventId = route.eventId,
                     onNavUp = { navController.popBackStack() },
                 )
             }
@@ -174,7 +176,10 @@ fun NavigationGraph(
                         navController.navigate(Screen.Profile)
                     },
                     onNavigateToAddEvent = {
-                        navController.navigate(Screen.CreateEvent)
+                        navController.navigate(Screen.CreateEvent(null))
+                    },
+                    onNavigateToEditEvent = { eventId ->
+                        navController.navigate(Screen.CreateEvent(eventId))
                     },
                     onEventClick = { eventId ->
                         navController.navigate(Screen.EventDetails(eventId))

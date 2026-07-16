@@ -19,7 +19,7 @@ sealed interface Screen {
     data class EventDetails(val eventId: String) : Screen
 
     @Serializable
-    data object CreateEvent : Screen
+    data class CreateEvent(val eventId: String? = null) : Screen
 
     /**
      * Repurposed as the "Registered Events" screen per the wireframe —

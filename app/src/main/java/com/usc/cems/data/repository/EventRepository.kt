@@ -7,6 +7,8 @@ interface EventRepository {
     fun getEvents(): StateFlow<List<Event>>
     fun getEventById(id: String): Event?
     suspend fun addEvent(event: Event): Result<Unit>
+    suspend fun updateEvent(event: Event): Result<Unit>
+    suspend fun deleteEvent(eventId: String): Result<Unit>
     
     // User registrations
     fun getRegisteredEvents(userId: String): StateFlow<List<Event>>

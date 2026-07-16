@@ -69,6 +69,7 @@ fun AdminDashboardScreen(
     onNavigateToHome: () -> Unit = {},
     onNavigateToProfile: () -> Unit = {},
     onNavigateToAddEvent: () -> Unit = {},
+    onNavigateToEditEvent: (String) -> Unit = {},
     onEventClick: (String) -> Unit = {},
     modifier: Modifier = Modifier,
     viewModel: AdminDashboardViewModel = hiltViewModel()
@@ -261,7 +262,7 @@ fun AdminDashboardScreen(
                         AdminEventCard(
                             event = event,
                             onClick = { onEventClick(event.id) },
-                            onEditClick = { /* Edit Action */ }
+                            onEditClick = { onNavigateToEditEvent(event.id) }
                         )
                     }
                 }

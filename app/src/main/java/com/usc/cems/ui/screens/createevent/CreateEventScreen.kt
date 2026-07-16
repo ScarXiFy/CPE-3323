@@ -32,6 +32,8 @@ import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.MeetingRoom
 import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material.icons.outlined.Title
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -67,6 +69,7 @@ import java.util.Calendar
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateEventScreen(
+    eventId: String? = null,
     onNavUp: () -> Unit = {},
     modifier: Modifier = Modifier,
     viewModel: CreateEventViewModel = hiltViewModel()
@@ -85,7 +88,7 @@ fun CreateEventScreen(
     Scaffold(
         topBar = {
             CemsTopAppBar(
-                title = "Create Event",
+                title = if (viewModel.isEditMode) "Edit Event" else "Create Event",
                 onNavUp = onNavUp
             )
         },
@@ -103,13 +106,13 @@ fun CreateEventScreen(
 
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(
-                    text = "Create New Event",
+                    text = if (viewModel.isEditMode) "Edit Event" else "Create New Event",
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onBackground
                 )
                 Text(
-                    text = "Fill in the details below to broadcast your event to the campus community.",
+                    text = if (viewModel.isEditMode) "Modify the details of your event below." else "Fill in the details below to broadcast your event to the campus community.",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -354,14 +357,37 @@ fun CreateEventScreen(
 
             // Action submit button
             PrimaryButton(
-                text = "Create Event",
-                onClick = viewModel::createEvent,
+                text = if (viewModel.isEditMode) "Save Changes" else "Create Event",
+                onClick = viewModel::saveEvent,
                 isLoading = viewModel.isLoading,
                 enabled = !viewModel.isLoading,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 32.dp)
             )
+
+            if (viewModel.isEditMode) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Button(
+                    onClick = viewModel::deleteEvent,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.errorContainer,
+                        contentColor = MaterialTheme.colorScheme.onErrorContainer
+                    ),
+                    shape = RoundedCornerShape(99.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 32.dp),
+                    enabled = !viewModel.isLoading
+                ) {
+                    Text(
+                        text = "Delete Event",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            } else {
+                Spacer(modifier = Modifier.height(32.dp))
+            }
         }
     }
 }

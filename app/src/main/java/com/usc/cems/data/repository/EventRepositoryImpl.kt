@@ -160,6 +160,27 @@ class EventRepositoryImpl @Inject constructor(
         firestore.collection("events").document(event.id).set(eventMap).await()
     }
 
+    override suspend fun updateEvent(event: Event): Result<Unit> = runCatching {
+        val eventMap = hashMapOf(
+            "title" to event.title,
+            "category" to event.category,
+            "imageUrl" to event.imageUrl,
+            "dateTime" to event.dateTime,
+            "location" to event.location,
+            "spotsLeft" to event.spotsLeft,
+            "description" to event.description,
+            "organizerName" to event.organizerName,
+            "organizerLogo" to event.organizerLogo,
+            "attendingCount" to event.attendingCount,
+            "registrationStatus" to event.registrationStatus
+        )
+        firestore.collection("events").document(event.id).set(eventMap).await()
+    }
+
+    override suspend fun deleteEvent(eventId: String): Result<Unit> = runCatching {
+        firestore.collection("events").document(eventId).delete().await()
+    }
+
     override fun getRegisteredEvents(userId: String): StateFlow<List<Event>> {
         val flow = MutableStateFlow<List<Event>>(emptyList())
         firestore.collection("registrations")
