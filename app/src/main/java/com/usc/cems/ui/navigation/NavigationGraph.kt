@@ -20,6 +20,7 @@ import com.usc.cems.ui.screens.myevents.MyEventsScreen
 import com.usc.cems.ui.screens.profile.ProfileScreen
 import com.usc.cems.ui.screens.register.RegisterScreen
 import com.usc.cems.ui.screens.splash.SplashScreen
+import com.usc.cems.ui.screens.updateevent.UpdateEventScreen
 
 @Composable
 fun NavigationGraph(
@@ -113,7 +114,7 @@ fun NavigationGraph(
 
         composable<Screen.UpdateEvent> { backStackEntry ->
             val route = backStackEntry.toRoute<Screen.UpdateEvent>()
-            CreateEventScreen(
+            UpdateEventScreen(
                 eventId = route.eventId,
                 onNavUp = { navController.popBackStack() },
             )

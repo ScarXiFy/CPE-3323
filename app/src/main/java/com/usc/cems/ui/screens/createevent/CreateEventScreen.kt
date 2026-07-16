@@ -75,7 +75,7 @@ fun CreateEventScreen(
     Scaffold(
         topBar = {
             CemsTopAppBar(
-                title = if (viewModel.isEditMode) "Edit Event" else "Create Event",
+                title = if (viewModel.isEditMode) "Update Event" else "Create Event",
                 onNavUp = onNavUp
             )
         },
