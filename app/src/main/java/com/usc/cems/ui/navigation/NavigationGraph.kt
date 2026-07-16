@@ -175,6 +175,9 @@ fun NavigationGraph(
                     onNavigateToProfile = {
                         navController.navigate(Screen.Profile)
                     },
+                    onNavigateToRegistered = {
+                        navController.navigate(Screen.MyEvents)
+                    },
                     onNavigateToAddEvent = {
                         navController.navigate(Screen.CreateEvent(null))
                     },

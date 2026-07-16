@@ -26,7 +26,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.CalendarToday
 import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Search
@@ -74,6 +73,7 @@ import com.usc.cems.ui.components.PrimaryButton
 fun AdminDashboardScreen(
     onNavigateToHome: () -> Unit = {},
     onNavigateToProfile: () -> Unit = {},
+    onNavigateToRegistered: () -> Unit = {},
     onNavigateToAddEvent: () -> Unit = {},
     onNavigateToEditEvent: (String) -> Unit = {},
     onEventClick: (String) -> Unit = {},
@@ -184,7 +184,7 @@ fun AdminDashboardScreen(
                         when (destination) {
                             BottomNavDestination.Home -> onNavigateToHome()
                             BottomNavDestination.Profile -> onNavigateToProfile()
-                            BottomNavDestination.Registered -> {}
+                            BottomNavDestination.Registered -> onNavigateToRegistered()
                         }
                     }
                 )
@@ -297,7 +297,6 @@ fun AdminDashboardScreen(
                         AdminEventCard(
                             event = event,
                             onClick = { onEventClick(event.id) },
-                            onEditClick = { onNavigateToEditEvent(event.id) },
                             onDeleteClick = { eventToDelete = event }
                         )
                     }
@@ -311,7 +310,6 @@ fun AdminDashboardScreen(
 fun AdminEventCard(
     event: Event,
     onClick: () -> Unit,
-    onEditClick: () -> Unit,
     onDeleteClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -418,22 +416,6 @@ fun AdminEventCard(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(28.dp)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.surfaceContainerHigh)
-                        .clickable(onClick = onEditClick),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Edit,
-                        contentDescription = "Edit Event",
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(16.dp)
-                    )
-                }
-
                 Box(
                     modifier = Modifier
                         .size(28.dp)
