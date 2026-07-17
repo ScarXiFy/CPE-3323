@@ -27,7 +27,7 @@ class HomeViewModel @Inject constructor(
     var selectedCategory by mutableStateOf("All Events")
         private set
 
-    val categories = listOf("All Events", "Academic", "Sports", "Cultural", "Workshop")
+    val categories = listOf("All Events", "Academic", "Sports", "Social", "Workshop", "Other")
 
     private var allEvents by mutableStateOf<List<Event>>(emptyList())
 
@@ -41,7 +41,14 @@ class HomeViewModel @Inject constructor(
 
     val events: List<Event>
         get() = allEvents.filter { event ->
-            val matchesCategory = selectedCategory == "All Events" || event.category.equals(selectedCategory, ignoreCase = true)
+            val matchesCategory = when (selectedCategory) {
+                "All Events" -> true
+                "Other" -> {
+                    val predefinedCategories = listOf("Academic", "Sports", "Social", "Workshop")
+                    !predefinedCategories.any { it.equals(event.category, ignoreCase = true) }
+                }
+                else -> event.category.equals(selectedCategory, ignoreCase = true)
+            }
             val matchesSearch = searchQuery.isBlank() || 
                     event.title.contains(searchQuery, ignoreCase = true) || 
                     event.location.contains(searchQuery, ignoreCase = true)

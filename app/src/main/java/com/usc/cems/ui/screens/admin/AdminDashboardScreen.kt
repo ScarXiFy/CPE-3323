@@ -142,7 +142,7 @@ fun AdminDashboardScreen(
         val filteredList = remember(eventsState, viewModel.searchQuery, viewModel.selectedCategory) {
             viewModel.getFilteredEventsList()
         }
-        val categories = listOf("All Events", "Academic", "Sports", "Workshops", "Social")
+        val categories = listOf("All Events", "Academic", "Sports", "Workshops", "Social", "Other")
         var eventToDelete by remember { mutableStateOf<Event?>(null) }
 
         if (eventToDelete != null) {

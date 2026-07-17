@@ -44,7 +44,7 @@ class AdminDashboardViewModel @Inject constructor(
             // Create state flows for compose states to combine them reactively
             val qFlow = kotlinx.coroutines.flow.MutableStateFlow(searchQuery)
             val cFlow = kotlinx.coroutines.flow.MutableStateFlow(selectedCategory)
-            
+
             // Keep them updated
             this@AdminDashboardViewModel.javaClass.getDeclaredFields() // Triggering compiler helpers if needed
             
@@ -85,9 +85,17 @@ class AdminDashboardViewModel @Inject constructor(
             val matchesSearch = event.title.contains(searchQuery, ignoreCase = true) ||
                     event.location.contains(searchQuery, ignoreCase = true) ||
                     event.category.contains(searchQuery, ignoreCase = true)
-            val matchesCategory = selectedCategory == "All Events" ||
-                    event.category.lowercase() == selectedCategory.lowercase() ||
-                    (selectedCategory == "Workshops" && event.category.lowercase() == "workshop")
+//            val matchesCategory = selectedCategory == "All Events" ||
+//                    event.category.lowercase() == selectedCategory.lowercase() ||
+//                    (selectedCategory == "Workshops" && event.category.lowercase() == "workshop")
+            val matchesCategory = when (selectedCategory) {
+                "All Events" -> true
+                "Other" -> {
+                    val predefinedCategories = listOf("Academic", "Sports", "Social", "Workshop")
+                    !predefinedCategories.any { it.equals(event.category, ignoreCase = true) }
+                }
+                else -> event.category.equals(selectedCategory, ignoreCase = true)
+            }
             matchesSearch && matchesCategory
         }
     }
