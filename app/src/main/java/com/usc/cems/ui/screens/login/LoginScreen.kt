@@ -255,7 +255,7 @@ fun LoginScreen(
                                 color = MaterialTheme.colorScheme.outline,
                                 fontWeight = FontWeight.SemiBold
                             )
-                            TextButton(
+                            /*TextButton(
                                 onClick = { /* Forgot logic */ },
                                 contentPadding = PaddingValues(0.dp),
                                 modifier = Modifier.height(24.dp)
@@ -266,7 +266,7 @@ fun LoginScreen(
                                     color = MaterialTheme.colorScheme.primary,
                                     fontWeight = FontWeight.SemiBold
                                 )
-                            }
+                            }*/
                         }
                         CemsTextField(
                             value = viewModel.password,
@@ -326,7 +326,7 @@ fun LoginScreen(
                     }
                 }
 
-                Row(
+                /*Row(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth()
@@ -348,7 +348,7 @@ fun LoginScreen(
                         style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.outline
                     )
-                }
+                }*/
             }
         }
     }

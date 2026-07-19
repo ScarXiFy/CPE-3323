@@ -191,7 +191,6 @@ fun HomeScreen(
                             title = event.title,
                             dateTime = event.dateTime,
                             location = event.location,
-                            spotsLeft = event.spotsLeft,
                             onClick = { onEventClick(event.id) }
                         )
                     }

@@ -42,7 +42,6 @@ import androidx.compose.ui.unit.dp
  * @param title         Event title.
  * @param dateTime      Formatted date + time string.
  * @param location      Venue / building name.
- * @param spotsLeft     Optional "N spots left" text.
  * @param onClick       Click handler for the whole card.
  */
 @Composable
@@ -54,7 +53,6 @@ fun EventCard(
     modifier: Modifier = Modifier,
     categoryColor: Color = MaterialTheme.colorScheme.primary,
     categoryOnColor: Color = MaterialTheme.colorScheme.onPrimary,
-    spotsLeft: String? = null,
     onClick: () -> Unit = {},
 ) {
     Surface(
@@ -71,19 +69,12 @@ fun EventCard(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            // Category + spots row
+            // Category row
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 CategoryBadge(label = category, containerColor = categoryColor, contentColor = categoryOnColor)
-                if (spotsLeft != null) {
-                    Text(
-                        text = spotsLeft,
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
             }
 
             // Title
