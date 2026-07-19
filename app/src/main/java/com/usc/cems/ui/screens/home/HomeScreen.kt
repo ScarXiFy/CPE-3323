@@ -1,6 +1,8 @@
 package com.usc.cems.ui.screens.home
 
 import androidx.compose.foundation.horizontalScroll
+import com.usc.cems.ui.components.formattedDate
+import com.usc.cems.ui.components.formattedTimeRange
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -183,13 +185,14 @@ fun HomeScreen(
                             "cultural" -> MaterialTheme.colorScheme.tertiary to MaterialTheme.colorScheme.onTertiary
                             else -> MaterialTheme.colorScheme.primary to MaterialTheme.colorScheme.onPrimary
                         }
-                        
+
                         EventCard(
                             category = event.category,
                             categoryColor = categoryColor,
                             categoryOnColor = categoryOnColor,
                             title = event.title,
-                            dateTime = event.dateTime,
+                            date = event.formattedDate(),
+                            time = event.formattedTimeRange(),
                             location = event.location,
                             onClick = { onEventClick(event.id) }
                         )

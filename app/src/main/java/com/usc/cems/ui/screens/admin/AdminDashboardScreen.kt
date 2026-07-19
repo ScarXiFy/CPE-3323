@@ -228,7 +228,7 @@ fun AdminDashboardScreen(
                             color = MaterialTheme.colorScheme.onBackground
                         )
                         Text(
-                            text = "Add, edit, or remove USC university listings.",
+                            text = "Add, edit, or remove USC event listings.",
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )

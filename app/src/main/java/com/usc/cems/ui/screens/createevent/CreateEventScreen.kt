@@ -117,7 +117,7 @@ fun CreateEventScreen(
                     color = MaterialTheme.colorScheme.onBackground
                 )
                 Text(
-                    text = if (viewModel.isEditMode) "Modify the details of your event below." else "Fill in the details below to broadcast your event to the campus community.",
+                    text = if (viewModel.isEditMode) "Modify the details of your event below." else "Fill in the details below to post the event to the Carolinian community.",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
