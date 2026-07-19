@@ -79,7 +79,7 @@ fun MyEventsScreen(
     val past = viewModel.pastEvents
     val totalCount = upcoming.size
 
-    var selectedTicketEvent by remember { mutableStateOf<Event?>(null) }
+    //var selectedTicketEvent by remember { mutableStateOf<Event?>(null) }
     val context = LocalContext.current
 
     // Reload list on open
@@ -196,8 +196,8 @@ fun MyEventsScreen(
                     items(upcoming) { event ->
                         RegisteredEventCard(
                             event = event,
-                            onClick = { onEventClick(event.id) },
-                            onTicketClick = { selectedTicketEvent = event }
+                            onClick = { onEventClick(event.id) }//,
+                            //onTicketClick = { selectedTicketEvent = event }
                         )
                     }
                 }
@@ -226,7 +226,7 @@ fun MyEventsScreen(
     }
 
     // Mock Ticket/QR Code dialog popup
-    selectedTicketEvent?.let { event ->
+    /*selectedTicketEvent?.let { event ->
         AlertDialog(
             onDismissRequest = { selectedTicketEvent = null },
             icon = {
@@ -332,14 +332,14 @@ fun MyEventsScreen(
                 }
             }
         )
-    }
+    }*/
 }
 
 @Composable
 fun RegisteredEventCard(
     event: Event,
     onClick: () -> Unit,
-    onTicketClick: () -> Unit,
+    //onTicketClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -421,7 +421,7 @@ fun RegisteredEventCard(
             Spacer(modifier = Modifier.height(12.dp))
 
             // View Ticket Button
-            Button(
+            /*Button(
                 onClick = onTicketClick,
                 shape = RoundedCornerShape(8.dp),
                 modifier = Modifier.fillMaxWidth().height(36.dp),
@@ -432,7 +432,7 @@ fun RegisteredEventCard(
                     style = MaterialTheme.typography.labelLarge,
                     fontWeight = FontWeight.Bold
                 )
-            }
+            }*/
         }
     }
 }
