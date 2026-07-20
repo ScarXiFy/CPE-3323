@@ -129,16 +129,7 @@ class EventRepositoryImpl @Inject constructor(
     }
 
     override fun getEvents(): StateFlow<List<Event>> {
-        // Return active/upcoming events to the student Home Dashboard feed
-        val activeFlow = MutableStateFlow<List<Event>>(emptyList())
-        val observer = _eventsFlow.value
-        activeFlow.value = _eventsFlow.value.filter { !it.id.startsWith("past_") }
-        
-        // Keep active events updated when backing flow changes
-        firestore.collection("events").addSnapshotListener { _, _ ->
-            activeFlow.value = _eventsFlow.value.filter { !it.id.startsWith("past_") }
-        }
-        return activeFlow.asStateFlow()
+        return _eventsFlow.asStateFlow()
     }
 
     override fun getEventById(id: String): Event? {
@@ -208,17 +199,27 @@ class EventRepositoryImpl @Inject constructor(
             "eventId" to eventId
         )
         firestore.collection("registrations").document(registrationId).set(regMap).await()
-        firestore.collection("events").document(eventId)
-            .update("attendees", com.google.firebase.firestore.FieldValue.arrayUnion(userId))
-            .await()
+        val docRef = firestore.collection("events").document(eventId)
+        docRef.update("attendees", com.google.firebase.firestore.FieldValue.arrayUnion(userId)).await()
+
+        val docSnap = docRef.get().await()
+        val attendeesList = docSnap.get("attendees") as? List<*>
+        val count = attendeesList?.size ?: 0
+        val countStr = if (count == 1) "1 student is attending" else "$count students are attending"
+        docRef.update("attendingCount", countStr).await()
     }
 
     override suspend fun unregisterFromEvent(userId: String, eventId: String): Result<Unit> = runCatching {
         val registrationId = "${userId}_$eventId"
         firestore.collection("registrations").document(registrationId).delete().await()
-        firestore.collection("events").document(eventId)
-            .update("attendees", com.google.firebase.firestore.FieldValue.arrayRemove(userId))
-            .await()
+        val docRef = firestore.collection("events").document(eventId)
+        docRef.update("attendees", com.google.firebase.firestore.FieldValue.arrayRemove(userId)).await()
+
+        val docSnap = docRef.get().await()
+        val attendeesList = docSnap.get("attendees") as? List<*>
+        val count = attendeesList?.size ?: 0
+        val countStr = if (count == 1) "1 student is attending" else "$count students are attending"
+        docRef.update("attendingCount", countStr).await()
     }
 
     override suspend fun isUserRegistered(userId: String, eventId: String): Boolean {
@@ -229,6 +230,16 @@ class EventRepositoryImpl @Inject constructor(
 
     private fun DocumentSnapshot.toEvent(): Event? {
         return try {
+            val attendeesList = get("attendees") as? List<*>
+            val attendeesCount = attendeesList?.size
+            val storedAttending = getString("attendingCount") ?: "0 students are attending"
+
+            val finalAttending = if (attendeesCount != null && attendeesCount > 0) {
+                if (attendeesCount == 1) "1 student is attending" else "$attendeesCount students are attending"
+            } else {
+                storedAttending
+            }
+
             Event(
                 id = id,
                 title = getString("title") ?: "",
@@ -240,7 +251,7 @@ class EventRepositoryImpl @Inject constructor(
                 description = getString("description") ?: "",
                 organizerName = getString("organizerName") ?: "",
                 organizerLogo = getString("organizerLogo") ?: "",
-                attendingCount = getString("attendingCount") ?: "0 students are attending",
+                attendingCount = finalAttending,
                 registrationStatus = getString("registrationStatus") ?: "Open",
                 status = getString("status") ?: getString("registrationStatus") ?: "Upcoming"
             )

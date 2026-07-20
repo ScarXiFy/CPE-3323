@@ -48,13 +48,20 @@ fun CemsBottomNavBar(
     currentDestination: BottomNavDestination,
     onDestinationChanged: (BottomNavDestination) -> Unit,
     modifier: Modifier = Modifier,
+    isAdmin: Boolean = false,
 ) {
+    val visibleDestinations = if (isAdmin) {
+        BottomNavDestination.entries.filter { it != BottomNavDestination.Registered }
+    } else {
+        BottomNavDestination.entries
+    }
+
     NavigationBar(
         modifier = modifier.height(72.dp),
         containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f),
         tonalElevation = 0.dp,
     ) {
-        BottomNavDestination.entries.forEach { destination ->
+        visibleDestinations.forEach { destination ->
             val selected = destination == currentDestination
             NavigationBarItem(
                 selected = selected,

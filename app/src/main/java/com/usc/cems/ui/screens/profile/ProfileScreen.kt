@@ -173,6 +173,7 @@ fun ProfileScreen(
         ) {
             CemsBottomNavBar(
                 currentDestination = BottomNavDestination.Profile,
+                isAdmin = viewModel.isAdmin,
                 onDestinationChanged = { destination ->
                     when (destination) {
                         BottomNavDestination.Home -> onNavigateToHome()

@@ -39,7 +39,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    val events: List<Event>
+    val filteredEvents: List<Event>
         get() = allEvents.filter { event ->
             val matchesCategory = when (selectedCategory) {
                 "All Events" -> true
@@ -54,6 +54,36 @@ class HomeViewModel @Inject constructor(
                     event.location.contains(searchQuery, ignoreCase = true)
             matchesCategory && matchesSearch
         }
+
+    val events: List<Event>
+        get() = upcomingEvents
+
+    val upcomingEvents: List<Event>
+        get() = filteredEvents.filter { !isPastEvent(it) }
+
+    val pastEvents: List<Event>
+        get() = filteredEvents.filter { isPastEvent(it) }
+
+    private fun isPastEvent(event: Event): Boolean {
+        if (event.id.startsWith("past_") || 
+            event.status.equals("completed", ignoreCase = true) || 
+            event.registrationStatus.equals("completed", ignoreCase = true)) {
+            return true
+        }
+        val datePart = event.dateTime.split(" • ").getOrNull(0) ?: ""
+        val firstToken = datePart.split(" ").getOrNull(0) ?: ""
+        if (firstToken.matches(Regex("\\d{4}-\\d{2}-\\d{2}"))) {
+            try {
+                val eventDate = java.time.LocalDate.parse(firstToken)
+                if (eventDate.isBefore(java.time.LocalDate.now())) {
+                    return true
+                }
+            } catch (e: Exception) {
+                // ignored
+            }
+        }
+        return false
+    }
 
     fun onSearchQueryChange(query: String) {
         searchQuery = query

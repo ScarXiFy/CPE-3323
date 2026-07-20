@@ -37,47 +37,54 @@ class CreateEventViewModel @Inject constructor(
 
     init {
         eventId?.let { id ->
-            eventRepository.getEventById(id)?.let { event ->
-                originalEvent = event
-                title = event.title
-                
-                val defaultCategories = listOf("Academic", "Sports", "Workshop", "Social")
-                if (event.category in defaultCategories) {
-                    category = event.category
-                    customCategory = ""
-                } else {
-                    category = "Other"
-                    customCategory = event.category
+            viewModelScope.launch {
+                eventRepository.getEvents().collect { events ->
+                    val event = events.find { it.id == id } ?: eventRepository.getEventById(id)
+                    if (event != null && originalEvent == null) {
+                        populateEventDetails(event)
+                    }
                 }
-                
-                organizer = event.organizerName
-                
-                val parts = event.dateTime.split(" • ")
-                val datePart = parts.getOrNull(0) ?: ""
-                val timeParts = datePart.split(" ")
-                
-                if (timeParts.size == 2 && timeParts[0].matches(Regex("\\d{4}-\\d{2}-\\d{2}")) && timeParts[1].matches(Regex("\\d{2}:\\d{2}"))) {
-                    date = timeParts[0]
-                    startTime = timeParts[1]
-                } else {
-                    date = ""
-                    startTime = ""
-                }
-                
-                val endTimePart = parts.getOrNull(1) ?: ""
-                val endTimeParts = endTimePart.split(" ")
-                if (endTimeParts.size == 2) {
-                    endTime = endTimeParts[1]
-                } else if (endTimeParts.size == 1 && endTimeParts[0].matches(Regex("\\d{2}:\\d{2}"))) {
-                    endTime = endTimeParts[0]
-                } else {
-                    endTime = ""
-                }
-                
-                location = event.location
-                description = event.description
-                //imageUrl = event.imageUrl
             }
+        }
+    }
+
+    private fun populateEventDetails(event: Event) {
+        originalEvent = event
+        title = event.title
+
+        val defaultCategories = listOf("Academic", "Sports", "Workshop", "Social")
+        if (event.category in defaultCategories) {
+            category = event.category
+            customCategory = ""
+        } else {
+            category = "Other"
+            customCategory = event.category
+        }
+
+        organizer = event.organizerName
+        location = event.location
+        description = event.description
+
+        val parts = event.dateTime.split(" • ")
+        val datePart = parts.getOrNull(0) ?: ""
+        val timePart = parts.getOrNull(1) ?: ""
+
+        val timeParts = datePart.trim().split(" ")
+        if (timeParts.size == 2 && timeParts[0].matches(Regex("\\d{4}-\\d{2}-\\d{2}")) && timeParts[1].matches(Regex("\\d{2}:\\d{2}"))) {
+            date = timeParts[0]
+            startTime = timeParts[1]
+        } else {
+            date = if (timeParts.isNotEmpty()) timeParts[0] else datePart
+            startTime = if (timeParts.size > 1) timeParts[1] else ""
+        }
+
+        val endTimeParts = timePart.trim().split(" ")
+        if (endTimeParts.size == 2 && endTimeParts[1].matches(Regex("\\d{2}:\\d{2}"))) {
+            endTime = endTimeParts[1]
+        } else if (endTimeParts.isNotEmpty() && endTimeParts[0].matches(Regex("\\d{2}:\\d{2}"))) {
+            endTime = endTimeParts[0]
+        } else {
+            endTime = timePart.trim()
         }
     }
 

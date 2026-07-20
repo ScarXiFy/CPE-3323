@@ -59,6 +59,7 @@ fun HomeScreen(
         bottomBar = {
             CemsBottomNavBar(
                 currentDestination = BottomNavDestination.Home,
+                isAdmin = viewModel.isAdmin,
                 onDestinationChanged = { destination ->
                     when (destination) {
                         BottomNavDestination.Home -> { /* Already here */ }
@@ -134,7 +135,7 @@ fun HomeScreen(
                 }
             }
 
-            // Section Header
+            // Upcoming Events Section Header
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -148,37 +149,28 @@ fun HomeScreen(
                     color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Bold
                 )
-                TextButton(onClick = { /* See All logic */ }) {
-                    Text(
-                        text = "See All",
-                        style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.primary,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                }
             }
 
-            // Events List
-            val eventsList = viewModel.events
-            if (eventsList.isEmpty()) {
+            // Upcoming Events List
+            val upcomingList = viewModel.upcomingEvents
+            if (upcomingList.isEmpty()) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(200.dp),
+                        .height(100.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "No events found matching criteria",
-                        style = MaterialTheme.typography.bodyLarge,
+                        text = "No upcoming events found matching criteria",
+                        style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             } else {
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    modifier = Modifier.padding(bottom = 24.dp)
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    eventsList.forEach { event ->
+                    upcomingList.forEach { event ->
                         val (categoryColor, categoryOnColor) = when (event.category.lowercase()) {
                             "workshop" -> MaterialTheme.colorScheme.primary to MaterialTheme.colorScheme.onPrimary
                             "sports" -> MaterialTheme.colorScheme.secondary to MaterialTheme.colorScheme.onSecondary
@@ -189,6 +181,64 @@ fun HomeScreen(
                         EventCard(
                             category = event.category,
                             categoryColor = categoryColor,
+                            categoryOnColor = categoryOnColor,
+                            title = event.title,
+                            date = event.formattedDate(),
+                            time = event.formattedTimeRange(),
+                            location = event.location,
+                            onClick = { onEventClick(event.id) }
+                        )
+                    }
+                }
+            }
+
+            // Past Events Section Header
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Past Events",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
+            // Past Events List
+            val pastList = viewModel.pastEvents
+            if (pastList.isEmpty()) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(100.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "No past events found matching criteria",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            } else {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    modifier = Modifier.padding(bottom = 24.dp)
+                ) {
+                    pastList.forEach { event ->
+                        val (categoryColor, categoryOnColor) = when (event.category.lowercase()) {
+                            "workshop" -> MaterialTheme.colorScheme.primary to MaterialTheme.colorScheme.onPrimary
+                            "sports" -> MaterialTheme.colorScheme.secondary to MaterialTheme.colorScheme.onSecondary
+                            "cultural" -> MaterialTheme.colorScheme.tertiary to MaterialTheme.colorScheme.onTertiary
+                            else -> MaterialTheme.colorScheme.primary to MaterialTheme.colorScheme.onPrimary
+                        }
+
+                        EventCard(
+                            category = event.category,
+                            categoryColor = categoryColor.copy(alpha = 0.6f),
                             categoryOnColor = categoryOnColor,
                             title = event.title,
                             date = event.formattedDate(),
