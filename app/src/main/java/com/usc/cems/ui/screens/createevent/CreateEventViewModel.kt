@@ -53,31 +53,30 @@ class CreateEventViewModel @Inject constructor(
                 organizer = event.organizerName
                 
                 val parts = event.dateTime.split(" • ")
-                val startPart = parts.getOrNull(0) ?: ""
-                val endPart = parts.getOrNull(1) ?: ""
+                val datePart = parts.getOrNull(0) ?: ""
+                val timeParts = datePart.split(" ")
                 
-                val startParts = startPart.split(" ")
-                val endParts = endPart.split(" ")
-                
-                if (startParts.size == 2 && startParts[0].matches(Regex("\\d{4}-\\d{2}-\\d{2}")) && startParts[1].matches(Regex("\\d{2}:\\d{2}"))) {
-                    startDate = startParts[0]
-                    startTime = startParts[1]
+                if (timeParts.size == 2 && timeParts[0].matches(Regex("\\d{4}-\\d{2}-\\d{2}")) && timeParts[1].matches(Regex("\\d{2}:\\d{2}"))) {
+                    date = timeParts[0]
+                    startTime = timeParts[1]
                 } else {
-                    startDate = ""
+                    date = ""
                     startTime = ""
                 }
                 
-                if (endParts.size == 2 && endParts[0].matches(Regex("\\d{4}-\\d{2}-\\d{2}")) && endParts[1].matches(Regex("\\d{2}:\\d{2}"))) {
-                    endDate = endParts[0]
-                    endTime = endParts[1]
+                val endTimePart = parts.getOrNull(1) ?: ""
+                val endTimeParts = endTimePart.split(" ")
+                if (endTimeParts.size == 2) {
+                    endTime = endTimeParts[1]
+                } else if (endTimeParts.size == 1 && endTimeParts[0].matches(Regex("\\d{2}:\\d{2}"))) {
+                    endTime = endTimeParts[0]
                 } else {
-                    endDate = ""
                     endTime = ""
                 }
                 
                 location = event.location
                 description = event.description
-                imageUrl = event.imageUrl
+                //imageUrl = event.imageUrl
             }
         }
     }
@@ -102,19 +101,14 @@ class CreateEventViewModel @Inject constructor(
     var organizerError by mutableStateOf<String?>(null)
         private set
 
-    var startDate by mutableStateOf("")
+    var date by mutableStateOf("")
         private set
-    var startDateError by mutableStateOf<String?>(null)
+    var dateError by mutableStateOf<String?>(null)
         private set
 
     var startTime by mutableStateOf("")
         private set
     var startTimeError by mutableStateOf<String?>(null)
-        private set
-
-    var endDate by mutableStateOf("")
-        private set
-    var endDateError by mutableStateOf<String?>(null)
         private set
 
     var endTime by mutableStateOf("")
@@ -167,19 +161,14 @@ class CreateEventViewModel @Inject constructor(
         organizerError = null
     }
 
-    fun onStartDateChange(value: String) {
-        startDate = value
-        startDateError = null
+    fun onDateChange(value: String) {
+        date = value
+        dateError = null
     }
 
     fun onStartTimeChange(value: String) {
         startTime = value
         startTimeError = null
-    }
-
-    fun onEndDateChange(value: String) {
-        endDate = value
-        endDateError = null
     }
 
     fun onEndTimeChange(value: String) {
@@ -207,8 +196,8 @@ class CreateEventViewModel @Inject constructor(
         isLoading = true
         viewModelScope.launch {
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
-            val startDateTime = LocalDateTime.parse("$startDate $startTime", formatter)
-            val endDateTime = LocalDateTime.parse("$endDate $endTime", formatter)
+            val startDateTime = LocalDateTime.parse("$date $startTime", formatter)
+            val endDateTime = LocalDateTime.parse("$date $endTime", formatter)
             val calculatedStatus = calculateEventStatus(startDateTime, endDateTime)
 
             val finalCategory = if (category == "Other") customCategory.trim() else category
@@ -217,10 +206,10 @@ class CreateEventViewModel @Inject constructor(
                 id = UUID.randomUUID().toString(),
                 title = title.trim(),
                 category = finalCategory,
-                imageUrl = imageUrl,
-                dateTime = "$startDate $startTime • $endDate $endTime",
+                //imageUrl = imageUrl,
+                dateTime = "$date $startTime • $endTime",
                 location = location.trim(),
-                spotsLeft = "Unlimited spots",
+                //spotsLeft = "Unlimited spots",
                 description = description.trim(),
                 organizerName = organizer.trim(),
                 organizerLogo = "https://lh3.googleusercontent.com/aida-public/AB6AXuDBkuM5btIeSGlZYkviOI_ikadaa7meJOX_vVgO0WFCh5PsjNAAqu5bZsfixtExgIjvBFWz_jS7Q67ardG8KKf-FK4oEZEdzW9ClrnnVFFPhgdelnlE8H6Ul2FeMYCWGilxdj2UU7U1Q_kofBpiY28RqlOuM0rdQYKPxOAdpvj6WTx5EZ3MkAFSUAa7NQQrYYwPXPe7eaGw6wA4BL4Sg_phOxO4WChvmlhNA3v6tdEMBq-jlcDdGeE0FQ",
@@ -242,8 +231,8 @@ class CreateEventViewModel @Inject constructor(
         isLoading = true
         viewModelScope.launch {
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
-            val startDateTime = LocalDateTime.parse("$startDate $startTime", formatter)
-            val endDateTime = LocalDateTime.parse("$endDate $endTime", formatter)
+            val startDateTime = LocalDateTime.parse("$date $startTime", formatter)
+            val endDateTime = LocalDateTime.parse("$date $endTime", formatter)
             val calculatedStatus = calculateEventStatus(startDateTime, endDateTime)
 
             val finalCategory = if (category == "Other") customCategory.trim() else category
@@ -252,10 +241,10 @@ class CreateEventViewModel @Inject constructor(
                 id = eventId!!,
                 title = title.trim(),
                 category = finalCategory,
-                imageUrl = imageUrl,
-                dateTime = "$startDate $startTime • $endDate $endTime",
+                //imageUrl = imageUrl,
+                dateTime = "$date $startTime • $endTime",
                 location = location.trim(),
-                spotsLeft = originalEvent?.spotsLeft ?: "Unlimited spots",
+                //spotsLeft = originalEvent?.spotsLeft ?: "Unlimited spots",
                 description = description.trim(),
                 organizerName = organizer.trim(),
                 organizerLogo = originalEvent?.organizerLogo ?: "https://lh3.googleusercontent.com/aida-public/AB6AXuDBkuM5btIeSGlZYkviOI_ikadaa7meJOX_vVgO0WFCh5PsjNAAqu5bZsfixtExgIjvBFWz_jS7Q67ardG8KKf-FK4oEZEdzW9ClrnnVFFPhgdelnlE8H6Ul2FeMYCWGilxdj2UU7U1Q_kofBpiY28RqlOuM0rdQYKPxOAdpvj6WTx5EZ3MkAFSUAa7NQQrYYwPXPe7eaGw6wA4BL4Sg_phOxO4WChvmlhNA3v6tdEMBq-jlcDdGeE0FQ",
@@ -298,9 +287,8 @@ class CreateEventViewModel @Inject constructor(
         categoryError = null
         customCategoryError = null
         organizerError = null
-        startDateError = null
+        dateError = null
         startTimeError = null
-        endDateError = null
         endTimeError = null
         descriptionError = null
         locationError = null
@@ -322,16 +310,12 @@ class CreateEventViewModel @Inject constructor(
             organizerError = "Organizer name is required"
             isValid = false
         }
-        if (startDate.isBlank()) {
-            startDateError = "Start Date is required"
+        if (date.isBlank()) {
+            dateError = "Date is required"
             isValid = false
         }
         if (startTime.isBlank()) {
             startTimeError = "Start Time is required"
-            isValid = false
-        }
-        if (endDate.isBlank()) {
-            endDateError = "End Date is required"
             isValid = false
         }
         if (endTime.isBlank()) {
@@ -351,8 +335,8 @@ class CreateEventViewModel @Inject constructor(
 
         try {
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
-            val startDateTime = LocalDateTime.parse("$startDate $startTime", formatter)
-            val endDateTime = LocalDateTime.parse("$endDate $endTime", formatter)
+            val startDateTime = LocalDateTime.parse("$date $startTime", formatter)
+            val endDateTime = LocalDateTime.parse("$date $endTime", formatter)
             val currentDateTime = LocalDateTime.now()
 
             var enforceStartNotInPast = true
@@ -360,19 +344,19 @@ class CreateEventViewModel @Inject constructor(
                 val parts = originalEvent!!.dateTime.split(" • ")
                 val origStart = parts.getOrNull(0) ?: ""
                 val origStartParts = origStart.split(" ")
-                if (startDate == origStartParts.getOrNull(0) && startTime == origStartParts.getOrNull(1)) {
+                if (date == origStartParts.getOrNull(0) && startTime == origStartParts.getOrNull(1)) {
                     enforceStartNotInPast = false
                 }
             }
 
             if (enforceStartNotInPast && startDateTime.isBefore(currentDateTime)) {
-                startDateError = "Start Date & Time cannot be in the past"
-                validationError = "Start Date & Time cannot be in the past"
+                dateError = "Start Time cannot be in the past"
+                validationError = "Start Time cannot be in the past"
                 isValid = false
             }
             if (!endDateTime.isAfter(startDateTime)) {
-                endDateError = "End Date & Time must be after Start Date & Time"
-                validationError = "End Date & Time must be after Start Date & Time"
+                endTimeError = "End Time must be after Start Time"
+                validationError = "End Time must be after Start Time"
                 isValid = false
             }
         } catch (e: Exception) {

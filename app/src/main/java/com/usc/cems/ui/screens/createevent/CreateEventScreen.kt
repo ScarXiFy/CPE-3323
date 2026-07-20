@@ -117,7 +117,7 @@ fun CreateEventScreen(
                     color = MaterialTheme.colorScheme.onBackground
                 )
                 Text(
-                    text = if (viewModel.isEditMode) "Modify the details of your event below." else "Fill in the details below to broadcast your event to the campus community.",
+                    text = if (viewModel.isEditMode) "Modify the details of your event below." else "Fill in the details below to post the event to the Carolinian community.",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -211,10 +211,10 @@ fun CreateEventScreen(
                 supportingText = viewModel.organizerError?.let { { Text(it) } }
             )
 
-            // Start Date Picker Field
+            // Date Picker Field
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(
-                    text = "Start Date",
+                    text = "Date",
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.outline,
                     fontWeight = FontWeight.SemiBold
@@ -228,7 +228,7 @@ fun CreateEventScreen(
                                 context,
                                 { _, year, month, dayOfMonth ->
                                     val formattedDate = String.format("%d-%02d-%02d", year, month + 1, dayOfMonth)
-                                    viewModel.onStartDateChange(formattedDate)
+                                    viewModel.onDateChange(formattedDate)
                                 },
                                 calendar.get(Calendar.YEAR),
                                 calendar.get(Calendar.MONTH),
@@ -237,15 +237,15 @@ fun CreateEventScreen(
                         }
                 ) {
                     OutlinedTextField(
-                        value = viewModel.startDate,
+                        value = viewModel.date,
                         onValueChange = {},
                         readOnly = true,
                         enabled = false,
-                        placeholder = { Text("Select start date") },
+                        placeholder = { Text("Select event date") },
                         leadingIcon = {
                             Icon(
                                 imageVector = Icons.Outlined.CalendarToday,
-                                contentDescription = "Start Date",
+                                contentDescription = "Date",
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         },
@@ -253,12 +253,12 @@ fun CreateEventScreen(
                         shape = RoundedCornerShape(12.dp),
                         colors = OutlinedTextFieldDefaults.colors(
                             disabledTextColor = MaterialTheme.colorScheme.onSurface,
-                            disabledBorderColor = if (viewModel.startDateError != null) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.outline,
+                            disabledBorderColor = if (viewModel.dateError != null) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.outline,
                             disabledLeadingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
                             disabledPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
                         ),
-                        isError = viewModel.startDateError != null,
-                        supportingText = viewModel.startDateError?.let { { Text(it) } }
+                        isError = viewModel.dateError != null,
+                        supportingText = viewModel.dateError?.let { { Text(it) } }
                     )
                 }
             }
@@ -311,58 +311,6 @@ fun CreateEventScreen(
                         ),
                         isError = viewModel.startTimeError != null,
                         supportingText = viewModel.startTimeError?.let { { Text(it) } }
-                    )
-                }
-            }
-
-            // End Date Picker Field
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Text(
-                    text = "End Date",
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.outline,
-                    fontWeight = FontWeight.SemiBold
-                )
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            val calendar = Calendar.getInstance()
-                            DatePickerDialog(
-                                context,
-                                { _, year, month, dayOfMonth ->
-                                    val formattedDate = String.format("%d-%02d-%02d", year, month + 1, dayOfMonth)
-                                    viewModel.onEndDateChange(formattedDate)
-                                },
-                                calendar.get(Calendar.YEAR),
-                                calendar.get(Calendar.MONTH),
-                                calendar.get(Calendar.DAY_OF_MONTH)
-                            ).show()
-                        }
-                ) {
-                    OutlinedTextField(
-                        value = viewModel.endDate,
-                        onValueChange = {},
-                        readOnly = true,
-                        enabled = false,
-                        placeholder = { Text("Select end date") },
-                        leadingIcon = {
-                            Icon(
-                                imageVector = Icons.Outlined.CalendarToday,
-                                contentDescription = "End Date",
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        },
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(12.dp),
-                        colors = OutlinedTextFieldDefaults.colors(
-                            disabledTextColor = MaterialTheme.colorScheme.onSurface,
-                            disabledBorderColor = if (viewModel.endDateError != null) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.outline,
-                            disabledLeadingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            disabledPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
-                        ),
-                        isError = viewModel.endDateError != null,
-                        supportingText = viewModel.endDateError?.let { { Text(it) } }
                     )
                 }
             }

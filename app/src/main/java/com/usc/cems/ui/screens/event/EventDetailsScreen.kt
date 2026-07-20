@@ -97,13 +97,19 @@ fun EventDetailsScreen(
             val startPart = parts.getOrNull(0) ?: ""
             val endPart = parts.getOrNull(1) ?: ""
 
+            // Format: "YYYY-MM-DD HH:MM • HH:MM" or "YYYY-MM-DD HH:MM • YYYY-MM-DD HH:MM"
             val startSplit = startPart.split(" ")
-            val startDateVal = startSplit.getOrNull(0) ?: startPart
+            val startDateVal = startSplit.getOrNull(0) ?: ""
             val startTimeVal = startSplit.getOrNull(1) ?: ""
 
             val endSplit = endPart.split(" ")
-            val endDateVal = endSplit.getOrNull(0) ?: endPart
-            val endTimeVal = endSplit.getOrNull(1) ?: ""
+            // If endPart has 2 segments, it's "YYYY-MM-DD HH:MM"
+            // If endPart has 1 segment, it's just "HH:MM"
+            val (endDateVal, endTimeVal) = if (endSplit.size == 2) {
+                endSplit[0] to endSplit[1]
+            } else {
+                "" to (endSplit.getOrNull(0) ?: "")
+            }
 
             val dateDisplay = if (startDateVal == endDateVal || endDateVal.isBlank()) {
                 startDateVal

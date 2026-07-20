@@ -28,6 +28,9 @@ import androidx.compose.material.icons.outlined.CalendarToday
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.material.icons.outlined.Schedule
+import com.usc.cems.ui.components.formattedDate
+import com.usc.cems.ui.components.formattedTimeRange
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
@@ -225,7 +228,7 @@ fun AdminDashboardScreen(
                             color = MaterialTheme.colorScheme.onBackground
                         )
                         Text(
-                            text = "Add, edit, or remove USC university listings.",
+                            text = "Add, edit, or remove USC event listings.",
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -368,7 +371,7 @@ fun AdminEventCard(
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                // Date & Location details
+                // Date
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -380,7 +383,7 @@ fun AdminEventCard(
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     Text(
-                        text = event.dateTime,
+                        text = event.formattedDate(),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 1,
@@ -390,6 +393,29 @@ fun AdminEventCard(
 
                 Spacer(modifier = Modifier.height(4.dp))
 
+                // Time
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Schedule,
+                        contentDescription = "Time",
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.size(14.dp)
+                    )
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Text(
+                        text = event.formattedTimeRange(),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                // Location
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {

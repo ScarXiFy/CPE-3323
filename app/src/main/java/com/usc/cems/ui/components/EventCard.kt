@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CalendarToday
 import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -40,21 +41,21 @@ import androidx.compose.ui.unit.dp
  * @param category      Category label (e.g. "WORKSHOP", "SPORTS").
  * @param categoryColor Background tint for the category badge.
  * @param title         Event title.
- * @param dateTime      Formatted date + time string.
+ * @param date          Formatted date string (e.g. "Jan 20, 2026").
+ * @param time          Formatted time range string (e.g. "2:00 PM - 4:00 PM").
  * @param location      Venue / building name.
- * @param spotsLeft     Optional "N spots left" text.
  * @param onClick       Click handler for the whole card.
  */
 @Composable
 fun EventCard(
     category: String,
     title: String,
-    dateTime: String,
+    date: String,
+    time: String,
     location: String,
     modifier: Modifier = Modifier,
     categoryColor: Color = MaterialTheme.colorScheme.primary,
     categoryOnColor: Color = MaterialTheme.colorScheme.onPrimary,
-    spotsLeft: String? = null,
     onClick: () -> Unit = {},
 ) {
     Surface(
@@ -71,19 +72,12 @@ fun EventCard(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            // Category + spots row
+            // Category row
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 CategoryBadge(label = category, containerColor = categoryColor, contentColor = categoryOnColor)
-                if (spotsLeft != null) {
-                    Text(
-                        text = spotsLeft,
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
             }
 
             // Title
@@ -110,7 +104,25 @@ fun EventCard(
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 Text(
-                    text = dateTime,
+                    text = date,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+
+            // Time
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Schedule,
+                    contentDescription = null,
+                    modifier = Modifier.height(16.dp).width(16.dp),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Text(
+                    text = time,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
