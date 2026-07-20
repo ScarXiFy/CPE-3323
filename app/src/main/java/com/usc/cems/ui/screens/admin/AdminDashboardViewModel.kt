@@ -79,22 +79,44 @@ class AdminDashboardViewModel @Inject constructor(
         selectedCategory = category
     }
 
+    fun isPastEvent(event: Event): Boolean {
+        if (event.id.startsWith("past_") || 
+            event.status.equals("completed", ignoreCase = true) || 
+            event.registrationStatus.equals("completed", ignoreCase = true)) {
+            return true
+        }
+        val datePart = event.dateTime.split(" • ").getOrNull(0) ?: ""
+        val firstToken = datePart.split(" ").getOrNull(0) ?: ""
+        if (firstToken.matches(Regex("\\d{4}-\\d{2}-\\d{2}"))) {
+            try {
+                val eventDate = java.time.LocalDate.parse(firstToken)
+                if (eventDate.isBefore(java.time.LocalDate.now())) {
+                    return true
+                }
+            } catch (e: Exception) {
+                // ignored
+            }
+        }
+        return false
+    }
+
     // Direct helper to filter list for compose UI
     fun getFilteredEventsList(): List<Event> {
         return events.value.filter { event ->
-            val matchesSearch = event.title.contains(searchQuery, ignoreCase = true) ||
+            val matchesSearch = searchQuery.isBlank() ||
+                    event.title.contains(searchQuery, ignoreCase = true) ||
                     event.location.contains(searchQuery, ignoreCase = true) ||
                     event.category.contains(searchQuery, ignoreCase = true)
-//            val matchesCategory = selectedCategory == "All Events" ||
-//                    event.category.lowercase() == selectedCategory.lowercase() ||
-//                    (selectedCategory == "Workshops" && event.category.lowercase() == "workshop")
             val matchesCategory = when (selectedCategory) {
                 "All Events" -> true
+                "Past Events" -> isPastEvent(event)
+                "Upcoming" -> !isPastEvent(event)
                 "Other" -> {
                     val predefinedCategories = listOf("Academic", "Sports", "Social", "Workshop")
                     !predefinedCategories.any { it.equals(event.category, ignoreCase = true) }
                 }
-                else -> event.category.equals(selectedCategory, ignoreCase = true)
+                else -> event.category.equals(selectedCategory, ignoreCase = true) ||
+                        (selectedCategory.equals("workshops", ignoreCase = true) && event.category.equals("workshop", ignoreCase = true))
             }
             matchesSearch && matchesCategory
         }

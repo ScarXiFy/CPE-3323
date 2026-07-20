@@ -79,12 +79,12 @@ fun EventDetailsScreen(
                 )
             }
         } else {
-            val (categoryColor, categoryOnColor) = when (event.category.lowercase()) {
-                "workshop" -> MaterialTheme.colorScheme.primary to MaterialTheme.colorScheme.onPrimary
-                "sports" -> MaterialTheme.colorScheme.secondary to MaterialTheme.colorScheme.onSecondary
-                "cultural" -> MaterialTheme.colorScheme.tertiary to MaterialTheme.colorScheme.onTertiary
-                else -> MaterialTheme.colorScheme.primary to MaterialTheme.colorScheme.onPrimary
-            }
+            val categoryColor = com.usc.cems.ui.components.getCategoryColor(event.category)
+            val categoryOnColor = Color.White
+
+            val isPastEvent = event.id.startsWith("past_") ||
+                    event.status.equals("completed", ignoreCase = true) ||
+                    event.registrationStatus.equals("completed", ignoreCase = true)
 
             val statusColor = when (event.status.lowercase()) {
                 "upcoming" -> MaterialTheme.colorScheme.primary
@@ -290,6 +290,23 @@ fun EventDetailsScreen(
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = Color.White
+                        )
+                    }
+                } else if (isPastEvent) {
+                    // Interaction Safety: Past event registration is closed
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp)
+                            .clip(RoundedCornerShape(12.dp))
+                            .background(MaterialTheme.colorScheme.surfaceContainerHigh),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "Past Event • Registration Closed",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 } else {

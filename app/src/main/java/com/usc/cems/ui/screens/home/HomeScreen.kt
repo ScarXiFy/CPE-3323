@@ -40,7 +40,9 @@ import com.usc.cems.ui.components.BottomNavDestination
 import com.usc.cems.ui.components.CategoryChip
 import com.usc.cems.ui.components.CemsBottomNavBar
 import com.usc.cems.ui.components.CemsTopAppBar
+import com.usc.cems.ui.components.CollapsibleSection
 import com.usc.cems.ui.components.EventCard
+import com.usc.cems.ui.components.getCategoryColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -135,117 +137,81 @@ fun HomeScreen(
                 }
             }
 
-            // Upcoming Events Section Header
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Upcoming Events",
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-
-            // Upcoming Events List
+            // Upcoming Events Collapsible Section
             val upcomingList = viewModel.upcomingEvents
-            if (upcomingList.isEmpty()) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(100.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "No upcoming events found matching criteria",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            } else {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    upcomingList.forEach { event ->
-                        val (categoryColor, categoryOnColor) = when (event.category.lowercase()) {
-                            "workshop" -> MaterialTheme.colorScheme.primary to MaterialTheme.colorScheme.onPrimary
-                            "sports" -> MaterialTheme.colorScheme.secondary to MaterialTheme.colorScheme.onSecondary
-                            "cultural" -> MaterialTheme.colorScheme.tertiary to MaterialTheme.colorScheme.onTertiary
-                            else -> MaterialTheme.colorScheme.primary to MaterialTheme.colorScheme.onPrimary
-                        }
-
-                        EventCard(
-                            category = event.category,
-                            categoryColor = categoryColor,
-                            categoryOnColor = categoryOnColor,
-                            title = event.title,
-                            date = event.formattedDate(),
-                            time = event.formattedTimeRange(),
-                            location = event.location,
-                            onClick = { onEventClick(event.id) }
+            CollapsibleSection(
+                title = "Upcoming Events",
+                count = upcomingList.size,
+                initiallyExpanded = true
+            ) {
+                if (upcomingList.isEmpty()) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(80.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "No upcoming events found matching criteria",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
+                    }
+                } else {
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        upcomingList.forEach { event ->
+                            EventCard(
+                                category = event.category,
+                                categoryColor = getCategoryColor(event.category),
+                                title = event.title,
+                                date = event.formattedDate(),
+                                time = event.formattedTimeRange(),
+                                location = event.location,
+                                onClick = { onEventClick(event.id) }
+                            )
+                        }
                     }
                 }
             }
 
-            // Past Events Section Header
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 12.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Past Events",
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-
-            // Past Events List
+            // Past Events Collapsible Section
             val pastList = viewModel.pastEvents
-            if (pastList.isEmpty()) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(100.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "No past events found matching criteria",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            } else {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    modifier = Modifier.padding(bottom = 24.dp)
-                ) {
-                    pastList.forEach { event ->
-                        val (categoryColor, categoryOnColor) = when (event.category.lowercase()) {
-                            "workshop" -> MaterialTheme.colorScheme.primary to MaterialTheme.colorScheme.onPrimary
-                            "sports" -> MaterialTheme.colorScheme.secondary to MaterialTheme.colorScheme.onSecondary
-                            "cultural" -> MaterialTheme.colorScheme.tertiary to MaterialTheme.colorScheme.onTertiary
-                            else -> MaterialTheme.colorScheme.primary to MaterialTheme.colorScheme.onPrimary
-                        }
-
-                        EventCard(
-                            category = event.category,
-                            categoryColor = categoryColor.copy(alpha = 0.6f),
-                            categoryOnColor = categoryOnColor,
-                            title = event.title,
-                            date = event.formattedDate(),
-                            time = event.formattedTimeRange(),
-                            location = event.location,
-                            onClick = { onEventClick(event.id) }
+            CollapsibleSection(
+                title = "Past Events",
+                count = pastList.size,
+                initiallyExpanded = true
+            ) {
+                if (pastList.isEmpty()) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(80.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "No past events found matching criteria",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
+                    }
+                } else {
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                        modifier = Modifier.padding(bottom = 24.dp)
+                    ) {
+                        pastList.forEach { event ->
+                            EventCard(
+                                category = event.category,
+                                categoryColor = getCategoryColor(event.category).copy(alpha = 0.7f),
+                                title = event.title,
+                                date = event.formattedDate(),
+                                time = event.formattedTimeRange(),
+                                location = event.location,
+                                onClick = { onEventClick(event.id) }
+                            )
+                        }
                     }
                 }
             }

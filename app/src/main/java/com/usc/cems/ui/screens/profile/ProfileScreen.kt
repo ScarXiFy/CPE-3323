@@ -16,15 +16,16 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AdminPanelSettings
 import androidx.compose.material.icons.outlined.ExitToApp
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -37,8 +38,10 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.usc.cems.ui.components.BottomNavDestination
 import com.usc.cems.ui.components.CemsBottomNavBar
+import com.usc.cems.ui.components.CemsTopAppBar
 import com.usc.cems.ui.components.PrimaryButton
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
     onNavigateToHome: () -> Unit = {},
@@ -48,28 +51,36 @@ fun ProfileScreen(
     modifier: Modifier = Modifier,
     viewModel: ProfileViewModel = hiltViewModel(),
 ) {
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-    ) {
+    Scaffold(
+        topBar = {
+            CemsTopAppBar(
+                title = "My Profile",
+                actions = {}
+            )
+        },
+        bottomBar = {
+            CemsBottomNavBar(
+                currentDestination = BottomNavDestination.Profile,
+                isAdmin = viewModel.isAdmin,
+                onDestinationChanged = { destination ->
+                    when (destination) {
+                        BottomNavDestination.Home -> onNavigateToHome()
+                        BottomNavDestination.Registered -> onNavigateToRegistered()
+                        BottomNavDestination.Profile -> {} // Current tab
+                    }
+                }
+            )
+        },
+        modifier = modifier.fillMaxSize()
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 24.dp)
-                .padding(top = 48.dp, bottom = 96.dp),
+                .padding(innerPadding)
+                .padding(horizontal = 24.dp, vertical = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
-            Text(
-                text = "My Profile",
-                style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Start
-            )
-
             // Profile Card Info
             Card(
                 shape = RoundedCornerShape(16.dp),
@@ -163,25 +174,6 @@ fun ProfileScreen(
                     )
                 }
             }
-        }
-
-        // Bottom Navigation Bar placed at the bottom
-        Box(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .fillMaxWidth()
-        ) {
-            CemsBottomNavBar(
-                currentDestination = BottomNavDestination.Profile,
-                isAdmin = viewModel.isAdmin,
-                onDestinationChanged = { destination ->
-                    when (destination) {
-                        BottomNavDestination.Home -> onNavigateToHome()
-                        BottomNavDestination.Registered -> onNavigateToRegistered()
-                        BottomNavDestination.Profile -> {} // Current tab
-                    }
-                }
-            )
         }
     }
 }

@@ -165,62 +165,43 @@ fun MyEventsScreen(
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
-                // Upcoming events header & list
+                // Upcoming events collapsible section
                 if (upcoming.isNotEmpty()) {
                     item {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
+                        com.usc.cems.ui.components.CollapsibleSection(
+                            title = "Upcoming Events",
+                            count = upcoming.size,
+                            initiallyExpanded = true
                         ) {
-                            Text(
-                                text = "Upcoming Events",
-                                style = MaterialTheme.typography.titleLarge,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onBackground
-                            )
-                            Box(
-                                modifier = Modifier
-                                    .clip(RoundedCornerShape(99.dp))
-                                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f))
-                                    .padding(horizontal = 12.dp, vertical = 4.dp)
-                            ) {
-                                Text(
-                                    text = "$totalCount REGISTERED",
-                                    color = MaterialTheme.colorScheme.primary,
-                                    fontSize = 11.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
+                            Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                                upcoming.forEach { event ->
+                                    RegisteredEventCard(
+                                        event = event,
+                                        onClick = { onEventClick(event.id) }
+                                    )
+                                }
                             }
                         }
                     }
-
-                    items(upcoming) { event ->
-                        RegisteredEventCard(
-                            event = event,
-                            onClick = { onEventClick(event.id) }//,
-                            //onTicketClick = { selectedTicketEvent = event }
-                        )
-                    }
                 }
 
-                // Completed/Past events header & list
+                // Completed/Past events collapsible section
                 if (past.isNotEmpty()) {
                     item {
-                        Text(
-                            text = "Past Events",
-                            style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onBackground,
-                            modifier = Modifier.padding(top = 8.dp)
-                        )
-                    }
-
-                    items(past) { event ->
-                        PastEventCard(
-                            event = event,
-                            onClick = { onEventClick(event.id) }
-                        )
+                        com.usc.cems.ui.components.CollapsibleSection(
+                            title = "Past Events",
+                            count = past.size,
+                            initiallyExpanded = true
+                        ) {
+                            Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                                past.forEach { event ->
+                                    PastEventCard(
+                                        event = event,
+                                        onClick = { onEventClick(event.id) }
+                                    )
+                                }
+                            }
+                        }
                     }
                 }
             }

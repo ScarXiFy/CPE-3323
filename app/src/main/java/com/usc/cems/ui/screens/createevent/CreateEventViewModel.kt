@@ -346,16 +346,7 @@ class CreateEventViewModel @Inject constructor(
             val endDateTime = LocalDateTime.parse("$date $endTime", formatter)
             val currentDateTime = LocalDateTime.now()
 
-            var enforceStartNotInPast = true
-            if (isEditMode && originalEvent != null) {
-                val parts = originalEvent!!.dateTime.split(" • ")
-                val origStart = parts.getOrNull(0) ?: ""
-                val origStartParts = origStart.split(" ")
-                if (date == origStartParts.getOrNull(0) && startTime == origStartParts.getOrNull(1)) {
-                    enforceStartNotInPast = false
-                }
-            }
-
+            var enforceStartNotInPast = !isEditMode
             if (enforceStartNotInPast && startDateTime.isBefore(currentDateTime)) {
                 dateError = "Start Time cannot be in the past"
                 validationError = "Start Time cannot be in the past"

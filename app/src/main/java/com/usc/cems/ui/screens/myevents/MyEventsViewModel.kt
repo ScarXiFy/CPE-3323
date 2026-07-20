@@ -31,13 +31,34 @@ class MyEventsViewModel @Inject constructor(
         loadRegisteredEvents()
     }
 
+    private fun isPastEvent(event: Event): Boolean {
+        if (event.id.startsWith("past_") || 
+            event.status.equals("completed", ignoreCase = true) || 
+            event.registrationStatus.equals("completed", ignoreCase = true)) {
+            return true
+        }
+        val datePart = event.dateTime.split(" • ").getOrNull(0) ?: ""
+        val firstToken = datePart.split(" ").getOrNull(0) ?: ""
+        if (firstToken.matches(Regex("\\d{4}-\\d{2}-\\d{2}"))) {
+            try {
+                val eventDate = java.time.LocalDate.parse(firstToken)
+                if (eventDate.isBefore(java.time.LocalDate.now())) {
+                    return true
+                }
+            } catch (e: Exception) {
+                // ignored
+            }
+        }
+        return false
+    }
+
     fun loadRegisteredEvents() {
         val uid = currentUserId ?: return
         viewModelScope.launch {
             eventRepository.getRegisteredEvents(uid).collect { list ->
                 // Split list into upcoming (active) and completed (past) events
-                upcomingEvents = list.filter { !it.id.startsWith("past_") }
-                pastEvents = list.filter { it.id.startsWith("past_") }
+                upcomingEvents = list.filter { !isPastEvent(it) }
+                pastEvents = list.filter { isPastEvent(it) }
             }
         }
     }

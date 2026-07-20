@@ -54,7 +54,7 @@ fun EventCard(
     time: String,
     location: String,
     modifier: Modifier = Modifier,
-    categoryColor: Color = MaterialTheme.colorScheme.primary,
+    categoryColor: Color = getCategoryColor(category),
     categoryOnColor: Color = MaterialTheme.colorScheme.onPrimary,
     onClick: () -> Unit = {},
 ) {

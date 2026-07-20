@@ -139,26 +139,24 @@ fun NavigationGraph(
         }
 
         composable<Screen.Profile> {
-            Box(modifier = Modifier.fillMaxSize().systemBarsPadding()) {
-                ProfileScreen(
-                    onNavigateToHome = {
-                        navController.navigate(Screen.Home) {
-                            popUpTo(Screen.Home) { inclusive = false }
-                        }
-                    },
-                    onNavigateToRegistered = {
-                        navController.navigate(Screen.MyEvents)
-                    },
-                    onNavigateToAdminDashboard = {
-                        navController.navigate(Screen.AdminDashboard)
-                    },
-                    onLogout = {
-                        navController.navigate(Screen.Login) {
-                            popUpTo(0) { inclusive = true }
-                        }
-                    },
-                )
-            }
+            ProfileScreen(
+                onNavigateToHome = {
+                    navController.navigate(Screen.Home) {
+                        popUpTo(Screen.Home) { inclusive = false }
+                    }
+                },
+                onNavigateToRegistered = {
+                    navController.navigate(Screen.MyEvents)
+                },
+                onNavigateToAdminDashboard = {
+                    navController.navigate(Screen.AdminDashboard)
+                },
+                onLogout = {
+                    navController.navigate(Screen.Login) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                },
+            )
         }
 
         composable<Screen.AdminDashboard> {
