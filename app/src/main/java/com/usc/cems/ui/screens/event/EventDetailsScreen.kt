@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.usc.cems.ui.components.CategoryBadge
 import com.usc.cems.ui.components.CemsTopAppBar
+import com.usc.cems.ui.components.isPastEvent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -82,9 +83,7 @@ fun EventDetailsScreen(
             val categoryColor = com.usc.cems.ui.components.getCategoryColor(event.category)
             val categoryOnColor = Color.White
 
-            val isPastEvent = event.id.startsWith("past_") ||
-                    event.status.equals("completed", ignoreCase = true) ||
-                    event.registrationStatus.equals("completed", ignoreCase = true)
+            val isPastEvent = event.isPastEvent()
 
             val statusColor = when (event.status.lowercase()) {
                 "upcoming" -> MaterialTheme.colorScheme.primary

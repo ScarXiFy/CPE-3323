@@ -12,6 +12,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+import com.usc.cems.ui.components.isPastEvent
+
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val eventRepository: EventRepository,
@@ -65,24 +67,7 @@ class HomeViewModel @Inject constructor(
         get() = filteredEvents.filter { isPastEvent(it) }
 
     private fun isPastEvent(event: Event): Boolean {
-        if (event.id.startsWith("past_") || 
-            event.status.equals("completed", ignoreCase = true) || 
-            event.registrationStatus.equals("completed", ignoreCase = true)) {
-            return true
-        }
-        val datePart = event.dateTime.split(" • ").getOrNull(0) ?: ""
-        val firstToken = datePart.split(" ").getOrNull(0) ?: ""
-        if (firstToken.matches(Regex("\\d{4}-\\d{2}-\\d{2}"))) {
-            try {
-                val eventDate = java.time.LocalDate.parse(firstToken)
-                if (eventDate.isBefore(java.time.LocalDate.now())) {
-                    return true
-                }
-            } catch (e: Exception) {
-                // ignored
-            }
-        }
-        return false
+        return event.isPastEvent()
     }
 
     fun onSearchQueryChange(query: String) {

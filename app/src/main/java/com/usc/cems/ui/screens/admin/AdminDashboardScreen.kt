@@ -30,8 +30,10 @@ import androidx.compose.material.icons.outlined.Group
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Schedule
+import com.usc.cems.ui.components.formattedAttendingCount
 import com.usc.cems.ui.components.formattedDate
 import com.usc.cems.ui.components.formattedTimeRange
+import com.usc.cems.ui.components.isPastEvent
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
@@ -146,7 +148,7 @@ fun AdminDashboardScreen(
         val filteredList = remember(eventsState, viewModel.searchQuery, viewModel.selectedCategory) {
             viewModel.getFilteredEventsList()
         }
-        val categories = listOf("All Events", "Upcoming", "Past Events", "Academic", "Sports", "Workshops", "Social", "Other")
+        val categories = listOf("All Events", "Academic", "Sports", "Workshops", "Social", "Other")
         var eventToDelete by remember { mutableStateOf<Event?>(null) }
 
         if (eventToDelete != null) {
@@ -301,60 +303,42 @@ fun AdminDashboardScreen(
                     val upcomingList = filteredList.filter { !viewModel.isPastEvent(it) }
                     val pastList = filteredList.filter { viewModel.isPastEvent(it) }
 
-                    if (viewModel.selectedCategory == "Past Events") {
-                        items(pastList) { event ->
-                            AdminEventCard(
-                                event = event,
-                                onClick = { onEventClick(event.id) },
-                                onDeleteClick = { eventToDelete = event }
-                            )
-                        }
-                    } else if (viewModel.selectedCategory == "Upcoming") {
-                        items(upcomingList) { event ->
-                            AdminEventCard(
-                                event = event,
-                                onClick = { onEventClick(event.id) },
-                                onDeleteClick = { eventToDelete = event }
-                            )
-                        }
-                    } else {
-                        // Collapsible Upcoming Events
-                        if (upcomingList.isNotEmpty()) {
-                            item {
-                                com.usc.cems.ui.components.CollapsibleSection(
-                                    title = "Upcoming Events",
-                                    count = upcomingList.size,
-                                    initiallyExpanded = true
-                                ) {
-                                    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                                        upcomingList.forEach { event ->
-                                            AdminEventCard(
-                                                event = event,
-                                                onClick = { onEventClick(event.id) },
-                                                onDeleteClick = { eventToDelete = event }
-                                            )
-                                        }
+                    // Collapsible Upcoming Events
+                    if (upcomingList.isNotEmpty()) {
+                        item {
+                            com.usc.cems.ui.components.CollapsibleSection(
+                                title = "Upcoming Events",
+                                count = upcomingList.size,
+                                initiallyExpanded = true
+                            ) {
+                                Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                                    upcomingList.forEach { event ->
+                                        AdminEventCard(
+                                            event = event,
+                                            onClick = { onEventClick(event.id) },
+                                            onDeleteClick = { eventToDelete = event }
+                                        )
                                     }
                                 }
                             }
                         }
+                    }
 
-                        // Collapsible Past Events
-                        if (pastList.isNotEmpty()) {
-                            item {
-                                com.usc.cems.ui.components.CollapsibleSection(
-                                    title = "Past Events",
-                                    count = pastList.size,
-                                    initiallyExpanded = true
-                                ) {
-                                    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                                        pastList.forEach { event ->
-                                            AdminEventCard(
-                                                event = event,
-                                                onClick = { onEventClick(event.id) },
-                                                onDeleteClick = { eventToDelete = event }
-                                            )
-                                        }
+                    // Collapsible Past Events
+                    if (pastList.isNotEmpty()) {
+                        item {
+                            com.usc.cems.ui.components.CollapsibleSection(
+                                title = "Past Events",
+                                count = pastList.size,
+                                initiallyExpanded = true
+                            ) {
+                                Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                                    pastList.forEach { event ->
+                                        AdminEventCard(
+                                            event = event,
+                                            onClick = { onEventClick(event.id) },
+                                            onDeleteClick = { eventToDelete = event }
+                                        )
                                     }
                                 }
                             }
@@ -501,7 +485,7 @@ fun AdminEventCard(
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     Text(
-                        text = event.attendingCount,
+                        text = event.formattedAttendingCount(),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.SemiBold,
