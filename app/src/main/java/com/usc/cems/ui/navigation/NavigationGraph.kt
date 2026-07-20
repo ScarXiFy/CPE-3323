@@ -116,7 +116,7 @@ fun NavigationGraph(
 
         composable<Screen.UpdateEvent> { backStackEntry ->
             val route = backStackEntry.toRoute<Screen.UpdateEvent>()
-            UpdateEventScreen(
+            com.usc.cems.ui.screens.editevent.EditEventScreen(
                 eventId = route.eventId,
                 onNavUp = { navController.popBackStack() },
             )
