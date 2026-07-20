@@ -85,11 +85,11 @@ fun EventDetailsScreen(
 
             val isPastEvent = event.isPastEvent()
 
-            val statusColor = when (event.status.lowercase()) {
-                "upcoming" -> MaterialTheme.colorScheme.primary
-                "ongoing" -> MaterialTheme.colorScheme.secondary
-                "completed" -> MaterialTheme.colorScheme.outline
-                else -> MaterialTheme.colorScheme.primary
+            val statusText = if (isPastEvent) "Past" else "Upcoming"
+            val statusColor = if (isPastEvent) {
+                MaterialTheme.colorScheme.outline
+            } else {
+                MaterialTheme.colorScheme.primary
             }
 
             val parts = event.dateTime.split(" • ")
@@ -152,7 +152,7 @@ fun EventDetailsScreen(
                                 .padding(horizontal = 8.dp, vertical = 2.dp)
                         ) {
                             Text(
-                                text = event.status.uppercase(),
+                                text = statusText.uppercase(),
                                 style = MaterialTheme.typography.labelMedium,
                                 color = statusColor,
                                 fontWeight = FontWeight.Bold
