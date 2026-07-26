@@ -43,8 +43,8 @@ fun Event.formattedTimeRange(): String = formatEventTimeRange(this.dateTime)
  */
 fun Event.isPastEvent(now: LocalDateTime = LocalDateTime.now()): Boolean {
     if (this.id.startsWith("past_") ||
-        this.status.equals("completed", ignoreCase = true) ||
-        this.registrationStatus.equals("completed", ignoreCase = true)
+        this.status.equals("completed", ignoreCase = true) //||
+        //this.registrationStatus.equals("completed", ignoreCase = true)
     ) {
         return true
     }

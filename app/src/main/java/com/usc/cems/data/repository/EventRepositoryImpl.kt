@@ -26,7 +26,7 @@ class EventRepositoryImpl @Inject constructor(
 
                 if (documents.isEmpty()) {
                     // Pre-populate/seed initial mock events if Firestore database is empty
-                    seedInitialMockEvents()
+                    //seedInitialMockEvents()
                 } else {
                     val list = documents.mapNotNull { doc -> doc.toEvent() }
                     _eventsFlow.value = list
@@ -34,7 +34,7 @@ class EventRepositoryImpl @Inject constructor(
             }
     }
 
-    private fun seedInitialMockEvents() {
+    /*private fun seedInitialMockEvents() {
         val initialList = listOf(
             Event(
                 id = "1",
@@ -126,7 +126,7 @@ class EventRepositoryImpl @Inject constructor(
             )
             firestore.collection("events").document(event.id).set(eventMap)
         }
-    }
+    }*/
 
     override fun getEvents(): StateFlow<List<Event>> {
         return _eventsFlow.asStateFlow()
@@ -146,9 +146,9 @@ class EventRepositoryImpl @Inject constructor(
             //"spotsLeft" to event.spotsLeft,
             "description" to event.description,
             "organizerName" to event.organizerName,
-            "organizerLogo" to event.organizerLogo,
+            //"organizerLogo" to event.organizerLogo,
             "attendingCount" to event.attendingCount,
-            "registrationStatus" to event.registrationStatus,
+            //"registrationStatus" to event.registrationStatus,
             "status" to event.status,
             "attendees" to emptyList<String>()
         )
@@ -165,9 +165,9 @@ class EventRepositoryImpl @Inject constructor(
             //"spotsLeft" to event.spotsLeft,
             "description" to event.description,
             "organizerName" to event.organizerName,
-            "organizerLogo" to event.organizerLogo,
+            //"organizerLogo" to event.organizerLogo,
             "attendingCount" to event.attendingCount,
-            "registrationStatus" to event.registrationStatus,
+            //"registrationStatus" to event.registrationStatus,
             "status" to event.status
         )
         firestore.collection("events").document(event.id)
@@ -250,9 +250,9 @@ class EventRepositoryImpl @Inject constructor(
                 //spotsLeft = getString("spotsLeft"),
                 description = getString("description") ?: "",
                 organizerName = getString("organizerName") ?: "",
-                organizerLogo = getString("organizerLogo") ?: "",
+                //organizerLogo = getString("organizerLogo") ?: "",
                 attendingCount = finalAttending,
-                registrationStatus = getString("registrationStatus") ?: "Open",
+                //registrationStatus = getString("registrationStatus") ?: "Open",
                 status = getString("status") ?: getString("registrationStatus") ?: "Upcoming"
             )
         } catch (e: Exception) {
