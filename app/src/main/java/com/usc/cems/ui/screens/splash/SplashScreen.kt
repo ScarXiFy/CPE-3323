@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -131,6 +132,7 @@ fun SplashScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
+            .systemBarsPadding()
             .background(Color(0xFF003FB1)), // Primary blue brand color
         contentAlignment = Alignment.Center
     ) {

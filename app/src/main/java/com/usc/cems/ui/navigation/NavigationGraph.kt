@@ -98,15 +98,13 @@ fun NavigationGraph(
 
         composable<Screen.EventDetails> { backStackEntry ->
             val route = backStackEntry.toRoute<Screen.EventDetails>()
-            Box(modifier = Modifier.fillMaxSize().systemBarsPadding()) {
-                EventDetailsScreen(
-                    eventId = route.eventId,
-                    onNavUp = { navController.popBackStack() },
-                    onNavigateToEditEvent = { eventId ->
-                        navController.navigate(Screen.UpdateEvent(eventId))
-                    }
-                )
-            }
+            EventDetailsScreen(
+                eventId = route.eventId,
+                onNavUp = { navController.popBackStack() },
+                onNavigateToEditEvent = { eventId ->
+                    navController.navigate(Screen.UpdateEvent(eventId))
+                }
+            )
         }
 
         composable<Screen.CreateEvent> {

@@ -57,7 +57,7 @@ fun CemsBottomNavBar(
     }
 
     NavigationBar(
-        modifier = modifier.height(72.dp),
+        modifier = modifier,
         containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.95f),
         tonalElevation = 0.dp,
     ) {

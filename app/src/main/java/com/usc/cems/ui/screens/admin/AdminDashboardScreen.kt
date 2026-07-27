@@ -203,7 +203,7 @@ fun AdminDashboardScreen(
                     contentColor = MaterialTheme.colorScheme.onPrimary,
                     shape = CircleShape,
                     modifier = Modifier
-                        .padding(bottom = 80.dp) // Avoid overlap with bottom nav bar
+                        .padding(bottom = 16.dp)
                         .size(56.dp)
                 ) {
                     Icon(
