@@ -37,24 +37,39 @@ fun Event.formattedDate(): String = formatEventDate(this.dateTime)
 fun Event.formattedTimeRange(): String = formatEventTimeRange(this.dateTime)
 
 /**
- * Evaluates whether an event is in the past based on:
- * 1. Explicit ID/status flags ("past_", "completed").
- * 2. Full scheduled end time (or start time if no end time exists).
+ * Single source of truth for determining an event's status.
+ * Evaluates whether an event is "Upcoming", "Ongoing", or "Completed"
+ * using both the scheduled event date and start/end times relative to [now].
  */
-fun Event.isPastEvent(now: LocalDateTime = LocalDateTime.now()): Boolean {
-    if (this.id.startsWith("past_") ||
-        this.status.equals("completed", ignoreCase = true) //||
-        //this.registrationStatus.equals("completed", ignoreCase = true)
-    ) {
-        return true
+fun Event.computeStatus(now: LocalDateTime = LocalDateTime.now()): String {
+    if (this.id.startsWith("past_") || this.status.equals("completed", ignoreCase = true)) {
+        return "Completed"
     }
 
-    val eventEndDateTime = parseEventEndDateTime(this.dateTime, now)
-    return if (eventEndDateTime != null) {
-        now.isAfter(eventEndDateTime)
-    } else {
-        false
+    val startDateTime = parseEventStartDateTime(this.dateTime, now)
+    val endDateTime = parseEventEndDateTime(this.dateTime, now)
+
+    if (startDateTime == null && endDateTime == null) {
+        return if (this.status.isNotBlank()) this.status else "Upcoming"
     }
+
+    return when {
+        endDateTime != null && now.isAfter(endDateTime) -> "Completed"
+        startDateTime != null && endDateTime != null && !now.isBefore(startDateTime) && !now.isAfter(endDateTime) -> "Ongoing"
+        startDateTime != null && now.isBefore(startDateTime) -> "Upcoming"
+        else -> {
+            if (endDateTime != null && now.isAfter(endDateTime)) "Completed"
+            else if (startDateTime != null && now.isAfter(startDateTime)) "Completed"
+            else this.status.ifBlank { "Upcoming" }
+        }
+    }
+}
+
+/**
+ * Evaluates whether an event is in the past based on [computeStatus].
+ */
+fun Event.isPastEvent(now: LocalDateTime = LocalDateTime.now()): Boolean {
+    return this.computeStatus(now).equals("completed", ignoreCase = true)
 }
 
 /**
@@ -108,6 +123,35 @@ private fun formatStoredTime(raw: String): String? {
         LocalTime.parse(raw, STORED_TIME_FORMAT).format(DISPLAY_TIME_FORMAT)
     } catch (e: DateTimeParseException) {
         null
+    }
+}
+
+/**
+ * Parses the start date and time of an event from [dateTime].
+ */
+fun parseEventStartDateTime(dateTime: String, currentReferenceDateTime: LocalDateTime = LocalDateTime.now()): LocalDateTime? {
+    if (dateTime.isBlank()) return null
+
+    val parts = dateTime.split("•")
+    val startPart = parts.getOrNull(0)?.trim() ?: ""
+
+    val startTokens = startPart.split(" ").filter { it.isNotBlank() }
+    val dateStr = startTokens.getOrNull(0) ?: ""
+    val startTimeStr = startTokens.getOrNull(1) ?: ""
+
+    val parsedLocalDate: LocalDate = try {
+        LocalDate.parse(dateStr, STORED_DATE_FORMAT)
+    } catch (e: Exception) {
+        parseLegacyDate(startPart, currentReferenceDateTime.year) ?: return null
+    }
+
+    val parsedTime: LocalTime? = parseTimeFromToken(startTimeStr)
+        ?: parseLegacyTimeFromPart(startPart, isEnd = false)
+
+    return if (parsedTime != null) {
+        LocalDateTime.of(parsedLocalDate, parsedTime)
+    } else {
+        parsedLocalDate.atStartOfDay()
     }
 }
 

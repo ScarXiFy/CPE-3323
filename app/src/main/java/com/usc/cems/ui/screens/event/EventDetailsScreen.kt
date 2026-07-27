@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.usc.cems.ui.components.CategoryBadge
 import com.usc.cems.ui.components.CemsTopAppBar
+import com.usc.cems.ui.components.computeStatus
 import com.usc.cems.ui.components.isPastEvent
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -87,11 +88,11 @@ fun EventDetailsScreen(
 
             val isPastEvent = event.isPastEvent()
 
-            val statusText = if (isPastEvent) "Past" else "Upcoming"
-            val statusColor = if (isPastEvent) {
-                MaterialTheme.colorScheme.outline
-            } else {
-                MaterialTheme.colorScheme.primary
+            val statusText = event.computeStatus()
+            val statusColor = when (statusText.lowercase()) {
+                "completed" -> MaterialTheme.colorScheme.outline
+                "ongoing" -> MaterialTheme.colorScheme.tertiary
+                else -> MaterialTheme.colorScheme.primary
             }
 
             val parts = event.dateTime.split(" • ")

@@ -4,6 +4,7 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.usc.cems.data.model.Event
 import com.usc.cems.data.model.UserProfile
+import com.usc.cems.ui.components.computeStatus
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -280,7 +281,8 @@ class EventRepositoryImpl @Inject constructor(
                 storedAttending
             }
 
-            Event(
+            val rawStatus = getString("status") ?: getString("registrationStatus") ?: "Upcoming"
+            val tempEvent = Event(
                 id = id,
                 title = getString("title") ?: "",
                 category = getString("category") ?: "",
@@ -293,8 +295,14 @@ class EventRepositoryImpl @Inject constructor(
                 //organizerLogo = getString("organizerLogo") ?: "",
                 attendingCount = finalAttending,
                 //registrationStatus = getString("registrationStatus") ?: "Open",
-                status = getString("status") ?: getString("registrationStatus") ?: "Upcoming"
+                status = rawStatus
             )
+
+            val calculatedStatus = tempEvent.computeStatus()
+            if (rawStatus != calculatedStatus) {
+                firestore.collection("events").document(id).update("status", calculatedStatus)
+            }
+            tempEvent.copy(status = calculatedStatus)
         } catch (e: Exception) {
             null
         }

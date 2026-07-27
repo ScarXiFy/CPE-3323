@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.usc.cems.data.model.Event
 import com.usc.cems.data.repository.EventRepository
+import com.usc.cems.ui.components.computeStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -202,28 +203,20 @@ class CreateEventViewModel @Inject constructor(
 
         isLoading = true
         viewModelScope.launch {
-            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
-            val startDateTime = LocalDateTime.parse("$date $startTime", formatter)
-            val endDateTime = LocalDateTime.parse("$date $endTime", formatter)
-            val calculatedStatus = calculateEventStatus(startDateTime, endDateTime)
-
             val finalCategory = if (category == "Other") customCategory.trim() else category
             
-            val newEvent = Event(
+            val tempEvent = Event(
                 id = UUID.randomUUID().toString(),
                 title = title.trim(),
                 category = finalCategory,
-                //imageUrl = imageUrl,
                 dateTime = "$date $startTime • $endTime",
                 location = location.trim(),
-                //spotsLeft = "Unlimited spots",
                 description = description.trim(),
                 organizerName = organizer.trim(),
-                //organizerLogo = "https://lh3.googleusercontent.com/aida-public/AB6AXuDBkuM5btIeSGlZYkviOI_ikadaa7meJOX_vVgO0WFCh5PsjNAAqu5bZsfixtExgIjvBFWz_jS7Q67ardG8KKf-FK4oEZEdzW9ClrnnVFFPhgdelnlE8H6Ul2FeMYCWGilxdj2UU7U1Q_kofBpiY28RqlOuM0rdQYKPxOAdpvj6WTx5EZ3MkAFSUAa7NQQrYYwPXPe7eaGw6wA4BL4Sg_phOxO4WChvmlhNA3v6tdEMBq-jlcDdGeE0FQ",
                 attendingCount = "0 students attending",
-                //registrationStatus = calculatedStatus,
-                status = calculatedStatus
+                status = "Upcoming"
             )
+            val newEvent = tempEvent.copy(status = tempEvent.computeStatus())
 
             eventRepository.addEvent(newEvent)
                 .onSuccess {
@@ -237,28 +230,21 @@ class CreateEventViewModel @Inject constructor(
         if (!validateInputs()) return
         isLoading = true
         viewModelScope.launch {
-            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
-            val startDateTime = LocalDateTime.parse("$date $startTime", formatter)
-            val endDateTime = LocalDateTime.parse("$date $endTime", formatter)
-            val calculatedStatus = calculateEventStatus(startDateTime, endDateTime)
-
             val finalCategory = if (category == "Other") customCategory.trim() else category
             
-            val updatedEvent = Event(
+            val tempEvent = Event(
                 id = eventId!!,
                 title = title.trim(),
                 category = finalCategory,
-                //imageUrl = imageUrl,
                 dateTime = "$date $startTime • $endTime",
                 location = location.trim(),
-                //spotsLeft = originalEvent?.spotsLeft ?: "Unlimited spots",
                 description = description.trim(),
                 organizerName = organizer.trim(),
-                //organizerLogo = originalEvent?.organizerLogo ?: "https://lh3.googleusercontent.com/aida-public/AB6AXuDBkuM5btIeSGlZYkviOI_ikadaa7meJOX_vVgO0WFCh5PsjNAAqu5bZsfixtExgIjvBFWz_jS7Q67ardG8KKf-FK4oEZEdzW9ClrnnVFFPhgdelnlE8H6Ul2FeMYCWGilxdj2UU7U1Q_kofBpiY28RqlOuM0rdQYKPxOAdpvj6WTx5EZ3MkAFSUAa7NQQrYYwPXPe7eaGw6wA4BL4Sg_phOxO4WChvmlhNA3v6tdEMBq-jlcDdGeE0FQ",
                 attendingCount = originalEvent?.attendingCount ?: "0 students attending",
-                //registrationStatus = calculatedStatus,
-                status = calculatedStatus
+                status = originalEvent?.status ?: "Upcoming"
             )
+            val updatedEvent = tempEvent.copy(status = tempEvent.computeStatus())
+
             eventRepository.updateEvent(updatedEvent)
                 .onSuccess {
                     _creationSuccess.emit(Unit)
@@ -276,15 +262,6 @@ class CreateEventViewModel @Inject constructor(
                     _creationSuccess.emit(Unit)
                 }
             isLoading = false
-        }
-    }
-
-    private fun calculateEventStatus(start: LocalDateTime, end: LocalDateTime): String {
-        val now = LocalDateTime.now()
-        return when {
-            now.isBefore(start) -> "Upcoming"
-            now.isAfter(end) -> "Completed"
-            else -> "Ongoing"
         }
     }
 

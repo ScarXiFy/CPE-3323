@@ -78,6 +78,36 @@ class EventDateTimeUtilsTest {
     }
 
     @Test
+    fun testComputeStatus() {
+        val futureEvent = Event(
+            id = "f1",
+            title = "Future Event",
+            category = "Social",
+            dateTime = "2026-07-21 09:00 • 11:00",
+            location = "Hall"
+        )
+        assertEquals("Upcoming", futureEvent.computeStatus(referenceNow))
+
+        val ongoingEvent = Event(
+            id = "o1",
+            title = "Ongoing Event",
+            category = "Workshop",
+            dateTime = "2026-07-20 10:00 • 16:00",
+            location = "Lab"
+        )
+        assertEquals("Ongoing", ongoingEvent.computeStatus(referenceNow))
+
+        val completedEvent = Event(
+            id = "c1",
+            title = "Completed Event",
+            category = "Academic",
+            dateTime = "2026-07-20 10:00 • 13:00",
+            location = "Lab"
+        )
+        assertEquals("Completed", completedEvent.computeStatus(referenceNow))
+    }
+
+    @Test
     fun testIsPastEvent_explicitPastIdOrStatus() {
         val pastIdEvent = Event(
             id = "past_999",
