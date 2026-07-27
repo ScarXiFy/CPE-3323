@@ -37,7 +37,6 @@ import androidx.compose.ui.unit.dp
  * - Category badge chip
  * - Title, date, location row
  *
- * @param imageUrl      Remote image URL for the event banner.
  * @param category      Category label (e.g. "WORKSHOP", "SPORTS").
  * @param categoryColor Background tint for the category badge.
  * @param title         Event title.
@@ -151,9 +150,6 @@ fun EventCard(
     }
 }
 
-/**
- * Small inline category badge — a pill with a translucent fill.
- */
 @Composable
 fun CategoryBadge(
     label: String,

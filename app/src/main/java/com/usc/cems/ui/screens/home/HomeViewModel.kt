@@ -20,8 +20,8 @@ class HomeViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ) : ViewModel() {
 
-    val isAdmin: Boolean
-        get() = authRepository.getCurrentUser()?.role?.equals("admin", ignoreCase = true) == true
+    var isAdmin by mutableStateOf(false)
+        private set
 
     var searchQuery by mutableStateOf("")
         private set
@@ -34,6 +34,7 @@ class HomeViewModel @Inject constructor(
     private var allEvents by mutableStateOf<List<Event>>(emptyList())
 
     init {
+        isAdmin = authRepository.getCurrentUser()?.role?.equals("admin", ignoreCase = true) == true
         viewModelScope.launch {
             eventRepository.getEvents().collect { list ->
                 allEvents = list
@@ -51,8 +52,8 @@ class HomeViewModel @Inject constructor(
                 }
                 else -> event.category.equals(selectedCategory, ignoreCase = true)
             }
-            val matchesSearch = searchQuery.isBlank() || 
-                    event.title.contains(searchQuery, ignoreCase = true) || 
+            val matchesSearch = searchQuery.isBlank() ||
+                    event.title.contains(searchQuery, ignoreCase = true) ||
                     event.location.contains(searchQuery, ignoreCase = true)
             matchesCategory && matchesSearch
         }
