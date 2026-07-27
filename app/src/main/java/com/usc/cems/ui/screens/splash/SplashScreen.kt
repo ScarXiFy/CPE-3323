@@ -44,6 +44,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.usc.cems.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import androidx.compose.foundation.shape.CircleShape
 
 @Composable
 fun SplashScreen(
@@ -165,7 +166,7 @@ fun SplashScreen(
         ) {
             // Animated Logo Card
             Card(
-                shape = RoundedCornerShape(16.dp),
+                shape = CircleShape, //RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
                 elevation = CardDefaults.cardElevation(defaultElevation = 24.dp),
                 modifier = Modifier
@@ -175,7 +176,7 @@ fun SplashScreen(
             ) {
                 Box(
                     contentAlignment = Alignment.Center,
-                    modifier = Modifier.fillMaxSize().padding(16.dp)
+                    modifier = Modifier.fillMaxSize()//.padding(16.dp)
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.ic_logo),

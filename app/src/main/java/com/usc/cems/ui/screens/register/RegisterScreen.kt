@@ -54,6 +54,7 @@ import com.usc.cems.ui.components.CemsTextField
 import com.usc.cems.ui.components.PrimaryButton
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import androidx.compose.foundation.shape.CircleShape
 
 @Composable
 fun RegisterScreen(
@@ -153,14 +154,14 @@ fun RegisterScreen(
                     .offset { IntOffset(0, headerOffsetY.value.toInt()) }
             ) {
                 Card(
-                    shape = RoundedCornerShape(16.dp),
+                    shape = CircleShape,//RoundedCornerShape(16.dp),
                     colors = CardDefaults.cardColors(containerColor = Color.White),
                     elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
                     modifier = Modifier.size(80.dp)
                 ) {
                     Box(
                         contentAlignment = Alignment.Center,
-                        modifier = Modifier.fillMaxSize().padding(12.dp)
+                        modifier = Modifier.fillMaxSize()//.padding(12.dp)
                     ) {
                         Image(
                             painter = painterResource(id = R.drawable.ic_logo),
