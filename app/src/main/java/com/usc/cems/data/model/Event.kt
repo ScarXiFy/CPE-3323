@@ -1,5 +1,7 @@
 package com.usc.cems.data.model
 
+import com.usc.cems.ui.components.computeStatus
+
 data class Event(
     val id: String,
     val title: String,
@@ -12,5 +14,7 @@ data class Event(
     //val organizerLogo: String = "",
     val attendingCount: String = "0 students are attending",
     //val registrationStatus: String = "Open",
-    val status: String = "Upcoming"
-)
+) {
+    val status: String
+        get() = computeStatus()
+}

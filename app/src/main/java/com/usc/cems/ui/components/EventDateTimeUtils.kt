@@ -42,7 +42,7 @@ fun Event.formattedTimeRange(): String = formatEventTimeRange(this.dateTime)
  * using both the scheduled event date and start/end times relative to [now].
  */
 fun Event.computeStatus(now: LocalDateTime = LocalDateTime.now()): String {
-    if (this.id.startsWith("past_") || this.status.equals("completed", ignoreCase = true)) {
+    if (this.id.startsWith("past_")) {
         return "Completed"
     }
 
@@ -50,7 +50,7 @@ fun Event.computeStatus(now: LocalDateTime = LocalDateTime.now()): String {
     val endDateTime = parseEventEndDateTime(this.dateTime, now)
 
     if (startDateTime == null && endDateTime == null) {
-        return if (this.status.isNotBlank()) this.status else "Upcoming"
+        return "Upcoming"
     }
 
     return when {
@@ -60,7 +60,7 @@ fun Event.computeStatus(now: LocalDateTime = LocalDateTime.now()): String {
         else -> {
             if (endDateTime != null && now.isAfter(endDateTime)) "Completed"
             else if (startDateTime != null && now.isAfter(startDateTime)) "Completed"
-            else this.status.ifBlank { "Upcoming" }
+            else "Upcoming"
         }
     }
 }

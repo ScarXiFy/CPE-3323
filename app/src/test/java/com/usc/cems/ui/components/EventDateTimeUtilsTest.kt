@@ -117,16 +117,6 @@ class EventDateTimeUtilsTest {
             location = "Auditorium"
         )
         assertTrue(pastIdEvent.isPastEvent(referenceNow))
-
-        val completedStatusEvent = Event(
-            id = "test_completed",
-            title = "Completed Event",
-            category = "Social",
-            dateTime = "2026-07-25 18:00",
-            location = "Auditorium",
-            status = "Completed"
-        )
-        assertTrue(completedStatusEvent.isPastEvent(referenceNow))
     }
 
     @Test

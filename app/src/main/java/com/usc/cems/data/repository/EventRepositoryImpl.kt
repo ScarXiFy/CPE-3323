@@ -154,7 +154,6 @@ class EventRepositoryImpl @Inject constructor(
             //"organizerLogo" to event.organizerLogo,
             "attendingCount" to event.attendingCount,
             //"registrationStatus" to event.registrationStatus,
-            "status" to event.status,
             "attendees" to emptyList<String>()
         )
         firestore.collection("events").document(event.id).set(eventMap).await()
@@ -173,7 +172,6 @@ class EventRepositoryImpl @Inject constructor(
             //"organizerLogo" to event.organizerLogo,
             "attendingCount" to event.attendingCount,
             //"registrationStatus" to event.registrationStatus,
-            "status" to event.status
         )
         firestore.collection("events").document(event.id)
             .set(eventMap, com.google.firebase.firestore.SetOptions.merge())
@@ -281,8 +279,7 @@ class EventRepositoryImpl @Inject constructor(
                 storedAttending
             }
 
-            val rawStatus = getString("status") ?: getString("registrationStatus") ?: "Upcoming"
-            val tempEvent = Event(
+            Event(
                 id = id,
                 title = getString("title") ?: "",
                 category = getString("category") ?: "",
@@ -294,15 +291,7 @@ class EventRepositoryImpl @Inject constructor(
                 organizerName = getString("organizerName") ?: "",
                 //organizerLogo = getString("organizerLogo") ?: "",
                 attendingCount = finalAttending,
-                //registrationStatus = getString("registrationStatus") ?: "Open",
-                status = rawStatus
             )
-
-            val calculatedStatus = tempEvent.computeStatus()
-            if (rawStatus != calculatedStatus) {
-                firestore.collection("events").document(id).update("status", calculatedStatus)
-            }
-            tempEvent.copy(status = calculatedStatus)
         } catch (e: Exception) {
             null
         }

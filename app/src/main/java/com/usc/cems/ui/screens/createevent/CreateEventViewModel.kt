@@ -205,7 +205,7 @@ class CreateEventViewModel @Inject constructor(
         viewModelScope.launch {
             val finalCategory = if (category == "Other") customCategory.trim() else category
             
-            val tempEvent = Event(
+            val newEvent = Event(
                 id = UUID.randomUUID().toString(),
                 title = title.trim(),
                 category = finalCategory,
@@ -214,9 +214,7 @@ class CreateEventViewModel @Inject constructor(
                 description = description.trim(),
                 organizerName = organizer.trim(),
                 attendingCount = "0 students attending",
-                status = "Upcoming"
             )
-            val newEvent = tempEvent.copy(status = tempEvent.computeStatus())
 
             eventRepository.addEvent(newEvent)
                 .onSuccess {
@@ -232,7 +230,7 @@ class CreateEventViewModel @Inject constructor(
         viewModelScope.launch {
             val finalCategory = if (category == "Other") customCategory.trim() else category
             
-            val tempEvent = Event(
+            val updatedEvent = Event(
                 id = eventId!!,
                 title = title.trim(),
                 category = finalCategory,
@@ -241,9 +239,7 @@ class CreateEventViewModel @Inject constructor(
                 description = description.trim(),
                 organizerName = organizer.trim(),
                 attendingCount = originalEvent?.attendingCount ?: "0 students attending",
-                status = originalEvent?.status ?: "Upcoming"
             )
-            val updatedEvent = tempEvent.copy(status = tempEvent.computeStatus())
 
             eventRepository.updateEvent(updatedEvent)
                 .onSuccess {
