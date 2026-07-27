@@ -4,13 +4,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.google.firebase.auth.FirebaseAuth
+import com.usc.cems.data.repository.AuthRepository
 import com.usc.cems.ui.screens.admin.AdminDashboardScreen
 import com.usc.cems.ui.screens.createevent.CreateEventScreen
 import com.usc.cems.ui.screens.event.EventDetailsScreen
@@ -25,6 +24,7 @@ import com.usc.cems.ui.screens.updateevent.UpdateEventScreen
 @Composable
 fun NavigationGraph(
     navController: NavHostController,
+    authRepository: AuthRepository,
     modifier: Modifier = Modifier,
 ) {
     NavHost(
@@ -35,7 +35,9 @@ fun NavigationGraph(
         composable<Screen.Splash> {
             SplashScreen(
                 onNavigateToHome = {
-                    navController.navigate(Screen.Home) {
+                    val user = authRepository.getCurrentUser()
+                    val dest = if (user?.role?.equals("admin", ignoreCase = true) == true) Screen.AdminDashboard else Screen.Home
+                    navController.navigate(dest) {
                         popUpTo(Screen.Splash) { inclusive = true }
                     }
                 },
@@ -50,8 +52,8 @@ fun NavigationGraph(
         composable<Screen.Login> {
             LoginScreen(
                 onNavigateToHome = {
-                    val email = FirebaseAuth.getInstance().currentUser?.email?.trim()
-                    val dest = if (email == "21700003@usc.edu.ph") Screen.AdminDashboard else Screen.Home
+                    val user = authRepository.getCurrentUser()
+                    val dest = if (user?.role?.equals("admin", ignoreCase = true) == true) Screen.AdminDashboard else Screen.Home
                     navController.navigate(dest) {
                         popUpTo(Screen.Login) { inclusive = true }
                     }
@@ -68,8 +70,8 @@ fun NavigationGraph(
                     navController.popBackStack()
                 },
                 onNavigateToHome = {
-                    val email = FirebaseAuth.getInstance().currentUser?.email?.trim()
-                    val dest = if (email == "21700003@usc.edu.ph") Screen.AdminDashboard else Screen.Home
+                    val user = authRepository.getCurrentUser()
+                    val dest = if (user?.role?.equals("admin", ignoreCase = true) == true) Screen.AdminDashboard else Screen.Home
                     navController.navigate(dest) {
                         popUpTo(Screen.Register) { inclusive = true }
                     }
@@ -160,35 +162,28 @@ fun NavigationGraph(
         }
 
         composable<Screen.AdminDashboard> {
-            val email = FirebaseAuth.getInstance().currentUser?.email?.trim()
-            if (email != "21700003@usc.edu.ph") {
-                LaunchedEffect(Unit) {
-                    navController.popBackStack()
-                }
-            } else {
-                AdminDashboardScreen(
-                    onNavigateToHome = {
-                        navController.navigate(Screen.Home) {
-                            popUpTo(Screen.Home) { inclusive = false }
-                        }
-                    },
-                    onNavigateToProfile = {
-                        navController.navigate(Screen.Profile)
-                    },
-                    onNavigateToRegistered = {
-                        navController.navigate(Screen.MyEvents)
-                    },
-                    onNavigateToAddEvent = {
-                        navController.navigate(Screen.CreateEvent)
-                    },
-                    onNavigateToEditEvent = { eventId ->
-                        navController.navigate(Screen.UpdateEvent(eventId))
-                    },
-                    onEventClick = { eventId ->
-                        navController.navigate(Screen.EventDetails(eventId))
+            AdminDashboardScreen(
+                onNavigateToHome = {
+                    navController.navigate(Screen.Home) {
+                        popUpTo(Screen.Home) { inclusive = false }
                     }
-                )
-            }
+                },
+                onNavigateToProfile = {
+                    navController.navigate(Screen.Profile)
+                },
+                onNavigateToRegistered = {
+                    navController.navigate(Screen.MyEvents)
+                },
+                onNavigateToAddEvent = {
+                    navController.navigate(Screen.CreateEvent)
+                },
+                onNavigateToEditEvent = { eventId ->
+                    navController.navigate(Screen.UpdateEvent(eventId))
+                },
+                onEventClick = { eventId ->
+                    navController.navigate(Screen.EventDetails(eventId))
+                }
+            )
         }
     }
 }

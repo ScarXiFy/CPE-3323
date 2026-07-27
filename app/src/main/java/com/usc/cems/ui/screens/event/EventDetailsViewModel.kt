@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.usc.cems.data.model.Event
+import com.usc.cems.data.model.UserProfile
 import com.usc.cems.data.repository.AuthRepository
 import com.usc.cems.data.repository.EventRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,6 +23,9 @@ class EventDetailsViewModel @Inject constructor(
         private set
 
     var isRegistered by mutableStateOf(false)
+        private set
+
+    var attendees by mutableStateOf<List<UserProfile>>(emptyList())
         private set
 
     val isAdmin: Boolean
@@ -43,6 +47,11 @@ class EventDetailsViewModel @Inject constructor(
                 currentUserId?.let { uid ->
                     isRegistered = eventRepository.isUserRegistered(uid, id)
                 }
+            }
+        }
+        viewModelScope.launch {
+            eventRepository.getEventAttendees(id).collect { list ->
+                attendees = list
             }
         }
     }

@@ -3,9 +3,13 @@ package com.usc.cems.data.repository
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.usc.cems.data.model.Event
+import com.usc.cems.data.model.UserProfile
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -226,6 +230,42 @@ class EventRepositoryImpl @Inject constructor(
         val registrationId = "${userId}_$eventId"
         val doc = firestore.collection("registrations").document(registrationId).get().await()
         return doc.exists()
+    }
+
+    override fun getEventAttendees(eventId: String): StateFlow<List<UserProfile>> {
+        val flow = MutableStateFlow<List<UserProfile>>(emptyList())
+        firestore.collection("registrations")
+            .whereEqualTo("eventId", eventId)
+            .addSnapshotListener { snapshot, error ->
+                if (error != null || snapshot == null) return@addSnapshotListener
+                val userIds = snapshot.documents.mapNotNull { it.getString("userId") }
+                if (userIds.isEmpty()) {
+                    flow.value = emptyList()
+                    return@addSnapshotListener
+                }
+                CoroutineScope(Dispatchers.IO).launch {
+                    val userProfiles = userIds.mapNotNull { userId ->
+                        try {
+                            val userDoc = firestore.collection("users").document(userId).get().await()
+                            if (userDoc.exists()) {
+                                val fullname = userDoc.getString("fullname") ?: userDoc.getString("email") ?: "USC Student"
+                                val email = userDoc.getString("email") ?: ""
+                                val role = userDoc.getString("role") ?: "student"
+                                UserProfile(
+                                    uid = userId,
+                                    fullname = fullname,
+                                    email = email,
+                                    role = role
+                                )
+                            } else null
+                        } catch (e: Exception) {
+                            null
+                        }
+                    }
+                    flow.value = userProfiles
+                }
+            }
+        return flow.asStateFlow()
     }
 
     private fun DocumentSnapshot.toEvent(): Event? {
