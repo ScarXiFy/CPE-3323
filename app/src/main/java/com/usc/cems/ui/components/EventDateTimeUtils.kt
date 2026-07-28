@@ -73,6 +73,20 @@ fun Event.isPastEvent(now: LocalDateTime = LocalDateTime.now()): Boolean {
 }
 
 /**
+ * Evaluates whether an event is currently ongoing based on [computeStatus].
+ */
+fun Event.isOngoingEvent(now: LocalDateTime = LocalDateTime.now()): Boolean {
+    return this.computeStatus(now).equals("ongoing", ignoreCase = true)
+}
+
+/**
+ * Evaluates whether an event is upcoming based on [computeStatus].
+ */
+fun Event.isUpcomingEvent(now: LocalDateTime = LocalDateTime.now()): Boolean {
+    return this.computeStatus(now).equals("upcoming", ignoreCase = true)
+}
+
+/**
  * Returns formatted attendance count string.
  * For past events, formats as "<number> students attended".
  * For upcoming events, returns the original [Event.attendingCount].

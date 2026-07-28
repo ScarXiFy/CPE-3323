@@ -300,7 +300,8 @@ fun AdminDashboardScreen(
                         }
                     }
                 } else {
-                    val upcomingList = filteredList.filter { !viewModel.isPastEvent(it) }
+                    val upcomingList = filteredList.filter { viewModel.isUpcomingEvent(it) }
+                    val ongoingList = filteredList.filter { viewModel.isOngoingEvent(it) }
                     val pastList = filteredList.filter { viewModel.isPastEvent(it) }
 
                     // Collapsible Upcoming Events
@@ -313,6 +314,27 @@ fun AdminDashboardScreen(
                             ) {
                                 Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
                                     upcomingList.forEach { event ->
+                                        AdminEventCard(
+                                            event = event,
+                                            onClick = { onEventClick(event.id) },
+                                            onDeleteClick = { eventToDelete = event }
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    // Collapsible Ongoing Events
+                    if (ongoingList.isNotEmpty()) {
+                        item {
+                            com.usc.cems.ui.components.CollapsibleSection(
+                                title = "Ongoing Events",
+                                count = ongoingList.size,
+                                initiallyExpanded = true
+                            ) {
+                                Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                                    ongoingList.forEach { event ->
                                         AdminEventCard(
                                             event = event,
                                             onClick = { onEventClick(event.id) },

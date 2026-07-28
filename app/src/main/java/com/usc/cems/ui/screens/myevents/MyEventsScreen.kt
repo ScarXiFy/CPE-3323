@@ -78,8 +78,8 @@ fun MyEventsScreen(
     viewModel: MyEventsViewModel = hiltViewModel(),
 ) {
     val upcoming = viewModel.upcomingEvents
+    val ongoing = viewModel.ongoingEvents
     val past = viewModel.pastEvents
-    val totalCount = upcoming.size
 
     //var selectedTicketEvent by remember { mutableStateOf<Event?>(null) }
     val context = LocalContext.current
@@ -110,7 +110,7 @@ fun MyEventsScreen(
         },
         modifier = modifier.fillMaxSize()
     ) { innerPadding ->
-        if (upcoming.isEmpty() && past.isEmpty()) {
+        if (upcoming.isEmpty() && ongoing.isEmpty() && past.isEmpty()) {
             // Empty State View
             Column(
                 modifier = Modifier
@@ -175,6 +175,26 @@ fun MyEventsScreen(
                         ) {
                             Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
                                 upcoming.forEach { event ->
+                                    RegisteredEventCard(
+                                        event = event,
+                                        onClick = { onEventClick(event.id) }
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Ongoing events collapsible section
+                if (ongoing.isNotEmpty()) {
+                    item {
+                        com.usc.cems.ui.components.CollapsibleSection(
+                            title = "Ongoing Events",
+                            count = ongoing.size,
+                            initiallyExpanded = true
+                        ) {
+                            Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                                ongoing.forEach { event ->
                                     RegisteredEventCard(
                                         event = event,
                                         onClick = { onEventClick(event.id) }

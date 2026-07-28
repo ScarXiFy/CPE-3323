@@ -176,6 +176,45 @@ fun HomeScreen(
                 }
             }
 
+            // Ongoing Events Collapsible Section
+            val ongoingList = viewModel.ongoingEvents
+            CollapsibleSection(
+                title = "Ongoing Events",
+                count = ongoingList.size,
+                initiallyExpanded = true
+            ) {
+                if (ongoingList.isEmpty()) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(80.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "No ongoing events found matching criteria",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                } else {
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        ongoingList.forEach { event ->
+                            EventCard(
+                                category = event.category,
+                                categoryColor = getCategoryColor(event.category),
+                                title = event.title,
+                                date = event.formattedDate(),
+                                time = event.formattedTimeRange(),
+                                location = event.location,
+                                onClick = { onEventClick(event.id) }
+                            )
+                        }
+                    }
+                }
+            }
+
             // Past Events Collapsible Section
             val pastList = viewModel.pastEvents
             CollapsibleSection(

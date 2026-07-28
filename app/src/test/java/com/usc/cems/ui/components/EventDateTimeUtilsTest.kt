@@ -87,6 +87,9 @@ class EventDateTimeUtilsTest {
             location = "Hall"
         )
         assertEquals("Upcoming", futureEvent.computeStatus(referenceNow))
+        assertTrue(futureEvent.isUpcomingEvent(referenceNow))
+        assertFalse(futureEvent.isOngoingEvent(referenceNow))
+        assertFalse(futureEvent.isPastEvent(referenceNow))
 
         val ongoingEvent = Event(
             id = "o1",
@@ -96,6 +99,9 @@ class EventDateTimeUtilsTest {
             location = "Lab"
         )
         assertEquals("Ongoing", ongoingEvent.computeStatus(referenceNow))
+        assertFalse(ongoingEvent.isUpcomingEvent(referenceNow))
+        assertTrue(ongoingEvent.isOngoingEvent(referenceNow))
+        assertFalse(ongoingEvent.isPastEvent(referenceNow))
 
         val completedEvent = Event(
             id = "c1",
@@ -105,6 +111,51 @@ class EventDateTimeUtilsTest {
             location = "Lab"
         )
         assertEquals("Completed", completedEvent.computeStatus(referenceNow))
+        assertFalse(completedEvent.isUpcomingEvent(referenceNow))
+        assertFalse(completedEvent.isOngoingEvent(referenceNow))
+        assertTrue(completedEvent.isPastEvent(referenceNow))
+    }
+
+    @Test
+    fun testEventStatusTransitions() {
+        val event = Event(
+            id = "t1",
+            title = "Transition Test Event",
+            category = "Academic",
+            dateTime = "2026-07-20 12:00 • 15:00",
+            location = "Room 201"
+        )
+
+        val timeBeforeStart = LocalDateTime.of(2026, 7, 20, 11, 59)
+        val timeAtStart = LocalDateTime.of(2026, 7, 20, 12, 0)
+        val timeDuring = LocalDateTime.of(2026, 7, 20, 13, 30)
+        val timeAtEnd = LocalDateTime.of(2026, 7, 20, 15, 0)
+        val timeAfterEnd = LocalDateTime.of(2026, 7, 20, 15, 1)
+
+        // Before start -> Upcoming
+        assertTrue(event.isUpcomingEvent(timeBeforeStart))
+        assertFalse(event.isOngoingEvent(timeBeforeStart))
+        assertFalse(event.isPastEvent(timeBeforeStart))
+
+        // At start time -> Ongoing
+        assertFalse(event.isUpcomingEvent(timeAtStart))
+        assertTrue(event.isOngoingEvent(timeAtStart))
+        assertFalse(event.isPastEvent(timeAtStart))
+
+        // During event -> Ongoing
+        assertFalse(event.isUpcomingEvent(timeDuring))
+        assertTrue(event.isOngoingEvent(timeDuring))
+        assertFalse(event.isPastEvent(timeDuring))
+
+        // At end time -> Ongoing
+        assertFalse(event.isUpcomingEvent(timeAtEnd))
+        assertTrue(event.isOngoingEvent(timeAtEnd))
+        assertFalse(event.isPastEvent(timeAtEnd))
+
+        // After end time -> Past/Completed
+        assertFalse(event.isUpcomingEvent(timeAfterEnd))
+        assertFalse(event.isOngoingEvent(timeAfterEnd))
+        assertTrue(event.isPastEvent(timeAfterEnd))
     }
 
     @Test

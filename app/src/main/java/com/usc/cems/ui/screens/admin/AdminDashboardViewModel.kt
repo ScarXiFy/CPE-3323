@@ -17,6 +17,8 @@ import javax.inject.Inject
 
 import com.usc.cems.data.repository.AuthRepository
 import com.usc.cems.ui.components.isPastEvent
+import com.usc.cems.ui.components.isOngoingEvent
+import com.usc.cems.ui.components.isUpcomingEvent
 
 @HiltViewModel
 class AdminDashboardViewModel @Inject constructor(
@@ -78,6 +80,14 @@ class AdminDashboardViewModel @Inject constructor(
 
     fun onCategorySelect(category: String) {
         selectedCategory = category
+    }
+
+    fun isUpcomingEvent(event: Event): Boolean {
+        return event.isUpcomingEvent()
+    }
+
+    fun isOngoingEvent(event: Event): Boolean {
+        return event.isOngoingEvent()
     }
 
     fun isPastEvent(event: Event): Boolean {

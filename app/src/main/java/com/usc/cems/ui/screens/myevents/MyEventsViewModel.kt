@@ -13,6 +13,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 import com.usc.cems.ui.components.isPastEvent
+import com.usc.cems.ui.components.isOngoingEvent
+import com.usc.cems.ui.components.isUpcomingEvent
 
 @HiltViewModel
 class MyEventsViewModel @Inject constructor(
@@ -21,6 +23,9 @@ class MyEventsViewModel @Inject constructor(
 ) : ViewModel() {
 
     var upcomingEvents by mutableStateOf<List<Event>>(emptyList())
+        private set
+
+    var ongoingEvents by mutableStateOf<List<Event>>(emptyList())
         private set
 
     var pastEvents by mutableStateOf<List<Event>>(emptyList())
@@ -33,17 +38,14 @@ class MyEventsViewModel @Inject constructor(
         loadRegisteredEvents()
     }
 
-    private fun isPastEvent(event: Event): Boolean {
-        return event.isPastEvent()
-    }
-
     fun loadRegisteredEvents() {
         val uid = currentUserId ?: return
         viewModelScope.launch {
             eventRepository.getRegisteredEvents(uid).collect { list ->
-                // Split list into upcoming (active) and completed (past) events
-                upcomingEvents = list.filter { !isPastEvent(it) }
-                pastEvents = list.filter { isPastEvent(it) }
+                // Split list into upcoming, ongoing, and completed (past) events
+                upcomingEvents = list.filter { it.isUpcomingEvent() }
+                ongoingEvents = list.filter { it.isOngoingEvent() }
+                pastEvents = list.filter { it.isPastEvent() }
             }
         }
     }

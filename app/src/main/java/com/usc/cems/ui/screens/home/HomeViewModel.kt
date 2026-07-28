@@ -13,6 +13,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 import com.usc.cems.ui.components.isPastEvent
+import com.usc.cems.ui.components.isOngoingEvent
+import com.usc.cems.ui.components.isUpcomingEvent
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -62,14 +64,13 @@ class HomeViewModel @Inject constructor(
         get() = upcomingEvents
 
     val upcomingEvents: List<Event>
-        get() = filteredEvents.filter { !isPastEvent(it) }
+        get() = filteredEvents.filter { it.isUpcomingEvent() }
+
+    val ongoingEvents: List<Event>
+        get() = filteredEvents.filter { it.isOngoingEvent() }
 
     val pastEvents: List<Event>
-        get() = filteredEvents.filter { isPastEvent(it) }
-
-    private fun isPastEvent(event: Event): Boolean {
-        return event.isPastEvent()
-    }
+        get() = filteredEvents.filter { it.isPastEvent() }
 
     fun onSearchQueryChange(query: String) {
         searchQuery = query
