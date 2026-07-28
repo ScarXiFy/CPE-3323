@@ -306,7 +306,7 @@ fun AdminDashboardScreen(
 
                     // Collapsible Upcoming Events
                     if (upcomingList.isNotEmpty()) {
-                        item {
+                        item(key = "section_upcoming") {
                             com.usc.cems.ui.components.CollapsibleSection(
                                 title = "Upcoming Events",
                                 count = upcomingList.size,
@@ -327,7 +327,7 @@ fun AdminDashboardScreen(
 
                     // Collapsible Ongoing Events
                     if (ongoingList.isNotEmpty()) {
-                        item {
+                        item(key = "section_ongoing") {
                             com.usc.cems.ui.components.CollapsibleSection(
                                 title = "Ongoing Events",
                                 count = ongoingList.size,
@@ -348,7 +348,7 @@ fun AdminDashboardScreen(
 
                     // Collapsible Past Events
                     if (pastList.isNotEmpty()) {
-                        item {
+                        item(key = "section_past") {
                             com.usc.cems.ui.components.CollapsibleSection(
                                 title = "Past Events",
                                 count = pastList.size,
@@ -415,9 +415,9 @@ fun AdminEventCard(
                         fontWeight = FontWeight.Bold
                     )
                 }
-                
+
                 Spacer(modifier = Modifier.height(8.dp))
-                
+
                 Text(
                     text = event.title,
                     style = MaterialTheme.typography.titleMedium,
