@@ -207,122 +207,12 @@ fun MyEventsScreen(
             }
         }
     }
-
-    // Mock Ticket/QR Code dialog popup
-    /*selectedTicketEvent?.let { event ->
-        AlertDialog(
-            onDismissRequest = { selectedTicketEvent = null },
-            icon = {
-                Icon(
-                    imageVector = Icons.Outlined.QrCode2,
-                    contentDescription = "Ticket QR Code",
-                    modifier = Modifier.size(40.dp)
-                )
-            },
-            title = {
-                Text(
-                    text = "Event Ticket",
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center
-                )
-            },
-            text = {
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    Text(
-                        text = event.title,
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        textAlign = TextAlign.Center
-                    )
-
-                    // Bento info block
-                    Card(
-                        shape = RoundedCornerShape(8.dp),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
-                        ),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Column(
-                            modifier = Modifier.padding(12.dp),
-                            verticalArrangement = Arrangement.spacedBy(6.dp)
-                        ) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(
-                                    imageVector = Icons.Outlined.CalendarToday,
-                                    contentDescription = "Date",
-                                    tint = MaterialTheme.colorScheme.primary,
-                                    modifier = Modifier.size(16.dp)
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(
-                                    text = event.dateTime.substringBefore("•").trim(),
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                            }
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(
-                                    imageVector = Icons.Outlined.LocationOn,
-                                    contentDescription = "Location",
-                                    tint = MaterialTheme.colorScheme.primary,
-                                    modifier = Modifier.size(16.dp)
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(
-                                    text = event.location.substringBefore(",").trim(),
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                            }
-                        }
-                    }
-
-                    // QR Code graphic
-                    Box(
-                        modifier = Modifier
-                            .size(180.dp)
-                            .clip(RoundedCornerShape(8.dp))
-                            .background(Color.White)
-                            .border(width = 1.dp, color = Color.LightGray)
-                            .padding(16.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        // Drawing a nice mock QR Code structure
-                        Icon(
-                            imageVector = Icons.Outlined.QrCode2,
-                            contentDescription = "QR Code",
-                            tint = Color.Black,
-                            modifier = Modifier.fillMaxSize()
-                        )
-                    }
-
-                    Text(
-                        text = "Scan at the entrance of the venue to check-in.",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        textAlign = TextAlign.Center
-                    )
-                }
-            },
-            confirmButton = {
-                TextButton(onClick = { selectedTicketEvent = null }) {
-                    Text("Close Ticket")
-                }
-            }
-        )
-    }*/
 }
 
 @Composable
 fun RegisteredEventCard(
     event: Event,
     onClick: () -> Unit,
-    //onTicketClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -402,20 +292,6 @@ fun RegisteredEventCard(
             }
 
             Spacer(modifier = Modifier.height(12.dp))
-
-            // View Ticket Button
-            /*Button(
-                onClick = onTicketClick,
-                shape = RoundedCornerShape(8.dp),
-                modifier = Modifier.fillMaxWidth().height(36.dp),
-                contentPadding = PaddingValues(0.dp)
-            ) {
-                Text(
-                    text = "View Ticket",
-                    style = MaterialTheme.typography.labelLarge,
-                    fontWeight = FontWeight.Bold
-                )
-            }*/
         }
     }
 }
