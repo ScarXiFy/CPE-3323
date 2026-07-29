@@ -35,10 +35,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-/**
- * Collapsible section header component matching the dropdown / accordion design requirement.
- * Allows collapsing and expanding list sections across Home, Admin, and Registered Events dashboards.
- */
+
+ //Allows collapsing and expanding list sections across Home, Admin, and Registered Events dashboards.
 @Composable
 fun CollapsibleSection(
     title: String,

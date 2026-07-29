@@ -31,20 +31,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
-/**
- * Event card matching the wireframe design:
- * - 16:9 hero image on top
- * - Category badge chip
- * - Title, date, location row
- *
- * @param category      Category label (e.g. "WORKSHOP", "SPORTS").
- * @param categoryColor Background tint for the category badge.
- * @param title         Event title.
- * @param date          Formatted date string (e.g. "Jan 20, 2026").
- * @param time          Formatted time range string (e.g. "2:00 PM - 4:00 PM").
- * @param location      Venue / building name.
- * @param onClick       Click handler for the whole card.
- */
 @Composable
 fun EventCard(
     category: String,

@@ -25,24 +25,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
 
-/**
- * Branded OutlinedTextField with optional leading icon and password toggle.
- *
- * Matches the wireframe's outlined field with:
- * - Rounded corners (8 dp)
- * - Primary tint on focus
- * - 56 dp height
- *
- * @param value          Current text value.
- * @param onValueChange  Callback when text changes.
- * @param label          Floating label text.
- * @param leadingIcon    Optional leading icon vector.
- * @param isPassword     When true, masks input and shows a visibility toggle.
- * @param keyboardOptions Optional keyboard options (type, IME action).
- * @param keyboardActions Optional keyboard actions.
- * @param isError        When true, renders in error state.
- * @param supportingText Optional text shown below the field (error message etc.).
- */
 @Composable
 fun CemsTextField(
     value: String,

@@ -14,17 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.unit.dp
 
-/**
- * Full-width primary CTA button.
- *
- * Matches the wireframe's 56 dp tall, 12 dp rounded, primary-container-filled button.
- * Shows a [CircularProgressIndicator] instead of text when [isLoading] is true.
- *
- * @param text      Button label.
- * @param onClick   Click callback.
- * @param isLoading When true, replaces label with a spinner and disables the button.
- * @param enabled   Controls whether the button is interactive.
- */
 @Composable
 fun PrimaryButton(
     text: String,

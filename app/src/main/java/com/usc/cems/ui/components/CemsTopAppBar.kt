@@ -14,14 +14,6 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-/**
- * Branded top app bar used across the app.
- *
- * @param title       Text displayed in the center (defaults to brand name).
- * @param onNavUp     If non-null, shows a back arrow that calls this lambda.
- * @param actions     Trailing icons slot (e.g. bookmark, share).
- * @param scrollBehavior Optional scroll behaviour for collapsing/pinned bars.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CemsTopAppBar(

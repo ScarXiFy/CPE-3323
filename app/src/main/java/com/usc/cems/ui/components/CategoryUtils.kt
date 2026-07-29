@@ -2,14 +2,7 @@ package com.usc.cems.ui.components
 
 import androidx.compose.ui.graphics.Color
 
-/**
- * Standardized category color mapping:
- * - Academic -> Yellow (Amber)
- * - Sports -> Orange
- * - Workshops -> Green
- * - Social -> Purple
- * - Other -> Blue
- */
+
 fun getCategoryColor(category: String): Color {
     return when (category.trim().lowercase()) {
         "academic" -> Color(0xFFF59E0B)  // Yellow / Amber
